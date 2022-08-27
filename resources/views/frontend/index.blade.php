@@ -20,11 +20,13 @@
     <div class="container-page">
         <div id="content">
             <div class="content-left">
-                <div class="banner-image">
-                    <a href="">
-                        <img src="{{asset('/asset/images/item-34.jpg')}}" alt="">
-                    </a>
-                </div>
+                @if (!empty($banner_sidebar))
+                    <div class="banner-image">
+                        <a href="">
+                            <img src="{{asset('upload/images/slider/'.$banner_sidebar->image)}}" alt="">
+                        </a>
+                    </div>
+                @endif
                 <div class="block-services" style="margin-bottom: 30px;">
                     <ul class="clearfix">
                         <li>
@@ -193,13 +195,13 @@
                                                 <div class="name">
                                                     <a href="">{{$item->name}}</a>
                                                 </div>
-                                                <ul class="product-attributes">
-                                                    <li>Core i5</li>
-                                                    <li>500GB SSD</li>
-                                                    <li>8GB</li>
-                                                    <li>RTX 3070</li>
-                                                    <li>600W</li>
-                                                </ul>
+                                                @if (!empty($item->specifications))
+                                                    <ul class="product-attributes">
+                                                        @foreach ($item->get_specifications() as $k)
+                                                            <li>{{$k}}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
                                                 <div class="price-review clearfix">
                                                     <div class="price">
                                                         @if (!empty($item->onsale))
@@ -228,7 +230,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="count-review">({{$item->votes->count()}})</div>
-                                                        <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
+                                                        @if (!empty($item->sold))
+                                                            <div class="sold"><i class="fas fa-badge-check"></i>Đã bán {{$item->sold}}</div>
+                                                        @endif
                                                     </div>
                                                 </div>
 
@@ -701,7 +705,7 @@
 
                 <!-- Danh mục -->
                 @foreach ($get_cat_parents as $cat_parent)
-                    <div class="product-content" style="margin-bottom: 40px;">
+                    <div class="product-content" style="margin-bottom: 40px;" id="category-{{$cat_parent->id}}">
                         <div class="block-title">
                             <h2>{{$cat_parent->name}}</h2>
 
@@ -720,100 +724,8 @@
                             </ul>
                             <a href="" class="show-all">Xem tất cả <i class="far fa-angle-right"></i></a>
                         </div>
-                        <div class="tab-content container-home" id="pills-tabContent">
-                            @php
-                                    $e=0;
-                            @endphp
-                            @foreach ($cat_parent->cat_child as $cat_child)
-                                @php
-                                    $e++;
-                                @endphp
-                                @if ($e==1)
-                                    <div class="tab-pane fade show active" id="pills-cat{{$cat_child->id}}" role="tabpanel" aria-labelledby="pills-cat{{$cat_child->id}}-tab">
-                                        <div class="list-product owl-carousel owl-theme owl-loaded owl-drag list-product-group" id="list-product-group">
-                                            @foreach ($cat_child->get_list_product_by_cat() as $item)
-                                                <!-- product -->
-                                            <div class="product-item mb-3">
-                                                <div class="thumb">
-                                                    <a href="">
-                                                        <img class="owl-lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
-                                                        <span class="brand" style="background-image: url('asset/images/msi.png');"></span>
-                                                        <div class="wp-tag">
-                                                            <span class="years">New 2022</span>
-                                                            <span class="payment">Trả góp 0%</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="detail">
-                                                    <div class="wp-event">
-                                                        <p class="event" style="background: linear-gradient(to right,#ef3006,#c60004);">
-                                                            <img src="/asset/images/icon1-50x50.png" alt="">
-                                                            <span>Giảm sốc</span>
-                                                        </p>
-                                                    </div>
-                                                    <div class="name">
-                                                        <a href="">{{$item->name}}</a>
-                                                    </div>
-                                                    <ul class="product-attributes">
-                                                        <li>Core i5</li>
-                                                        <li>500GB SSD</li>
-                                                        <li>8GB</li>
-                                                        <li>RTX 3070</li>
-                                                        <li>600W</li>
-                                                        <li>Core i5</li>
-                                                        <li>500GB SSD</li>
-                                                        <li>8GB</li>
-                                                        <li>RTX 3070</li>
-                                                        <li>600W</li>
-                                                    </ul>
-                                                    <div class="price-review clearfix">
-                                                        <div class="price">
-                                                            @if (!empty($item->onsale))
-                                                                <span class="onsale">- {{$item->onsale}}%</span>
-                                                                <div class="price-old">{{number_format($item->price,0,',','.')}} đ</div>
-                                                                <div class="price-new">{{number_format($item->price_onsale,0,',','.')}} đ</div>
-                                                            @else
-                                                                <div class="price-new">{{number_format($item->price,0,',','.')}} đ</div>
-                                                            @endif
-                                                        </div>
-                                                        <div class="review">
-                                                            <div class="rating2">
-                                                                <div class="rating-upper" style="width: {{$item->count_vote()}}%">
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                </div>
-                                                                <div class="rating-lower">
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="count-review">({{$item->votes->count()}})</div>
-                                                            <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="detail-bottom">
-                                                        <div class="qty" style="color: #01aa42;
-                                                        background-color: #dbf8e1;">Còn hàng</div>
-                                                        <div class="action">
-                                                            <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
-                                                            <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
-                                                            <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endforeach
+                        <div id="data-{{$cat_parent->id}}" class="wp-slider-pro">
 
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
                         </div>
                     </div>
                 @endforeach
@@ -871,78 +783,79 @@
             return (top >= viewport_top && top < viewport_bottom) ||
                 (bottom > viewport_top && bottom <= viewport_bottom) ||
                 (height > viewport_height && top <= viewport_top && bottom >= viewport_bottom)
-        }
-        function laySp(id) {
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            var data = {
-                id: id,
-                _token: _token
-            };
-            $.ajax({
-                url:"{{route('getProducts')}}",
-                type:"post",
-                dataType:"json",
-                data: data,
-                success: function (data) {
-                    // console.log(data);
-                    $('#'+id).append(data);
-                    $('.list-product-group').owlCarousel({
-                        autoplay: true,
-                        autoplayHoverPause: true,
-                        loop: false,
-                        margin: 10,
-                        nav: true,
-                        dots: false,
-                        mouseDrag: true,
-                        touchDrag: true,
-                        lazyLoad: true,
-                        responsive: {
-                            0: {
-                                items: 1
-                            },
-                            375: {
-                                items: 2
-                            },
-                            768:{
-                                items: 3
-                            },
-                            992:{
-                                items: 4
-                            },
-                            1200:{
-                                items: 5
-                            },
-                            1650: {
-                                items: 6
-                            },
-                            1920: {
-                                items: 6
-                            },
-                        }
-                    });
-                },
-            })
-        }
+            }
+            function laySp(category_id) {
+                var _token = $('meta[name="csrf-token"]').attr('content');
+                var id= category_id;
+                var data = {
+                    id: category_id,
+                    _token: _token
+                };
+                $.ajax({
+                    url:"{{route('getProducts')}}",
+                    type:"post",
+                    dataType:"json",
+                    data: data,
+                    success: function (data) {
+                        // console.log(data);
+                        $('#data-'+id).append(data);
+                        $('.list-product-group').owlCarousel({
+                            autoplay: true,
+                            autoplayHoverPause: true,
+                            loop: false,
+                            margin: 10,
+                            nav: true,
+                            dots: false,
+                            mouseDrag: true,
+                            touchDrag: true,
+                            lazyLoad: true,
+                            responsive: {
+                                0: {
+                                    items: 1
+                                },
+                                375: {
+                                    items: 2
+                                },
+                                768:{
+                                    items: 3
+                                },
+                                992:{
+                                    items: 4
+                                },
+                                1200:{
+                                    items: 5
+                                },
+                                1650: {
+                                    items: 6
+                                },
+                                1920: {
+                                    items: 6
+                                },
+                            }
+                        });
+                    },
+                })
+            }
 
-        var list_product = [];
-        let list_cat_1 = $('.get-list-cat').data('list');
-        let list_cat = String(list_cat_1);
-        let cat_ids = list_cat.split(' ');
-        cat_ids.forEach(function(element){
-            list_product.push(element);
-        });
-
-
-
-        function runOnScroll() {
-            list_product.forEach(function(category_id) {
-                if (isOnScreen($("#category-"+ category_id)) && ($("#category-"+ category_id).hasClass("loaded") == false)) {
-                    laySp(category_id);
-                    $("#category-"+ category_id).addClass("loaded");
-                }
+            var list_product = [];
+            let list_cat_1 = $('.get-list-cat').data('list');
+            let list_cat = String(list_cat_1);
+            let cat_ids = list_cat.split(' ');
+            cat_ids.forEach(function(element){
+                list_product.push(element);
             });
-        }
-        $(window).scroll(runOnScroll);
+
+
+
+            function runOnScroll() {
+                list_product.forEach(function(category_id) {
+                    if (isOnScreen($("#category-"+ category_id)) && ($("#category-"+ category_id).hasClass("loaded") == false)) {
+                        laySp(category_id);
+                        $("#category-"+ category_id).addClass("loaded");
+                    }
+                });
+            }
+            $(window).scroll(runOnScroll);
         });
     </script>
 @endsection

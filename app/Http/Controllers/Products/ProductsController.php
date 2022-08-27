@@ -117,6 +117,7 @@ class ProductsController extends Controller
         if ($imgs === "null"){ $imgs = 'no-images.jpg'; }
         $cat_id   = json_encode($request->cat_id);
         $attr_id  = \json_encode($request->attr_id);
+        $specifications = \json_encode($request->specifications);
         $Product  = [
             'name'         => $request->name,
             'slug'         => CommonHelper::convertTitleToSlug($request->name, '-'),
@@ -132,13 +133,14 @@ class ProductsController extends Controller
             'user_id'      => Auth::id(),
             'image'        => $imgs,
             'brand'        => $request->brand,
-            'limit_amount' => $request->limit_amount,
             'cat_id'       => $cat_id,
             'property'     => $request->property,
             'attr'         => $attr_id,
-            'trend'        => $request->trend,
-            'deals'        => $request->deals,
-            'recommend'    => $request->recommend,
+            'new'        => $request->new,
+            'hot_sale'        => $request->hot_sale,
+            'gift'        => $request->gift,
+            'sold'        => $request->sold,
+            'specifications'    => $specifications,
             'time_deal'    => $request->time_deal,
         ];
 

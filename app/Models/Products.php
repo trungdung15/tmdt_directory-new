@@ -18,7 +18,6 @@ class Products extends Model
         'name',
         'slug',
         'price',
-        'quantity',
         'content',
         'short_content',
         'thumb',
@@ -32,9 +31,12 @@ class Products extends Model
         'property',
         'onsale',
         'price_onsale',
-        'trend',
-        'recommend',
-        'deals',
+        'new',
+        'specifications',
+        'hot_sale',
+        'event',
+        'gift',
+        'sold',
         'time_deal',
         'attr',
     ];
@@ -75,5 +77,8 @@ class Products extends Model
         return $this->belongsToMany(Category::class, 'category_relationships', 'product_id', 'cat_id');
     }
 
+    public function get_specifications(){
+        return \json_decode($this->specifications);
+    }
 
 }

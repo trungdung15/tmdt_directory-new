@@ -32,48 +32,40 @@ class HomeController extends Controller
         // $Menus              = $this->getmenu('menu');
         // $Sub_menus          = $this->getmenu('submenu');
         $locale             = config('app.locale');
-        $getcategoryblog    = $this->getcategoryblog();
-        $arrCategoryProduct = $this->arrCategory();
-        $arrCategory        = $this->arrcategory();
-        $banner_sidebar_1   = DB::table('sliders')->where('location',1)->where('status', 1)->inRandomOrder()->first();
-        $banner_sidebar_2   = DB::table('sliders')->where('location',2)->where('status', 1)->inRandomOrder()->first();
-        $banner_sidebar_3   = DB::table('sliders')->where('location',3)->where('status', 1)->inRandomOrder()->first();
-        $banner_sidebar_4   = DB::table('sliders')->where('location',4)->where('status', 1)->inRandomOrder()->first();
-        $banner_sidebar_5   = DB::table('sliders')->where('location',5)->where('status', 1)->inRandomOrder()->first();
+        $banner_1   = DB::table('sliders')->where('location',1)->where('status', 1)->inRandomOrder()->first();
+        $banner_2   = DB::table('sliders')->where('location',2)->where('status', 1)->inRandomOrder()->first();
+        $banner_3   = DB::table('sliders')->where('location',3)->where('status', 1)->inRandomOrder()->first();
+        $banner_sidebar   = DB::table('sliders')->where('location',4)->where('status', 1)->inRandomOrder()->first();
         $sliders = DB::table('sliders')->where('location',9)->where('status', 1)->orderBy('position', 'ASC')->get();
-        // $topSellProducts    = DB::table('products')
-        //                       ->where('status',1)->where('trend', 1)->whereNull('deleted_at')->inRandomOrder()->limit(5)->get();
-        $dealProduct        = Products::where('status',1)
-                              ->whereNull('deleted_at')->whereNotNull('time_deal')->where('time_deal', '>', date('Y-m-d').' 23:59:59')
-                              ->orderBy('time_deal', 'desc')->inRandomOrder()->limit(8)->get();
-        $t=0;
+        $product_hot_sale    = DB::table('products')
+                              ->where('status',1)->where('hot_sale', 1)->whereNull('deleted_at')->inRandomOrder()->limit(10)->get();
+        $product_new    = DB::table('products')
+                              ->where('status',1)->where('new', 1)->whereNull('deleted_at')->inRandomOrder()->limit(10)->get();
+        $dealProduct = Products::where('status',1)
+            ->whereNull('deleted_at')->whereNotNull('time_deal')->where('time_deal', '>', date('Y-m-d').' 23:59:59')
+            ->orderBy('time_deal', 'desc')->inRandomOrder()->limit(8)->get();
+        $time_deal = NULL;
+         $t=0;
         foreach($dealProduct as $k){
             $t++;
             $time_deal = $k->time_deal;
             if($t==1){ \false;}
         }
-        // $postStyle_2        = DB::table('posts')->where('status',1)->whereNull('deleted_at')->first();
-        // $postStyle_3        = DB::table('posts')->where('status',1)->whereNull('deleted_at')
-        //                       ->limit(5)->get();
+        $list_post = DB::table('posts')->where('status',1)->whereNull('deleted_at')->limit(3)->get();
         return view('frontend.index',[
         'get_cat_parents' =>  $get_cat_parents,
         'time_deal' => $time_deal,
         // 'Sidebars'          => $Sidebars,
         // 'Menus'             => $Menus,
         // 'Sub_menus'         => $Sub_menus,
-        'arrCategoryProduct'=> $arrCategoryProduct,
-        'arrCategory'       => $arrCategory,
-        'banner_sidebar_1'  => $banner_sidebar_1,
-        'banner_sidebar_2'  => $banner_sidebar_2,
-        'banner_sidebar_3'  => $banner_sidebar_3,
-        'banner_sidebar_4'  => $banner_sidebar_4,
-        'banner_sidebar_5'  => $banner_sidebar_5,
+        'banner_1'  => $banner_1,
+        'banner_2'  => $banner_2,
+        'banner_3'  => $banner_3,
+        'banner_sidebar'  => $banner_sidebar,
         'sliders'           => $sliders,
         // 'topSellProducts'   => $topSellProducts,
         'dealProduct'       => $dealProduct,
-        // 'postStyle_2'       => $postStyle_2,
-        // 'postStyle_3'       => $postStyle_3,
-        'getcategoryblog'   => $getcategoryblog,
+        'list_post' => $list_post,
         'list_cat'          => $list_cat,
         'locale'            => $locale,
         ]);
@@ -119,23 +111,9 @@ class HomeController extends Controller
     public function getProducts(Request $request){
         $locale       = config('app.locale');
         if (!is_null($request->id)){
-            $cat      = Category::find($request->id);
-            $list_id  = $cat->get_product_by_cat();
-            $products = Products::where('status', 1)->whereIn('id', $list_id)->orderBy('id', 'DESC')->get();
+            $cat_parent      = Category::find($request->id);
             $view     = view('frontend.get-products', [
-                'products' => $products,
-                'locale'   => $locale,
-            ])->render();
-        }
-        else {
-            $product_trends = Products::where('trend', 1)->where('status', 1)->get();
-            $product_deals = Products::where('deals', 1)->where('status', 1)->get();
-            $product_recommends = Products::where('recommend', 1)->where('status', 1)->get();
-            $view = view('frontend.get-product-trend', [
-                'product_trends' => $product_trends,
-                'product_deals' => $product_deals,
-                'product_recommends' => $product_recommends,
-                'type'     => $request->type,
+                'cat_parent' => $cat_parent,
                 'locale'   => $locale,
             ])->render();
         }
@@ -487,7 +465,7 @@ class HomeController extends Controller
     }
     public function changeLanguage($language)
     {
-        \Session::put('website_language', $language);
+        Session::put('website_language', $language);
 
         return redirect()->back();
     }

@@ -106,9 +106,9 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <label>Cảnh báo sl tồn hàng</label>
+                        <label>Số lượng đã bán</label>
                         <div class="mt-2">
-                        <input type="number" class="form-control" defaultValue="0" min="0" max="100000" name="limit_amount">
+                        <input type="number" class="form-control" defaultValue="0" min="0" max="100000" name="sold">
                         </div>
                     </div>
                     </div>
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                    <label>Loại sản phẩm</label>
+                    <label>Danh mục sản phẩm</label>
                     <div class="mt-2">
                     <select name="cat_id[]"  class="tom-select w-full" multiple>
                         @foreach ($listcategory as $val)
@@ -155,45 +155,37 @@
                         </select>
                     </div>
                     <div class="mt-3">
+                        <label for="">Thông số kỹ thuật mô tả dạng thẻ tag</label>
+                        <select name="specifications[]" data-placeholder="Nhập các thông số mô tả cho sản phẩm" class="tom-select w-full" multiple>
+                        </select>
+                    </div>
+                    <div class="mt-3">
                         <div class="form-check px-3 py-2">
-                            <input name="trend"
+                            <input name="new"
                                 class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="checkbox" value="1"
-                                id="trending">
+                                id="new">
                             <label class="form-check-label inline-block text-gray-800"
-                                for="trending"
+                                for="new"
                                 style="font-size: 1rem">
-                                Sản phẩm xu hướng
+                                Sản phẩm mới
                             </label>
                         </div>
                     </div>
                     <div class="mt-3">
                         <div class="form-check px-3 py-2">
-                            <input name="deals"
+                            <input name="hot_sale"
                                 class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="checkbox" value="1"
-                                id="deals">
+                                id="hot_sale">
                             <label class="form-check-label inline-block text-gray-800"
-                                for="deals"
+                                for="hot_sale"
                                 style="font-size: 1rem">
-                                Sản phẩm ưu đãi lớn
+                                Sản phẩm bán chạy
                             </label>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <div class="form-check px-3 py-2">
-                            <input name="recommend"
-                                class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                type="checkbox" value="1"
-                                id="recommend">
-                            <label class="form-check-label inline-block text-gray-800"
-                                for="recommend"
-                                style="font-size: 1rem">
-                                Gợi ý sản phẩm
-                            </label>
-                        </div>
-                    </div>
-                   
+
                 </div>
                 <div class="col-span-12 xl:col-span-4">
                     <div class="mt-3">
@@ -220,7 +212,13 @@
                 </div>
             </div>
             <div class="mt-3">
-                <label>Nội dung</label>
+                <label>Nội dung quà tặng ưu đãi</label>
+                <div class="mt-2">
+                    <textarea name="gift" id="tiny-editor3" rows="2">{{old('short_content')}}</textarea>
+                </div>
+            </div>
+            <div class="mt-3">
+                <label>Nội dung chi tiết</label>
                 <div class="mt-2">
                     <textarea name="content" id="tiny-editor" rows="7">{{old('content')}}</textarea>
                 </div>

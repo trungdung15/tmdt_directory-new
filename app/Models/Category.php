@@ -51,7 +51,7 @@ class Category extends Model
     }
 
     public function product(){
-        return $this->belongsToMany(Products::class, 'category_relationships', 'cat_id', 'product_id');
+        return $this->belongsToMany(Products::class, 'category_relationships', 'cat_id', 'product_id')->where('status', 1);
     }
 
     public function cat_child(){
