@@ -1,0 +1,151 @@
+/* :root {
+    --global-color-primary: #1558E5;
+    --global-color-primary_hover: #124fce;
+    --global-color-text: #666666;
+    --global-color-accent: #000000;
+    --global-color-lighter: #999999;
+    --global-color-highlight: #EF262C;
+    --global-color-border: #EFEFEF;
+    --global-typography-heading_title-font-family: "Heebo";
+    --global-typography-heading_title-font-size: 24px;
+    --global-typography-heading_title-font-weight: 500;
+    --global-typography-heading_title-text-transform: none;
+    --global-typography-heading_title-line-height: 32px;
+    --global-typography-heading_footer-font-family: "Heebo";
+    --global-typography-heading_footer-font-size: 16px;
+    --global-typography-heading_footer-font-weight: 500;
+    --global-typography-heading_footer-text-transform: uppercase;
+    --global-typography-heading_footer-line-height: 24px;
+}
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body {
+    --primary: #1558E5;
+    --primary_hover: #124fce;
+    --text: #666666;
+    --accent: #000000;
+    --lighter: #999999;
+    --highlight: #EF262C;
+    --border: #EFEFEF;
+    font-family: 'Heebo', sans-serif !important;
+} */
+
+/*
+███████▄▄███████████▄
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█
+▓▓▓▓▓▓█░░trungdung░░░█
+▓dungtdcs@gmail.com░░█
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█
+▓▓▓▓▓▓███░░░░░░░░░░░░█
+██████▀░░░░░░░██████▀
+░░░░░░░░░█░░░░█
+░░░░░░░░░░█░░░█
+░░░░░░░░░░░█░░█
+░░░░░░░░░░░█░░█
+░░░░░░░░░░░░▀▀
+*/
+
+a{text-decoration: none !important;}
+
+.showcoupon{
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+.wp-form{
+    font-size: 14px;
+}
+.wp-form label{
+    margin-bottom: 5px;
+}
+.wp-form input{
+    padding: 15px;
+    font-size: 14px;
+    transition: all 1s;
+}
+.wp-form textarea{
+    font-size: 14px;
+}
+.wp-form input:focus::placeholder, .wp-form textarea:focus::placeholder{
+    color: #fff;
+    transition: all 1s;
+}
+.order-review{
+    background-color: #fff;
+    padding: 30px 30px 40px;
+    position: relative;
+    border-radius: 5px;
+    border: 6px solid var(--border);
+}
+table.checkout-review-order-table th {
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+}
+table.checkout-review-order-table .product-name {
+    width: 45%;
+    word-wrap: break-word;
+}
+table.checkout-review-order-table .product-total{
+    text-align: right;
+}
+table.checkout-review-order-table tbody{
+    font-size: 14px;
+}
+table.checkout-review-order-table tbody tr td{
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+table.checkout-review-order-table tfoot tr{
+    border-bottom: 1px solid var(--border);
+}
+table.checkout-review-order-table tfoot tr td{
+    text-align: right;
+    font-size: 14px;
+}
+table.checkout-review-order-table tfoot tr.order-total td .amount{
+    font-size: 24px;
+    color: var(--primary);
+    font-weight: 600;
+}
+.order-review .payment label{
+    cursor: pointer;
+}
+.order-review .payment .form-group{
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+.order-review .payment .payment-box{
+    padding: 10px;
+}
+.order-review .payment .payment-box p{
+    margin-bottom: 0;
+    font-size: 13px;
+    color: var(--text);
+}
+.payment-box-none{
+    display: none;
+}
+.order-review .place-order p{
+    font-size: 14px;
+    color: var(--text);
+}
+.order-review .place-order button{
+    width: 100%;
+    font-size: 14px;
+    padding: 0.929em 2em;
+    font-weight: 700;
+    border-radius: 5px;
+    color: #fff;
+    background-color: var(--primary);
+}
+.order-review .place-order button:hover{
+    background-color: var(--accent);
+}

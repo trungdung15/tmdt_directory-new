@@ -1,0 +1,139 @@
+/* :root {
+    --global-color-primary: #1558E5;
+    --global-color-primary_hover: #124fce;
+    --global-color-text: #666666;
+    --global-color-accent: #000000;
+    --global-color-lighter: #999999;
+    --global-color-highlight: #EF262C;
+    --global-color-border: #EFEFEF;
+    --global-typography-heading_title-font-family: "Heebo";
+    --global-typography-heading_title-font-size: 24px;
+    --global-typography-heading_title-font-weight: 500;
+    --global-typography-heading_title-text-transform: none;
+    --global-typography-heading_title-line-height: 32px;
+    --global-typography-heading_footer-font-family: "Heebo";
+    --global-typography-heading_footer-font-size: 16px;
+    --global-typography-heading_footer-font-weight: 500;
+    --global-typography-heading_footer-text-transform: uppercase;
+    --global-typography-heading_footer-line-height: 24px;
+}
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body {
+    --primary: #1558E5;
+    --primary_hover: #124fce;
+    --text: #666666;
+    --accent: #000000;
+    --lighter: #999999;
+    --highlight: #EF262C;
+    --border: #EFEFEF;
+    font-family: 'Heebo', sans-serif !important;
+} */
+
+/*
+███████▄▄███████████▄
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█
+▓▓▓▓▓▓█░░trungdung░░░█
+▓dungtdcs@gmail.com░░█
+▓▓▓▓▓▓█░░░░░░░░░░░░░░█
+▓▓▓▓▓▓███░░░░░░░░░░░░█
+██████▀░░░░░░░██████▀
+░░░░░░░░░█░░░░█
+░░░░░░░░░░█░░░█
+░░░░░░░░░░░█░░█
+░░░░░░░░░░░█░░█
+░░░░░░░░░░░░▀▀
+*/
+
+a{text-decoration: none !important;}
+
+ul.menu-account {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 50px;
+}
+ul.menu-account li{
+    width: 100%;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+}
+ul.menu-account li:last-child{
+    border-bottom: 1px solid var(--border);
+}
+ul.menu-account li a{
+    padding: 15px 0;
+    color: var(--accent);
+    display: block;
+    width: 100%;
+}
+ul.menu-account li a span{
+    text-align: right;
+    float: right;
+}
+ul.menu-account li:hover a{
+    color: var(--global-color-primary);
+}
+.nav-tabs .nav-link{
+    border: none;
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    isolation: unset;
+}
+.nav-tabs .nav-link.active{
+    border: none;
+    color: var(--global-color-primary);
+}
+.tab-content .content-info{
+    order: 2;
+}
+.tab-content .content-avt{
+    order: 1;
+}
+.tab-content{
+    margin-bottom: 50px;
+    font-size: 14px;
+}
+.tab-content input, .tab-content select{
+    font-size: 14px;
+    padding: 15px;
+}
+.tab-content label{
+    margin-bottom: 5px;
+}
+.wp-avatar{
+    text-align: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.wp-avatar .show-avatar{
+    max-width: 225px;
+    max-height: 225px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+.wp-avatar .show-avatar img{
+    width: 100%;
+}
+#thumb-show-list{max-width: 120px;}
+
+.back-home{text-align: center; padding-top: 15px;}
+.back-home a{display: inline; padding: 10px; background-color: #205efc; color: #fff; border-radius: 4px;}
+.back-home a:hover{color: #fff;}
+@media (min-width: 768px){
+    .tab-content{
+        margin-left: 20px;
+    }
+    .tab-content .content-info{
+        order: 1;
+    }
+    .tab-content .content-avt{
+        order: 2;
+    }
+}
