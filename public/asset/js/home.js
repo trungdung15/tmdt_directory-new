@@ -19,7 +19,7 @@ $(document).ready(function () {
         $(".dropdown-login").toggleClass("active-form-login");
     })
 
-    
+
     $('#slider-show').owlCarousel({
         autoplay: true,
         autoplayHoverPause: true,
@@ -31,6 +31,7 @@ $(document).ready(function () {
         dots: true,
         mouseDrag: true,
         touchDrag: true,
+        lazyLoad: true,
         responsive: {
             0: {
                 items: 1
@@ -49,12 +50,13 @@ $(document).ready(function () {
     $('#list-cat-slider').owlCarousel({
         autoplay: true,
         autoplayHoverPause: true,
-        loop: true,
+        loop: false,
         margin: 30,
         nav: true,
         dots: false,
         mouseDrag: true,
         touchDrag: true,
+        lazyLoad: true,
         responsive: {
             0: {
                 items: 1
@@ -88,12 +90,14 @@ $(document).ready(function () {
     $('#slider-deal-supper').owlCarousel({
         autoplay: true,
         autoplayHoverPause: true,
-        loop: true,
+        loop: false,
         margin: 10,
         nav: true,
         dots: false,
         mouseDrag: true,
         touchDrag: true,
+        callbacks: false,
+        lazyLoad: true,
         responsive: {
             0: {
                 items: 1
@@ -112,7 +116,7 @@ $(document).ready(function () {
     $('.wp-info-product').owlCarousel({
         autoplay: true,
         autoplayHoverPause: true,
-        loop: true,
+        loop: false,
         margin: 10,
         nav: true,
         dots: false,
@@ -130,7 +134,7 @@ $(document).ready(function () {
             },
         }
     });
-    
+
 
     $('.sub_cat_title_slider').owlCarousel({
         autoplay: false,
@@ -146,12 +150,13 @@ $(document).ready(function () {
     $('.list-product-group').owlCarousel({
         autoplay: true,
         autoplayHoverPause: true,
-        loop: true,
+        loop: false,
         margin: 10,
         nav: true,
         dots: false,
         mouseDrag: true,
         touchDrag: true,
+        lazyLoad: true,
         responsive: {
             0: {
                 items: 1
@@ -179,7 +184,7 @@ $(document).ready(function () {
     $('.list-product-recommend-slider').owlCarousel({
         autoplay: true,
         autoplayHoverPause: true,
-        loop: true,
+        loop: false,
         margin: 10,
         nav: true,
         dots: false,
@@ -240,7 +245,7 @@ $(document).ready(function () {
             },
         }
     });
-    
+
     var $time = $('.time-dem-nguoc').attr('data-date');
     var countDownDate = new Date($time).getTime();
     if(countDownDate){

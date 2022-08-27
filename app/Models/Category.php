@@ -73,6 +73,14 @@ class Category extends Model
         }
         return $list_id;
     }
+    public function get_list_product_by_cat(){
+        $db = \collect();
+        $list_id = \collect();
+        $db[] = $this->product;
+        $this->get_product_recursive($this, $db);
+        $products = $db->collapse()->unique('id');
+        return $products;
+    }
 
     public function get_product_recursive($cat, $list_product){
         foreach ($cat->cat_child as $cat){

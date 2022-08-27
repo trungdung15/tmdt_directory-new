@@ -1,271 +1,113 @@
 @extends('admin.layouts.main')
-@section('css')
-    <script src="{{ asset('lib/tinymce/js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
-@endsection
-@section('subcontent')
-    <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-        <h2 class="text-lg font-medium mr-auto">
-            {{$title}}
-        </h2>
-        <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-            @can('viewAny',App\Models\Products::class)
-                <a class="btn btn-primary shadow-md mr-2" href="{{route('products.index')}}">Danh sách sản phẩm</a>
-            @endcan
+@section('category')
+ <div class="content">
+
+                <h2 class="intro-y text-lg font-medium mt-10">
+                   {{ $title }}
+                </h2>
+    <div class="form-group">
+        <form action="{{ route('category.store')}}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-heade">
+            </div>
+            <div class="grid grid-cols-12 gap-x-5">
+            <div class="col-span-12 xl:col-span-6">
+            <div class="form-group mb-4">
+                <label>Tên danh mục</label>
+                <input type="text" class=" form-control" name='name' id="typinginput" value="{{old('name')}}">
+                @error('name') <span style="color: rgb(239 68 68);">{{ $message }}</span>@enderror
+            </div>
+            <div class="form-group mb-4">
+                <label>Tên danh mục(ngoại ngữ)</label>
+                <input type="text" class=" form-control" name='name2' value="{{old('name2')}}">
+            </div>
+            <div class="form-group mb-4">
+                <label>SLUG</label>
+                <textarea type="text" class="form-control" rows="1" id="slugchanged" name='slug'>{{old('slug')}}</textarea>
+                @error('slug') <span style="color: rgb(239 68 68);">{{ $message }}</span>@enderror
+            </div>
+             <div class="form-group mb-4">
+                <label>Icon</label>
+                <input type="text" class="form-control" name='icon' value=" {{old('icon')}}">
+            </div>
+             <div class="form-group mb-4">
+                <a type="button" class="btn btn-primary" href="https://fontawesome.com/v5/search" target="_blank">Lấy icon</a>
+             </div>
+            <div class="form-group mb-4">
+                <label>Danh mục cha</label>
+                <select name="parent_id"  class="tom-select w-full">
+                    <option value="0">Mặc định</option>
+                    @foreach ($categorieslv as $val)
+                    <option value="{{$val->id}}" class="form-control">
+                        @php
+                        $str ='';
+                        for ($i=0; $i < $val->level; $i++) {
+                            echo $str;
+                            $str.='&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
+                        }
+                        @endphp
+                        {{$val->name}}
+                    </option>
+                    @endforeach
+
+            </select>
+            </div>
+            <div class="form-group mb-4">
+                <label>Trạng thái</label> <br>
+                 <input type="checkbox" name='status' checked="checked" class="form-check-switch">
+            </div>
+             <div class="form-group mb-4">
+                <label>Hiện danh sách sản phẩm lên trang chủ</label> <br>
+                 <input type="checkbox" name='show_push_product' checked="checked" class="form-check-switch">
+            </div>
+            <div class="modal-footer">
+
+                <a type="button" class="btn btn-default" href="{{ route('category.index')}}">Hủy</a>
+
+            <input type="submit" class="btn btn-primary " value="Create">
+
         </div>
-    </div>
-    <div class="grid grid-cols-12 gap-6 mt-5">
-        <div class="intro-y col-span-12">
-            <!-- BEGIN: Form Layout -->
-            <form action="{{route('products.store')}}" method="post" enctype="multipart/form-data" id="form-post">
-                <div class="intro-y box p-5">
-                    <div>
-                        <label for="crud-form-1" class="form-label">Tên sản phẩm(<span class="text-red-600">*</span>)</label>
-                        <input id="crud-form-1" type="text" name="name" value="{{old('name')}}" class="form-control w-full">
-                        @error('name')
-                        <span style="color:red">{{$message}}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group mb-4">
-                     <label>Trạng thái</label> <br>
-                     <input type="checkbox" name='status' checked="checked" class="form-check-switch">
-                     </div>
-                    <div class="mt-3">
-                        <div class="grid grid-cols-12 gap-x-5">
-                            <div class="col-span-12 xl:col-span-4">
-                                <label>Ảnh sản phẩm</label><br>
-                                <div class="px-4 pb-4 flex items-center cursor-pointer relative">
-                                    <i data-feather="image" class="w-4 h-4 mr-2"></i>
-                                    <span class="text-theme-1 dark:text-theme-10 mr-1">Upload ảnh</span>
-                                    <input name='thumb' type="file" class="w-56 h-56 top-0 left-0 absolute opacity-0" id="fileupload2" />
-
-                                </div>
-                                <div class="border-2 border-dashed dark:border-dark-5 rounded-md p-2">
-                                    <div class="flex flex-wrap px-4 w-full">
-                                        <div id="dvPreview2">
-                                            @error('thumb')
-                                                <span style="color:red">{{$message}}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-span-12 xl:col-span-7 ">
-                        <label>Ảnh giới thiệu sản phẩm</label><br>
-                        <div class="px-4 pb-4 flex items-center cursor-pointer relative">
-                                <i data-feather="image" class="w-4 h-4 mr-2"></i>
-                                <span class="text-theme-1 dark:text-theme-10 mr-1">Upload ảnh</span>
-                                <input type="file" class="w-full h-full top-0 left-0 absolute opacity-0" name="image[]" multiple id="fileupload">
-                        </div>
-                        <div class="border-2 border-dashed dark:border-dark-5 rounded-md p-2">
-                            <div class="flex flex-wrap px-4 w-full">
-                                <div class="mt-2 ">
-                                <div id="dvPreview" >
-                                </div>
-                                @error('thumb')
-                                    <span style="color:red">{{$message}}</span>
-                                @enderror
-                                </div>
-
-                            </div>
-                            </div>
-
-                        </div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-12 gap-x-5">
-                    <div class="col-span-12 xl:col-span-4">
-                    <div class="mt-3">
-                    <label>Giá bán</label>
-                    <div class="mt-2">
-                    <input type="int-number" min="0" max="1000000000000" class="form-control tiente " id="price" name="price">
-                    </div>
-                    </div>
-                    <div class="mt-3">
-                    <label>Giảm giá(%)</label>
-                    <div class="mt-2">
-                    <input type="number" min="0" max="100" class="form-control" id="onsale" name="onsale">
-                    </div>
-                    </div>
-                    <div class="mt-3">
-                    <label>Giá đã giảm</label>
-                    <div class="mt-2">
-                    <input type="int-number" min="0" max="100" class="form-control tiente" id="price_onsale" name="price_onsale">
-                    </div>
-                    </div>
-                    <div class="mt-3">
-                    <label>Số lượng</label>
-                    <div class="mt-2">
-                    <input type="int-number" min="0" max="10000000" class="form-control tiente" name="quantity" >
-                    </div>
-                    </div>
-                    <div class="mt-3">
-                    <label>Đơn vị tính</label>
-                    <div class="mt-2">
-                            <input type="text" class="form-control" name="unit">
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <label>Cảnh báo sl tồn hàng</label>
-                        <div class="mt-2">
-                        <input type="number" class="form-control" defaultValue="0" min="0" max="100000" name="limit_amount">
-                        </div>
-                    </div>
-                    </div>
-                    <div class="col-span-12 xl:col-span-4">
-                    <div class="mt-3">
-                        <label>Nhà cung cấp</label>
-                        <div class="mt-2">
-                            <input type="text" class="form-control" name="brand" >
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                    <label>Loại sản phẩm</label>
-                    <div class="mt-2">
-                    <select name="cat_id[]"  class="tom-select w-full" multiple>
-                        @foreach ($listcategory as $val)
-                        <option value="{{$val->id}}" class="form-control">
-                            @php
-                            $str ='';
-                            for ($i=0; $i < $val->level; $i++) {
-                                echo $str;
-                                $str.='&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
-                            }
-                            @endphp
-                            {{ $val->name}}
-                        </option>
-                        @endforeach
-                    </select>
-                    </div>
-                    </div>
-                    <div class="mt-3">
-                        <label for="">Màu sản phẩm</label>
-                        <select name="attr_id[]"  class="tom-select w-full" multiple>
-                            @foreach ($colors as $color)
-                                <option value="{{$color->id}}">{{$color->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mt-3">
-                        <label for="">Size sản phẩm</label>
-                        <select name="attr_id[]"  class="tom-select w-full" multiple>
-                            @foreach ($sizes as $size)
-                                <option value="{{$size->id}}">{{$size->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mt-3">
-                        <div class="form-check px-3 py-2">
-                            <input name="trend"
-                                class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                type="checkbox" value="1"
-                                id="trending">
-                            <label class="form-check-label inline-block text-gray-800"
-                                for="trending"
-                                style="font-size: 1rem">
-                                Sản phẩm xu hướng
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <div class="form-check px-3 py-2">
-                            <input name="deals"
-                                class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                type="checkbox" value="1"
-                                id="deals">
-                            <label class="form-check-label inline-block text-gray-800"
-                                for="deals"
-                                style="font-size: 1rem">
-                                Sản phẩm ưu đãi lớn
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <div class="form-check px-3 py-2">
-                            <input name="recommend"
-                                class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                type="checkbox" value="1"
-                                id="recommend">
-                            <label class="form-check-label inline-block text-gray-800"
-                                for="recommend"
-                                style="font-size: 1rem">
-                                Gợi ý sản phẩm
-                            </label>
-                        </div>
-                    </div>
-                   
+            </div>
+            <div class="col-span-12 xl:col-span-6">
+            <div class="form-group mb-4">
+                <label>Ảnh đại diện danh mục (<span class="text-italic">Danh mục cha</span>)</label><br>
+                <div class="px-4 pb-4 flex items-center cursor-pointer relative">
+                    <i data-feather="image" class="w-4 h-4 mr-2"></i>
+                    <span class="text-theme-1 dark:text-theme-10 mr-1">Upload ảnh</span>
+                    <input name='thumb' type="file" class="w-56 h-56 top-0 left-0 absolute opacity-0" id="fileupload2">
                 </div>
-                <div class="col-span-12 xl:col-span-4">
-                    <div class="mt-3">
-                        <label>Thuộc tính sản phẩm</label>
-                        <p><i>( Màu sắc: đen, trắng; Chiều cao: 15 inch; )</i></p>
-                        <div class="mt-2">
-                       <textarea class="form-control" name="property" rows="7">{{ old('property') }}
-                       </textarea>
-                   </div>
-                    </div>
-                     <div class="mt-3">
-                        <div class="mt-3">
-                            <label for="time_deal" class="form-label">Thời hạn ưu đã cho sản phẩm</label>
-                            <input type="date" name="time_deal" class="form-control w-56 block mx-auto"
-                                id="time_deal" value="{{ old('time_deal',date('Y-m-d')) }}">
+                <div class="border-2 border-dashed dark:border-dark-5 rounded-md p-2">
+                    <div class="flex flex-wrap px-4 w-full">
+                        <div id="dvPreview2">
+                            @error('thumb')
+                                <span style="color:red">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-3">
-                <label>Mô tả ngắn</label>
-                <div class="mt-2">
-                    <textarea name="short_content" id="tiny-editor2" rows="2">{{old('short_content')}}</textarea>
+            <div class="form-group mb-4">
+                <label>Banner danh mục trang chủ (<span class="italic">Danh mục cha</span>)</label><br>
+                <div class="px-4 pb-4 flex items-center cursor-pointer relative">
+                    <i data-feather="image" class="w-4 h-4 mr-2"></i>
+                    <span class="text-theme-1 dark:text-theme-10 mr-1">Upload ảnh</span>
+                    <input name='banner' type="file" class="w-56 h-56 top-0 left-0 absolute opacity-0" id="fileupload3">
+                </div>
+                <div class="border-2 border-dashed dark:border-dark-5 rounded-md p-2">
+                    <div class="flex flex-wrap px-4 w-full">
+                        <div id="dvPreview3">
+                            @error('banner')
+                                <span style="color:red">{{$message}}</span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="mt-3">
-                <label>Nội dung</label>
-                <div class="mt-2">
-                    <textarea name="content" id="tiny-editor" rows="7">{{old('content')}}</textarea>
-                </div>
+
             </div>
-            <div class="text-right mt-5">
-                @can('viewAny',App\Models\Products::class)
-                    <a type="button" href="{{route('products.index')}}" class="btn btn-outline-secondary w-24 mr-1">Hủy</a>
-                @endcan
-                @can('update',App\Models\Products::class)
-                    <button type="submit" class="btn btn-primary w-24">Lưu</button>
-                @endcan
-            </div>
-                @csrf
-            </div>
-            </form>
-            <!-- END: Form Layout -->
         </div>
-    </div>
-@endsection
 
-@section('js')
-    <script src="{{ asset('/js/post-form.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            //xu ly show tien te
-            var tiente = document.querySelectorAll('.tiente');
-            for (var i = 0; i < tiente.length; i++) {
-                tiente[i].value = new Intl.NumberFormat('vi-VN').format(tiente[i].value);
-            }
-
-            $('#onsale').on('keyup',  function(){
-            const percent = this.value;
-            const giaban  = document.getElementById('price').value;
-            const giaban1 =  giaban.replace(/[^a-zA-Z0-9 ]/g, '');
-            const price_onsale = giaban1 - giaban1*percent/100;
-            document.getElementById('price_onsale').value = new Intl.NumberFormat('vi-VN').format(price_onsale);
-            });
-
-            $('#price').on('keyup',  function(){
-            const giaban= this.value;
-            const percent  = document.getElementById('onsale').value;
-            const giaban1 =  giaban.replace(/[^a-zA-Z0-9 ]/g, '');
-            const price_onsale = giaban1 - giaban1*percent/100;
-            document.getElementById('price_onsale').value = new Intl.NumberFormat('vi-VN').format(price_onsale);
-            });
-        });
-    </script>
+    </form>
+</div>
+</div>
 @endsection

@@ -23,11 +23,11 @@ class HomeController extends Controller
         ->where('status', 1)
         ->where('show_push_product', 1)
         ->get();
-        // $list_cat_id = array();
-        // foreach ($get_cat_parents as $cat){
-        //     $list_cat_id[] = $cat->id;
-        // }
-        // $list_cat = \implode(' ', $list_cat_id);
+        $list_cat_id = array();
+        foreach ($get_cat_parents as $cat){
+            $list_cat_id[] = $cat->id;
+        }
+        $list_cat = \implode(' ', $list_cat_id);
         // $Sidebars           = $this->getmenu('sidebar');
         // $Menus              = $this->getmenu('menu');
         // $Sub_menus          = $this->getmenu('submenu');
@@ -74,7 +74,7 @@ class HomeController extends Controller
         // 'postStyle_2'       => $postStyle_2,
         // 'postStyle_3'       => $postStyle_3,
         'getcategoryblog'   => $getcategoryblog,
-        // 'list_cat'          => $list_cat,
+        'list_cat'          => $list_cat,
         'locale'            => $locale,
         ]);
     }
