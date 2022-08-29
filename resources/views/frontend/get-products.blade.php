@@ -14,19 +14,30 @@
                         <div class="thumb">
                             <a href="">
                                 <img class="owl-lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
-                                <span class="brand" style="background-image: url('asset/images/msi.png');"></span>
+                                @if (!empty($item->brand))
+                                    <span class="brand" style="background-image: url('upload/images/products/thumb/{{$item->brands->image}}');"></span>
+                                @endif
                                 <div class="wp-tag">
-                                    <span class="years">New 2022</span>
-                                    <span class="payment">Trả góp 0%</span>
+                                    @if (!empty($item->year))
+                                        <span class="years">{{$item->year}}</span>
+                                    @endif
+                                    @if (!empty($item->installment))
+                                        <span class="payment">Trả góp 0%</span>
+                                    @endif
                                 </div>
                             </a>
                         </div>
                         <div class="detail">
                             <div class="wp-event">
-                                <p class="event" style="background: linear-gradient(to right,#ef3006,#c60004);">
-                                    <img src="/asset/images/icon1-50x50.png" alt="">
-                                    <span>Giảm sốc</span>
-                                </p>
+                                @if (!empty($item->event))
+                                    <p class="event" style="background: linear-gradient(to right,{{$item->events->color_left}},{{$item->events->color_right}});">
+                                        <img src="{{asset('upload/images/products/thumb/'.$item->events->icon)}}" alt="">
+                                        <span>{{$item->events->name}}</span>
+                                    </p>
+                                @else
+                                    <p class="event" style="min-height: 20px;"></p>
+                                @endif
+                                <p class="code">Mã: {{$item->id}}</p>
                             </div>
                             <div class="name">
                                 <a href="">{{$item->name}}</a>
@@ -72,8 +83,10 @@
                                 </div>
                             </div>
                             <div class="detail-bottom">
-                                <div class="qty" style="color: #01aa42;
-                                background-color: #dbf8e1;">Còn hàng</div>
+                                @if (!empty($item->still_stock))
+                                    <div class="qty" style="color: #01aa42;
+                                    background-color: #dbf8e1;">{{$item->still_stock}}</div>
+                                @endif
                                 <div class="action">
                                     <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
                                     <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>

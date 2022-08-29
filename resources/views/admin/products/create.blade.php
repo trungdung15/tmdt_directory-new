@@ -20,7 +20,7 @@
                 <div class="intro-y box p-5">
                     <div>
                         <label for="crud-form-1" class="form-label">Tên sản phẩm(<span class="text-red-600">*</span>)</label>
-                        <input id="crud-form-1" type="text" name="name" value="{{old('name')}}" class="form-control w-full">
+                        <input id="crud-form-1" type="text" name="name" value="{{old('name')}}" class="form-control w-full" required>
                         @error('name')
                         <span style="color:red">{{$message}}</span>
                         @enderror
@@ -36,7 +36,7 @@
                                 <div class="px-4 pb-4 flex items-center cursor-pointer relative">
                                     <i data-feather="image" class="w-4 h-4 mr-2"></i>
                                     <span class="text-theme-1 dark:text-theme-10 mr-1">Upload ảnh</span>
-                                    <input name='thumb' type="file" class="w-56 h-56 top-0 left-0 absolute opacity-0" id="fileupload2" />
+                                    <input name='thumb' type="file" class="w-56 h-56 top-0 left-0 absolute opacity-0" id="fileupload2" required/>
 
                                 </div>
                                 <div class="border-2 border-dashed dark:border-dark-5 rounded-md p-2">
@@ -62,7 +62,7 @@
                                 <div class="mt-2 ">
                                 <div id="dvPreview" >
                                 </div>
-                                @error('thumb')
+                                @error('image')
                                     <span style="color:red">{{$message}}</span>
                                 @enderror
                                 </div>
@@ -114,9 +114,14 @@
                     </div>
                     <div class="col-span-12 xl:col-span-4">
                     <div class="mt-3">
-                        <label>Nhà cung cấp</label>
+                        <label>Thương hiệu</label>
                         <div class="mt-2">
-                            <input type="text" class="form-control" name="brand" >
+                            <select name="brand"  class="tom-select w-full">
+                                <option value="0">Chọn thương hiệu</option>
+                                @foreach ($brands as $brand)
+                                    <option value="{{$brand->id}}">{{$brand->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="mt-3">
@@ -203,6 +208,44 @@
                                 id="time_deal" value="{{ old('time_deal') }}">
                         </div>
                     </div>
+                    <div class="mt-3">
+                        <div class="mt-3">
+                            <label for="year" class="form-label">Tag năm sản xuất</label>
+                            <input type="text" name="year" class="form-control w-56 block mx-auto"
+                                id="year" value="{{ old('year') }}" placeholder="VD: New 2022">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check px-3 py-2">
+                            <input name="installment"
+                                class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                                type="checkbox" value="1"
+                                id="installment">
+                            <label class="form-check-label inline-block text-gray-800"
+                                for="installment"
+                                style="font-size: 1rem">
+                                Trả góp 0%
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label>Thương hiệu</label>
+                        <div class="mt-2">
+                            <select name="event"  class="tom-select w-full">
+                                <option value="0">Chọn Tag ưu đãi</option>
+                                @foreach ($tag_events as $tag_event)
+                                    <option value="{{$tag_event->id}}">{{$tag_event->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="mt-3">
+                            <label for="" class="form-label">Tình trạng sản phẩm</label>
+                            <input type="text" name="still_stock" class="form-control w-56 block mx-auto"
+                                id="year" value="{{ old('still_stock') }}" placeholder="VD: Còn hàng" required>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="mt-3">
@@ -214,7 +257,7 @@
             <div class="mt-3">
                 <label>Nội dung quà tặng ưu đãi</label>
                 <div class="mt-2">
-                    <textarea name="gift" id="tiny-editor3" rows="2">{{old('short_content')}}</textarea>
+                    <textarea name="gift" id="tiny-editor3" rows="2">{{old('gift')}}</textarea>
                 </div>
             </div>
             <div class="mt-3">

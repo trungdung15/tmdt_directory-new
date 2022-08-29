@@ -121,6 +121,16 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/store-attr',  [ProductsController::class, 'store_attr'])->name('products.store_attr');
         Route::post('/update-attr',  [ProductsController::class, 'update_attr'])->name('products.update_attr');
         Route::post('/delete-attr',  [ProductsController::class, 'delete_attr'])->name('products.delete_attr');
+        Route::get('/list-brand',  [ProductsController::class, 'list_brand'])->name('products.list_brand');
+        Route::get('/create-brand',  [ProductsController::class, 'create_brand'])->name('products.create_brand');
+        Route::post('/store-brand',  [ProductsController::class, 'store_brand'])->name('products.store_brand');
+        Route::post('/update-brand',  [ProductsController::class, 'update_brand'])->name('products.update_brand');
+        Route::post('/delete-brand',  [ProductsController::class, 'delete_brand'])->name('products.delete_brand');
+        Route::get('/list-tag-event',  [ProductsController::class, 'list_tag_event'])->name('products.list_tag-event');
+        Route::get('/create-tag-event',  [ProductsController::class, 'create_tag_event'])->name('products.create_tag-event');
+        Route::post('/store-tag-event',  [ProductsController::class, 'store_tag_event'])->name('products.store_tag-event');
+        Route::post('/update-tag-event',  [ProductsController::class, 'update_tag_event'])->name('products.update_tag-event');
+        Route::post('/delete-tag-event',  [ProductsController::class, 'delete_tag_event'])->name('products.delete_tag-event');
     });
 
 

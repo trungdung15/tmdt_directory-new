@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Products;
 use App\Models\CategoryRelationship;
@@ -52,6 +53,7 @@ class HomeController extends Controller
             if($t==1){ \false;}
         }
         $list_post = DB::table('posts')->where('status',1)->whereNull('deleted_at')->limit(3)->get();
+        $list_brand = Brand::get();
         return view('frontend.index',[
         'get_cat_parents' =>  $get_cat_parents,
         'time_deal' => $time_deal,
@@ -67,7 +69,10 @@ class HomeController extends Controller
         'dealProduct'       => $dealProduct,
         'list_post' => $list_post,
         'list_cat'          => $list_cat,
+        'list_brand' => $list_brand,
         'locale'            => $locale,
+        'product_hot_sale' => $product_hot_sale,
+        'product_new' => $product_new,
         ]);
     }
     //lay danh muc cho blog tren menu

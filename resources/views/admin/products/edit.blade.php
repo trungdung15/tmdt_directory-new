@@ -23,7 +23,7 @@
                     <label for="crud-form-1" class="form-label">Tên sản phẩm(<span
                             class="text-red-600">*</span>)</label>
                     <input id="crud-form-1" type="text" name="name" value="{{ old('name') ?? $edit->name }}"
-                        class="form-control w-full">
+                        class="form-control w-full" required>
                     @error('name')
                         <span style="color:red">{{ $message }}</span>
                     @enderror
@@ -40,7 +40,6 @@
                         <i data-feather="image" class="w-4 h-4 mr-2"></i> <span
                             class="text-theme-1 dark:text-theme-10 mr-1">Upload ảnh</span>
                         <input name='thumb' type="file" class="w-56 h-56 top-0 left-0 absolute opacity-0" id="fileupload2" />
-                        {{-- @include('admin.products.cropimg') --}}
                     </div>
                     <div class="border-2 border-dashed dark:border-dark-5 rounded-md p-2">
                     <div class="m-2" id="dvPreview2">
@@ -124,21 +123,26 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <label>Cảnh báo sl tồn hàng</label>
+                        <label>Số lượng đã bán</label>
                         <div class="mt-2">
-                        <input type="number" class="form-control" defaultValue="0" min="0" max="100000" name="limit_amount" value="{{ old('limit_amount') ?? $edit->limit_amount }}">
+                        <input type="number" class="form-control" defaultValue="0" min="0" max="100000" name="sold" value="{{ old('quantity') ?? $edit->sold }}">
                         </div>
                     </div>
                 </div>
                 <div class="col-span-12 xl:col-span-4">
                     <div class="mt-3">
-                        <label>Nhà cung cấp</label>
+                        <label>Thương hiệu</label>
                         <div class="mt-2">
-                            <input type="text" class="form-control" name="brand" value="{{ old('brand') ?? $edit->brand }}">
+                            <select name="brand"  class="tom-select w-full">
+                                <option value="0">Chọn thương hiệu</option>
+                                @foreach ($brands as $brand)
+                                    <option value="{{$brand->id}}" {{($brand->id == $edit->brand) ? 'selected' : ''}}>{{$brand->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="mt-3">
-                    <label>Loại sản phẩm</label>
+                    <label>Danh mục sản phẩm</label>
                     <div class="mt-2">
                     <select name="cat_id[]"  class="tom-select w-full" multiple>
                             @foreach ($listcategory as $val)
@@ -186,45 +190,42 @@
                         </select>
                     </div>
                     <div class="mt-3">
+                        <label for="">Thông số kỹ thuật mô tả dạng thẻ tag</label>
+                        <select name="specifications[]" data-placeholder="Nhập các thông số mô tả cho sản phẩm" class="tom-select w-full" multiple>
+                            @if (!empty($edit->specifications))
+                                @foreach ($edit->get_specifications() as $item)
+                                    <option value="{{$item}}" selected>{{$item}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="mt-3">
                         <div class="form-check px-3 py-2">
-                            <input name="trend"
+                            <input name="new"
                                 class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="checkbox" value="1"
-                                id="trending" {{($edit->trend) ? 'checked' : ''}}>
+                                id="new" {{($edit->new) == 1 ? 'checked' : ''}}>
                             <label class="form-check-label inline-block text-gray-800"
-                                for="trending"
+                                for="new"
                                 style="font-size: 1rem">
-                                Sản phẩm xu hướng
+                                Sản phẩm mới
                             </label>
                         </div>
                     </div>
                     <div class="mt-3">
                         <div class="form-check px-3 py-2">
-                            <input name="deals"
+                            <input name="hot_sale"
                                 class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                 type="checkbox" value="1"
-                                id="deals" {{($edit->deals) ? 'checked' : ''}}>
+                                id="hot_sale" {{($edit->hot_sale) == 1 ? 'checked' : ''}}>
                             <label class="form-check-label inline-block text-gray-800"
-                                for="deals"
+                                for="hot_sale"
                                 style="font-size: 1rem">
-                                Sản phẩm ưu đãi lớn
+                                Sản phẩm bán chạy
                             </label>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <div class="form-check px-3 py-2">
-                            <input name="recommend"
-                                class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                type="checkbox" value="1"
-                                id="recommend" {{($edit->recommend) ? 'checked' : ''}}>
-                            <label class="form-check-label inline-block text-gray-800"
-                                for="recommend"
-                                style="font-size: 1rem">
-                                Gợi ý sản phẩm
-                            </label>
-                        </div>
-                    </div>
-                   
+
                 </div>
                 <div class="col-span-12 xl:col-span-4">
 
@@ -234,13 +235,51 @@
                         <div class="mt-2">
                        <textarea class="form-control" name="property" rows="7">{{ old('property') ?? $edit->property }}
                        </textarea>
-                   </div>
+                    </div>
                     </div>
                     <div class="mt-3">
                         <div class="mt-3">
                             <label for="time_deal" class="form-label">Thời hạn ưu đã cho sản phẩm</label>
                             <input type="date" name="time_deal" class="form-control w-56 block mx-auto"
-                                id="time_deal" value="{{ $edit->time_deal }}">
+                                id="time_deal" value="{{date('Y-m-d', strtotime($edit->time_deal))}}">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="mt-3">
+                            <label for="year" class="form-label">Tag năm sản xuất</label>
+                            <input type="text" name="year" class="form-control w-56 block mx-auto"
+                                id="year" value="{{ $edit->year }}" placeholder="VD: New 2022">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-check px-3 py-2">
+                            <input name="installment"
+                                class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                                type="checkbox" value="1"
+                                id="installment" {{($edit->installment == 1 ? 'checked' : '')}}>
+                            <label class="form-check-label inline-block text-gray-800"
+                                for="installment"
+                                style="font-size: 1rem">
+                                Trả góp 0%
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label>Thương hiệu</label>
+                        <div class="mt-2">
+                            <select name="event"  class="tom-select w-full">
+                                <option value="0">Chọn Tag ưu đãi</option>
+                                @foreach ($tag_events as $tag_event)
+                                    <option value="{{$tag_event->id}}" {{($edit->event == $tag_event->id) ? 'selected' : ''}}>{{$tag_event->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="mt-3">
+                            <label for="" class="form-label">Tình trạng sản phẩm</label>
+                            <input type="text" name="still_stock" class="form-control w-56 block mx-auto"
+                                id="year" value="{{ $edit->still_stock }}" placeholder="VD: Còn hàng" required>
                         </div>
                     </div>
                 </div>
@@ -249,6 +288,12 @@
                     <label>Mô tả ngắn</label>
                     <div class="mt-2">
                     <textarea name="short_content" id="tiny-editor2" rows="3">{{ old('short_content') ?? $edit->short_content }}</textarea>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <label>Nội dung quà tặng ưu đãi</label>
+                    <div class="mt-2">
+                        <textarea name="gift" id="tiny-editor3" rows="2">{{old('gift') ?? $edit->gift}}</textarea>
                     </div>
                 </div>
                 <div class="mt-3">

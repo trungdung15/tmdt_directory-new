@@ -154,6 +154,32 @@ $(document).ready(function () {
             alert("Trình duyệt này không hỗ trợ HTML 5 FileReader");
         }
     });
+    $(".fileupload2").change(function () {
+        if (typeof (FileReader) != "undefined") {
+            var dvPreview = $(".dvPreview2");
+            dvPreview.html("");
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+            $($(this)[0].files).each(function () {
+                var file = $(this);
+                if (regex.test(file[0].name.toLowerCase())) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var img = $("<img />");
+                        img.attr("style", " display: inline-block; object-fit: cover; object-position: 50% 0; width: 300px;height: 300px;");
+                        img.attr("src", e.target.result);
+                        dvPreview.append(img);
+                    }
+                    reader.readAsDataURL(file[0]);
+                } else {
+                    alert(file[0].name + " không phải file ảnh");
+                    dvPreview.html("");
+                    return false;
+                }
+            });
+        } else {
+            alert("Trình duyệt này không hỗ trợ HTML 5 FileReader");
+        }
+    });
 
     $("#fileupload3").change(function () {
         if (typeof (FileReader) != "undefined") {

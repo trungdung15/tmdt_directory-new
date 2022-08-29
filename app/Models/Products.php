@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
 
@@ -27,7 +28,6 @@ class Products extends Model
         'cat_id',
         'brand',
         'unit',
-        'limit_amount',
         'property',
         'onsale',
         'price_onsale',
@@ -37,6 +37,9 @@ class Products extends Model
         'event',
         'gift',
         'sold',
+        'installment',
+        'year',
+        'still_stock',
         'time_deal',
         'attr',
     ];
@@ -50,6 +53,13 @@ class Products extends Model
 
     public function votes(){
         return $this->hasMany(Vote::class, 'product_id');
+    }
+
+    public function brands(){
+        return $this->belongsTo(Brand::class, 'brand', 'id');
+    }
+    public function events(){
+        return $this->belongsTo(Tag_event::class, 'event', 'id');
     }
 
     public function count_vote(){

@@ -26,9 +26,8 @@ return new class extends Migration
             $table->longText('short_content')->nullable();
             $table->integer('status')->default(0);
             $table->string('cat_id')->nullable();
-            $table->string('brand')->nullable();
+            $table->unsignedBigInteger('brand')->nullable();
             $table->string('unit',32)->nullable();
-            $table->integer('limit_amount')->default(0)->nullable();
             $table->integer('onsale')->default(0)->nullable();
             $table->bigInteger('price_onsale')->default(0)->nullable();
             $table->integer('new')->default(0)->nullable();
@@ -36,10 +35,13 @@ return new class extends Migration
             $table->timestamp('time_deal')->nullable();
             $table->text('specifications')->nullable();
             $table->string('event')->nullable();
+            $table->string('installment')->nullable();
+            $table->string('year')->nullable();
             $table->longText('gift')->nullable();
             $table->integer('sold')->nullable();
             $table->string('property')->nullable();
             $table->text('attr')->nullable();
+            $table->string('still_stock')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

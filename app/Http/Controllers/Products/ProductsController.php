@@ -10,15 +10,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use Intervention\Image\Image;
-use Yajra\DataTables\DataTables;
 use App\Helpers\CommonHelper;
 use App\Models\Attribute_product;
-use App\Models\Permission;
-use App\Models\Role;
+use App\Models\Brand;
+use App\Models\Tag_event;
 use Illuminate\Support\Facades\Session;
-use PhpParser\Node\Expr\FuncCall;
 
 class ProductsController extends Controller
 {
@@ -74,11 +70,15 @@ class ProductsController extends Controller
         $listcategory =  $this->categorylevel();
         $colors = Attribute_product::where('attr', 'color')->get();
         $sizes = Attribute_product::where('attr', 'size')->get();
+        $brands = Brand::get();
+        $tag_events = Tag_event::get();
         return view('admin.products.create', [
             'title'        => 'Thêm sản phẩm',
             'listcategory' => $listcategory,
             'colors' => $colors,
             'sizes' => $sizes,
+            'brands' => $brands,
+            'tag_events' => $tag_events,
         ]);
     }
 
@@ -88,13 +88,15 @@ class ProductsController extends Controller
         $request->validate(
             [
                 'name'          => 'required|max:300|unique:products',
-                'thumb'         => 'image|mimes:jpeg,jpg,png|mimetypes:image/jpeg,image/png,image/jpg|max:5048'
+                'thumb'         => 'image|mimes:jpeg,jpg,png|mimetypes:image/jpeg,image/png,image/jpg|max:2048',
+                'image'         => 'image|mimes:jpeg,jpg,png|mimetypes:image/jpeg,image/png,image/jpg|max:2048',
             ],
             [
                 'name.required' => 'Tên sản phẩm không được để bỏ trống.',
                 'name.max'      => 'Tên sản phẩm có độ dài tối đa :max ký tự.',
                 'name.unique'   => 'Tên sản phẩm đã tồn tại trong hệ thống',
                 'thumb.image'   => 'Ảnh đại diện không đúng định dạng! (jpg, jpeg, png)',
+                'image.image'   => 'Ảnh đại diện không đúng định dạng! (jpg, jpeg, png)',
             ]
         );
 
@@ -102,8 +104,9 @@ class ProductsController extends Controller
         $nameFile = Products::IMAGE;
         if ($request->status == null)
             $status   = Products::DISABLE;
-        if ($request->thumb  != null)
+        if ($request->thumb  != null){
             $nameFile = CommonHelper::convertTitleToSlug($request->name, '-') . '-' . time() . '.' . $request->thumb->extension();
+        }
         //xu ly tien te va so luong
         $request->price             =  preg_replace('/[^A-Za-z0-9\-]/', '', $request->price);
         $request->quantity          =  preg_replace('/[^A-Za-z0-9\-]/', '', $request->quantity);
@@ -117,7 +120,12 @@ class ProductsController extends Controller
         if ($imgs === "null"){ $imgs = 'no-images.jpg'; }
         $cat_id   = json_encode($request->cat_id);
         $attr_id  = \json_encode($request->attr_id);
-        $specifications = \json_encode($request->specifications);
+        if(!empty($request->specifications)){
+            $specifications = \json_encode($request->specifications);
+        }else{
+            $specifications = NULL;
+        }
+
         $Product  = [
             'name'         => $request->name,
             'slug'         => CommonHelper::convertTitleToSlug($request->name, '-'),
@@ -141,6 +149,10 @@ class ProductsController extends Controller
             'gift'        => $request->gift,
             'sold'        => $request->sold,
             'specifications'    => $specifications,
+            'installment' => $request->installment,
+            'year' => $request->year,
+            'event' => $request->event,
+            'still_stock' => $request->still_stock,
             'time_deal'    => $request->time_deal,
         ];
 
@@ -179,6 +191,8 @@ class ProductsController extends Controller
             $colors = Attribute_product::where('attr', 'color')->get();
             $sizes  = Attribute_product::where('attr', 'size')->get();
             $attr_ids        = json_decode($edit->attr);
+            $brands = Brand::get();
+            $tag_events = Tag_event::get();
             if(empty($attr_ids)){$attr_ids = [];}
             $listcategory    =  $this->categorylevel();
             return view('admin.products.edit', [
@@ -190,6 +204,8 @@ class ProductsController extends Controller
                 'colors'       => $colors,
                 'sizes'        => $sizes,
                 'attr_ids'     => $attr_ids,
+                'brands' => $brands,
+                'tag_events' => $tag_events,
             ]);
         } else {
             \abort(404);
@@ -250,7 +266,11 @@ class ProductsController extends Controller
 
             $cat_id   = json_encode($request->cat_id);
             $attr_id = \json_encode($request->attr_id);
-
+            if(!empty($request->specifications)){
+                $specifications = \json_encode($request->specifications);
+            }else{
+                $specifications = NULL;
+            }
             $Product  = [
                 'name'         => $request->name,
                 'slug'         => CommonHelper::convertTitleToSlug($request->name, '-'),
@@ -266,13 +286,18 @@ class ProductsController extends Controller
                 'user_id'      => Auth::id(),
                 'image'        => $imgs,
                 'brand'        => $request->brand,
-                'limit_amount' => $request->limit_amount,
-                'property'     => $request->property,
                 'cat_id'       => $cat_id,
+                'property'     => $request->property,
                 'attr'         => $attr_id,
-                'trend'        => $request->trend,
-                'deals'        => $request->deals,
-                'recommend'    => $request->recommend,
+                'new'        => $request->new,
+                'hot_sale'        => $request->hot_sale,
+                'gift'        => $request->gift,
+                'sold'        => $request->sold,
+                'specifications'    => $specifications,
+                'installment' => $request->installment,
+                'year' => $request->year,
+                'event' => $request->event,
+                'still_stock' => $request->still_stock,
                 'time_deal'    => $request->time_deal,
             ];
 
@@ -422,5 +447,259 @@ class ProductsController extends Controller
         $data = $request->all();
         $id = $data['id'];
         Attribute_product::where('id', $id)->delete();
+    }
+    //xu ly lay danh sac thuong hieu san pham
+    public function list_brand(){
+        $this->authorize('viewAny', Products::class);
+        $brands = Brand::get();
+        return \view('admin.products.list-brand', \compact('brands'));
+    }
+    //xu ly luu thuong hieu san pham
+    public function store_brand(Request $request){
+        $this->authorize('create', Products::class);
+        $request->validate(
+            [
+                'name' => 'required|string|max:250',
+                'image' => 'required|image|mimes:jpeg,jpg,png|mimetypes:image/jpeg,image/png,image/jpg|max:2048',
+            ],
+            [
+                'required' => ':attribute không được để trống',
+                'image' => ':attribute là định dạng png, jpg, jpeg - có dung lượng tối đa 2MB',
+            ],
+            [
+                'name' => 'Tên thương hiệu',
+                'image' => 'Ảnh thương hiệu',
+            ],
+        );
+        $nameFile = Products::IMAGE;
+        if ($request->image  != null){
+            $nameFile = CommonHelper::convertTitleToSlug($request->name, '-') . '-' . time() . '.' . $request->image->extension();
+        }
+        $input = [
+            'name'  => $request->name,
+            'image'  => $nameFile,
+        ];
+        try {
+            DB::beginTransaction();
+
+            $brand = Brand::create($input);
+            // xu ly anh khong bi vo anh
+            if ($request->image != null) {
+                $folder_thumb    = 'upload/images/products/thumb/';
+                $folder_medium   = 'upload/images/products/medium/';
+                $folder_larage   = 'upload/images/products/large/';
+                CommonHelper::cropImage2($request->image, $nameFile, 100, 25, $folder_thumb);
+                CommonHelper::cropImage2($request->image, $nameFile, 150, 37, $folder_medium);
+                CommonHelper::cropImage2($request->image, $nameFile, 200, 50, $folder_larage);
+                $folder = 'upload/images/products';
+                CommonHelper::uploadImage($request->image, $nameFile, $folder);
+            }
+            DB::commit();
+            return redirect()->route('products.list_brand')->with('success', 'Thêm thương hiệu sản phẩm mới thành công.');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return redirect()->route('products.list_brand')->with('error', 'Đã có lỗi xảy ra. Vui lòng thử lại!');
+        }
+    }
+
+    // xu ly cap nhat thuong hieu san pham
+    public function update_brand(Request $request){
+        $this->authorize('update', Products::class);
+        $request->validate(
+            [
+                'name' => 'required|string|max:250',
+                'image' => 'image|mimes:jpeg,jpg,png|mimetypes:image/jpeg,image/png,image/jpg|max:2048',
+            ],
+            [
+                'required' => ':attribute không được để trống',
+                'image' => ':attribute là định dạng png, jpg, jpeg - có dung lượng tối đa 2MB',
+            ],
+            [
+                'name' => 'Tên thương hiệu',
+                'image' => 'Ảnh thương hiệu',
+            ],
+        );
+        $brand = Brand::find($request->id);
+
+        $nameFile = Products::IMAGE;
+        $nameFileOld = $brand->image;
+        if ($request->image  != null){
+            $nameFile = CommonHelper::convertTitleToSlug($request->name, '-') . '-' . time() . '.' . $request->image->extension();
+        }else{
+            $nameFile = $nameFileOld;
+        }
+
+        $input = [
+            'name'  => $request->name,
+            'image'  => $nameFile,
+        ];
+        try {
+            DB::beginTransaction();
+
+            $brand = Brand::where('id', $request->id)->update($input);
+            // xu ly anh khong bi vo anh
+            if ($request->image != null) {
+                $folder_thumb    = 'upload/images/products/thumb/';
+                $folder_medium   = 'upload/images/products/medium/';
+                $folder_larage   = 'upload/images/products/large/';
+                CommonHelper::cropImage2($request->image, $nameFile, 100, 25, $folder_thumb);
+                CommonHelper::cropImage2($request->image, $nameFile, 150, 37, $folder_medium);
+                CommonHelper::cropImage2($request->image, $nameFile, 200, 50, $folder_larage);
+                $folder = 'upload/images/products';
+                CommonHelper::uploadImage($request->image, $nameFile, $folder);
+            }
+            //Xoá ảnh cũ khi có upload ảnh mới
+            if ($nameFileOld != Products::IMAGE && $nameFile != Products::IMAGE) {
+                $path         = 'upload/images/products/';
+                $path_thumb   = 'upload/images/products/thumb/';
+                $path_medium  = 'upload/images/products/medium/';
+                $path_larage  = 'upload/images/products/large/';
+                CommonHelper::deleteImage($nameFileOld, $path);
+                CommonHelper::deleteImage($nameFileOld, $path_thumb);
+                CommonHelper::deleteImage($nameFileOld, $path_medium);
+                CommonHelper::deleteImage($nameFileOld, $path_larage);
+            }
+            DB::commit();
+            return redirect()->route('products.list_brand')->with('success', 'Cập nhật thương hiệu sản phẩm thành công.');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return redirect()->route('products.list_brand')->with('error', 'Đã có lỗi xảy ra. Vui lòng thử lại!');
+        }
+    }
+    // xu ly xoa thuong hieu san pham
+    public function delete_brand(Request $request)
+    {
+        $this->authorize('delete', Products::class);
+        $data = $request->all();
+        $id = $data['id'];
+        $brand = Brand::find($id);
+        $nameFile = $brand->image;
+        $path = 'upload/images/products/';
+        $path_thumb   = 'upload/images/products/thumb/';
+        $path_medium  = 'upload/images/products/medium/';
+        $path_larage  = 'upload/images/products/large/';
+        CommonHelper::deleteImage($nameFile, $path);
+        CommonHelper::deleteImage($nameFile, $path_thumb);
+        CommonHelper::deleteImage($nameFile, $path_medium);
+        CommonHelper::deleteImage($nameFile, $path_larage);
+        Brand::where('id', $id)->delete();
+    }
+
+    public function list_tag_event(){
+        $this->authorize('viewAny', Products::class);
+        $tags = Tag_event::get();
+        return \view('admin.products.list-tagEvents', \compact('tags'));
+    }
+
+    public function store_tag_event(Request $request){
+        $this->authorize('create', Products::class);
+        $request->validate(
+            [
+                'name' => 'required|string|max:250',
+                'icon' => 'required|image|mimes:jpeg,jpg,png|mimetypes:image/jpeg,image/png,image/jpg|max:2048',
+            ],
+            [
+                'required' => ':attribute không được để trống',
+                'icon' => ':attribute là định dạng png, jpg, jpeg - có dung lượng tối đa 2MB',
+            ],
+            [
+                'name' => 'Tiêu đề',
+                'icon' => 'Ảnh icon',
+            ],
+        );
+        if ($request->icon  != null){
+            $nameFile = CommonHelper::convertTitleToSlug($request->name, '-') . '-' . time() . '.' . $request->icon->extension();
+        }else{
+            $nameFile = NULL;
+        }
+        $input = [
+            'name'  => $request->name,
+            'icon'  => $nameFile,
+            'color_left' => $request->color_left,
+            'color_right' => $request->color_right,
+        ];
+        try {
+            DB::beginTransaction();
+
+            $brand = Tag_event::create($input);
+            // xu ly anh khong bi vo anh
+            if ($request->icon != null) {
+                $folder_thumb    = 'upload/images/products/thumb/';
+                CommonHelper::cropImage2($request->icon, $nameFile, 50, 50, $folder_thumb);
+                $folder = 'upload/images/products';
+                CommonHelper::uploadImage($request->icon, $nameFile, $folder);
+            }
+            DB::commit();
+            return redirect()->route('products.list_tag-event')->with('success', 'Thêm thẻ Tag mới thành công.');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return redirect()->route('products.list_tag-event')->with('error', 'Đã có lỗi xảy ra. Vui lòng thử lại!');
+        }
+    }
+
+
+    public function update_tag_event(Request $request){
+        $this->authorize('update', Products::class);
+        $request->validate(
+            [
+                'name' => 'required|string|max:250',
+                'icon' => 'image|mimes:jpeg,jpg,png|mimetypes:image/jpeg,image/png,image/jpg|max:2048',
+            ],
+            [
+                'required' => ':attribute không được để trống',
+                'icon' => ':attribute là định dạng png, jpg, jpeg - có dung lượng tối đa 2MB',
+            ],
+            [
+                'name' => 'Tiêu đề',
+                'icon' => 'Ảnh icon',
+            ],
+        );
+        $tag = Tag_event::find($request->id);
+
+        $nameFileOld = $tag->icon;
+        if ($request->icon  != null){
+            $nameFile = CommonHelper::convertTitleToSlug($request->name, '-') . '-' . time() . '.' . $request->icon->extension();
+        }else{
+            $nameFile = $nameFileOld;
+        }
+
+        $input = [
+            'name'  => $request->name,
+            'icon'  => $nameFile,
+            'color_left' => $request->color_left,
+            'color_right' => $request->color_right,
+        ];
+        try {
+            DB::beginTransaction();
+
+            $brand = Tag_event::where('id', $request->id)->update($input);
+            // xu ly anh khong bi vo anh
+            if ($request->icon != null) {
+                $folder_thumb    = 'upload/images/products/thumb/';
+                CommonHelper::cropImage2($request->icon, $nameFile, 50, 50, $folder_thumb);
+                $folder = 'upload/images/products';
+                CommonHelper::uploadImage($request->icon, $nameFile, $folder);
+                CommonHelper::deleteImage($nameFileOld, $folder);
+                CommonHelper::deleteImage($nameFileOld, $folder_thumb);
+            }
+            DB::commit();
+            return redirect()->route('products.list_tag-event')->with('success', 'Cập nhật thẻ Tag thành công.');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return redirect()->route('products.list_tag-event')->with('error', 'Đã có lỗi xảy ra. Vui lòng thử lại!');
+        }
+    }
+    public function delete_tag_event(Request $request)
+    {
+        $this->authorize('delete', Products::class);
+        $data = $request->all();
+        $id = $data['id'];
+        $tag = Tag_event::find($id);
+        $nameFile = $tag->icon;
+        $path = 'upload/images/products/';
+        $path_thumb   = 'upload/images/products/thumb/';
+        CommonHelper::deleteImage($nameFile, $path);
+        CommonHelper::deleteImage($nameFile, $path_thumb);
+        Brand::where('id', $id)->delete();
     }
 }

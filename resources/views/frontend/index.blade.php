@@ -178,19 +178,30 @@
                                             <div class="thumb">
                                                 <a href="">
                                                     <img class="owl-lazy lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
-                                                    <span class="brand" style="background-image: url('asset/images/msi.png');"></span>
+                                                    @if (!empty($item->brand))
+                                                        <span class="brand" style="background-image: url('upload/images/products/thumb/{{$item->brands->image}}');"></span>
+                                                    @endif
                                                     <div class="wp-tag">
-                                                        <span class="years">New 2022</span>
-                                                        <span class="payment">Trả góp 0%</span>
+                                                        @if (!empty($item->year))
+                                                            <span class="years">{{$item->year}}</span>
+                                                        @endif
+                                                        @if (!empty($item->installment))
+                                                            <span class="payment">Trả góp 0%</span>
+                                                        @endif
                                                     </div>
                                                 </a>
                                             </div>
                                             <div class="detail">
                                                 <div class="wp-event">
-                                                    <p class="event" style="background: linear-gradient(to right,#ef3006,#c60004);">
-                                                        <img src="/asset/images/icon1-50x50.png" alt="">
-                                                        <span>Giảm sốc</span>
-                                                    </p>
+                                                    @if (!empty($item->event))
+                                                        <p class="event" style="background: linear-gradient(to right,{{$item->events->color_left}},{{$item->events->color_right}});">
+                                                            <img src="{{asset('upload/images/products/thumb/'.$item->events->icon)}}" alt="">
+                                                            <span>{{$item->events->name}}</span>
+                                                        </p>
+                                                    @else
+                                                        <p class="event" style="min-height: 20px;"></p>
+                                                    @endif
+                                                    <p class="code">Mã: {{$item->id}}</p>
                                                 </div>
                                                 <div class="name">
                                                     <a href="">{{$item->name}}</a>
@@ -237,8 +248,10 @@
                                                 </div>
 
                                                 <div class="detail-bottom">
-                                                    <div class="qty" style="color: #01aa42;
-                                                    background-color: #dbf8e1;">Còn hàng</div>
+                                                    @if (!empty($item->still_stock))
+                                                        <div class="qty" style="color: #01aa42;
+                                                        background-color: #dbf8e1;">{{$item->still_stock}}</div>
+                                                    @endif
                                                     <div class="action">
                                                         <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
                                                         <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
@@ -271,147 +284,174 @@
                             <div class="tab-content container-home" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-new" role="tabpanel" aria-labelledby="pills-new-tab">
                                     <div class="wp-info-product owl-carousel owl-theme owl-loaded owl-drag" id="slider-product-new-tab">
-                                        <!--2 product -->
-                                        <div class="wp-prouct-item">
-                                            <!-- product -->
-                                            <div class="product-item-info mb-3">
-                                                <div class="thumb">
-                                                    <a href="">
-                                                        <img src="/asset/images/Apple-Macbook-Pro-2020-removebg-preview.png" alt="">
-                                                        <span class="brand" style="background-image: url('asset/images/macbook.png');"></span>
-                                                        <div class="wp-tag">
-                                                            <span class="years">New 2022</span>
-                                                            <span class="payment">Trả góp 0%</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="detail">
-
-                                                    <div class="name">
-                                                        <a href="">Laptop Macbook Air M10 2020</a>
-                                                    </div>
-                                                    <div class="wp-event">
-                                                        <p class="event" style="background: linear-gradient(to right,#6cc9ed,#169fd8);">
-                                                            <img src="/asset/images/icon4-50x50.png" alt="">
-                                                            <span>+1 năm bảo hành</span>
-                                                        </p>
-                                                    </div>
-                                                    <ul class="product-attributes">
-                                                        <li>Core i5</li>
-                                                        <li>256GB SSD</li>
-                                                        <li>8GB</li>
-                                                    </ul>
-                                                    <div class="price-review clearfix">
-                                                        <div class="price">
-                                                            <span class="onsale">- 15%</span>
-                                                            <div class="price-old">36.999.000 đ</div>
-                                                            <div class="price-new">32.866.000 đ</div>
-                                                        </div>
-                                                        <div class="review">
-                                                            <div class="rating2">
-                                                                <div class="rating-upper" style="width: 80%">
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
+                                        @foreach ($product_new->chunk(2) as $chunk)
+                                            <!--2 product -->
+                                            <div class="wp-prouct-item">
+                                                @foreach ($chunk as $item)
+                                                    <!-- product -->
+                                                    <div class="product-item-info mb-3">
+                                                        <div class="thumb">
+                                                            <a href="">
+                                                                <img class="owl-lazy lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
+                                                                {{-- @if (!empty($item->brand))
+                                                                    <span class="brand" style="background-image: url('upload/images/products/thumb/{{$item->brands->image}}');"></span>
+                                                                @endif --}}
+                                                                <div class="wp-tag">
+                                                                    @if (!empty($item->year))
+                                                                        <span class="years">{{$item->year}}</span>
+                                                                    @endif
+                                                                    @if (!empty($item->installment))
+                                                                        <span class="payment">Trả góp 0%</span>
+                                                                    @endif
                                                                 </div>
-                                                                <div class="rating-lower">
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="detail">
+
+                                                            <div class="name">
+                                                                <a href="">{{$item->name}}</a>
+                                                            </div>
+                                                            <div class="wp-event">
+                                                                {{-- @if (!empty($item->event))
+                                                                    <p class="event" style="background: linear-gradient(to right,{{$item->events->color_left}},{{$item->events->color_right}});">
+                                                                        <img src="{{asset('upload/images/products/thumb/'.$item->events->icon)}}" alt="">
+                                                                        <span>{{$item->events->name}}</span>
+                                                                    </p>
+                                                                @else
+                                                                    <p class="event" style="min-height: 20px;"></p>
+                                                                @endif --}}
+                                                                <p class="code">Mã: {{$item->id}}</p>
+                                                            </div>
+                                                            {{-- @if (!empty($item->specifications))
+                                                                <ul class="product-attributes">
+                                                                    @foreach ($item->get_specifications() as $k)
+                                                                        <li>{{$k}}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @endif --}}
+                                                            <div class="price-review clearfix">
+                                                                <div class="price">
+                                                                    @if (!empty($item->onsale))
+                                                                        <span class="onsale">- {{$item->onsale}}%</span>
+                                                                        <div class="price-old">{{number_format($item->price,0,',','.')}} đ</div>
+                                                                        <div class="price-new">{{number_format($item->price_onsale,0,',','.')}} đ</div>
+                                                                    @else
+                                                                        <div class="price-new">{{number_format($item->price,0,',','.')}} đ</div>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="review">
+                                                                    <div class="rating2">
+                                                                        <div class="rating-upper" style="width: %">
+                                                                            <span><i class="fas fa-star"></i></span>
+                                                                            <span><i class="fas fa-star"></i></span>
+                                                                            <span><i class="fas fa-star"></i></span>
+                                                                            <span><i class="fas fa-star"></i></span>
+                                                                            <span><i class="fas fa-star"></i></span>
+                                                                        </div>
+                                                                        <div class="rating-lower">
+                                                                            <span><i class="fal fa-star"></i></span>
+                                                                            <span><i class="fal fa-star"></i></span>
+                                                                            <span><i class="fal fa-star"></i></span>
+                                                                            <span><i class="fal fa-star"></i></span>
+                                                                            <span><i class="fal fa-star"></i></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="count-review">()</div>
+                                                                    @if (!empty($item->sold))
+                                                                        <div class="sold"><i class="fas fa-badge-check"></i>Đã bán {{$item->sold}}</div>
+                                                                    @endif
                                                                 </div>
                                                             </div>
-                                                            <div class="count-review">(5)</div>
-                                                            <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="detail-bottom">
-                                                        <div class="qty" style="color: #01aa42;
-                                                        background-color: #dbf8e1;">Còn hàng</div>
-                                                        <div class="action">
-                                                            <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
-                                                            <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
-                                                            <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- product -->
-                                            <div class="product-item-info mb-3">
-                                                <div class="thumb">
-                                                    <a href="">
-                                                        <img src="/asset/images/pc_gaming.jpg" alt="">
-                                                        <span class="brand" style="background-image: url('asset/images/msi.png');"></span>
-                                                        <div class="wp-tag">
-                                                            <span class="years">New 2022</span>
-                                                            <span class="payment">Trả góp 0%</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="detail">
-
-                                                    <div class="name">
-                                                        <a href="">PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD</a>
-                                                    </div>
-                                                    <div class="wp-event">
-                                                        <p class="event" style="background: linear-gradient(to right,#ef3006,#c60004);">
-                                                            <img src="/asset/images/icon1-50x50.png" alt="">
-                                                            <span>Giảm sốc</span>
-                                                        </p>
-                                                    </div>
-                                                    <ul class="product-attributes">
-                                                        <li>Core i5</li>
-                                                        <li>500GB SSD</li>
-                                                        <li>8GB</li>
-                                                        <li>RTX 3070</li>
-                                                        <li>600W</li>
-                                                    </ul>
-                                                    <div class="price-review clearfix">
-                                                        <div class="price">
-                                                            <span class="onsale">- 20%</span>
-                                                            <div class="price-old">19.999.000 đ</div>
-                                                            <div class="price-new">16.866.000 đ</div>
-                                                        </div>
-                                                        <div class="review">
-                                                            <div class="rating2">
-                                                                <div class="rating-upper" style="width: 90%">
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                </div>
-                                                                <div class="rating-lower">
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
+                                                            <div class="detail-bottom">
+                                                                @if (!empty($item->still_stock))
+                                                                    <div class="qty" style="color: #01aa42;
+                                                                    background-color: #dbf8e1;">{{$item->still_stock}}</div>
+                                                                @endif
+                                                                <div class="action">
+                                                                    <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
+                                                                    <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
+                                                                    <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
                                                                 </div>
                                                             </div>
-                                                            <div class="count-review">(5)</div>
-                                                            <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
                                                         </div>
                                                     </div>
+                                                @endforeach
 
-                                                    <div class="detail-bottom">
-                                                        <div class="qty" style="color: #01aa42;
-                                                        background-color: #dbf8e1;">Còn hàng</div>
-                                                        <div class="action">
-                                                            <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
-                                                            <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
-                                                            <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
+                                                {{-- <!-- product -->
+                                                <div class="product-item-info mb-3">
+                                                    <div class="thumb">
+                                                        <a href="">
+                                                            <img src="/asset/images/pc_gaming.jpg" alt="">
+                                                            <span class="brand" style="background-image: url('asset/images/msi.png');"></span>
+                                                            <div class="wp-tag">
+                                                                <span class="years">New 2022</span>
+                                                                <span class="payment">Trả góp 0%</span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="detail">
+
+                                                        <div class="name">
+                                                            <a href="">PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD</a>
+                                                        </div>
+                                                        <div class="wp-event">
+                                                            <p class="event" style="background: linear-gradient(to right,#ef3006,#c60004);">
+                                                                <img src="/asset/images/icon1-50x50.png" alt="">
+                                                                <span>Giảm sốc</span>
+                                                            </p>
+                                                        </div>
+                                                        <ul class="product-attributes">
+                                                            <li>Core i5</li>
+                                                            <li>500GB SSD</li>
+                                                            <li>8GB</li>
+                                                            <li>RTX 3070</li>
+                                                            <li>600W</li>
+                                                        </ul>
+                                                        <div class="price-review clearfix">
+                                                            <div class="price">
+                                                                <span class="onsale">- 20%</span>
+                                                                <div class="price-old">19.999.000 đ</div>
+                                                                <div class="price-new">16.866.000 đ</div>
+                                                            </div>
+                                                            <div class="review">
+                                                                <div class="rating2">
+                                                                    <div class="rating-upper" style="width: 90%">
+                                                                        <span><i class="fas fa-star"></i></span>
+                                                                        <span><i class="fas fa-star"></i></span>
+                                                                        <span><i class="fas fa-star"></i></span>
+                                                                        <span><i class="fas fa-star"></i></span>
+                                                                        <span><i class="fas fa-star"></i></span>
+                                                                    </div>
+                                                                    <div class="rating-lower">
+                                                                        <span><i class="fal fa-star"></i></span>
+                                                                        <span><i class="fal fa-star"></i></span>
+                                                                        <span><i class="fal fa-star"></i></span>
+                                                                        <span><i class="fal fa-star"></i></span>
+                                                                        <span><i class="fal fa-star"></i></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="count-review">(5)</div>
+                                                                <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="detail-bottom">
+                                                            <div class="qty" style="color: #01aa42;
+                                                            background-color: #dbf8e1;">Còn hàng</div>
+                                                            <div class="action">
+                                                                <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
+                                                                <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
+                                                                <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
-                                        </div>
+                                        @endforeach
 
-                                        <!--2 product -->
+
+                                        {{-- <!--2 product -->
                                         <div class="wp-prouct-item">
                                             <!-- product -->
                                             <div class="product-item-info mb-3">
@@ -547,7 +587,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                     </div>
                                 </div>
@@ -736,24 +776,11 @@
 
         <div class="brand-slider-bottom" style="margin-bottom: 30px;">
             <div class="brand-slider owl-carousel owl-theme owl-loaded owl-drag" id="brand-slider">
-                <a href="" class="brand">
-                    <img src="{{asset('asset/images/item-20.jpg')}}" alt="">
-                </a>
-                <a href="" class="brand">
-                    <img src="{{asset('asset/images/item-21.jpg')}}" alt="">
-                </a>
-                <a href="" class="brand">
-                    <img src="{{asset('asset/images/item-22.jpg')}}" alt="">
-                </a>
-                <a href="" class="brand">
-                    <img src="{{asset('asset/images/item-23.jpg')}}" alt="">
-                </a>
-                <a href="" class="brand">
-                    <img src="{{asset('asset/images/item-24.jpg')}}" alt="">
-                </a>
-                <a href="" class="brand">
-                    <img src="{{asset('asset/images/item-25.jpg')}}" alt="">
-                </a>
+                @foreach ($list_brand as $item)
+                    <a href="" class="brand">
+                        <img src="{{asset('upload/images/products/large/'.$item->image)}}" alt="">
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>
