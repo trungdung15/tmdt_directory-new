@@ -113,7 +113,7 @@ class CategoryController extends Controller
         $folder_thumb    = 'upload/images/products/thumb/';
         if ($request->hasFile('thumb')) {
             $file = CommonHelper::uploadImage($request->thumb, $nameFile, $folder);
-            CommonHelper::cropImage2($file, $nameFile, 150, 150, $folder_thumb);
+            CommonHelper::cropImage2($file, $nameFile, 300, 300, $folder_thumb);
         }
 
         //xu ly luu vi tri danh muc sau khi luu danh muc
@@ -221,7 +221,7 @@ class CategoryController extends Controller
             $folder_thumb  = 'upload/images/products/thumb/';
             $folder = 'upload/images/products';
             if ($request->thumb != null) {
-                CommonHelper::cropImage2($request->thumb,  $nameFile, 150, 150, $folder_thumb);
+                CommonHelper::cropImage2($request->thumb,  $nameFile, 300, 300, $folder_thumb);
                 CommonHelper::uploadImage($request->thumb, $nameFile, $folder);
 
                 //Xoá ảnh cũ khi có upload ảnh mới

@@ -577,11 +577,11 @@ class ProductsController extends Controller
         $path = 'upload/images/products/';
         $path_thumb   = 'upload/images/products/thumb/';
         $path_medium  = 'upload/images/products/medium/';
-        $path_larage  = 'upload/images/products/large/';
+        $path_large  = 'upload/images/products/large/';
         CommonHelper::deleteImage($nameFile, $path);
         CommonHelper::deleteImage($nameFile, $path_thumb);
         CommonHelper::deleteImage($nameFile, $path_medium);
-        CommonHelper::deleteImage($nameFile, $path_larage);
+        CommonHelper::deleteImage($nameFile, $path_large);
         Brand::where('id', $id)->delete();
     }
 
@@ -700,6 +700,6 @@ class ProductsController extends Controller
         $path_thumb   = 'upload/images/products/thumb/';
         CommonHelper::deleteImage($nameFile, $path);
         CommonHelper::deleteImage($nameFile, $path_thumb);
-        Brand::where('id', $id)->delete();
+        Tag_event::find($id)->delete();
     }
 }
