@@ -59,10 +59,10 @@ ul{
 .page-header .header-top .wp-language-email .language{
     display: inline-block;
 }
-.page-header .header-top .wp-language-email .language a, 
+.page-header .header-top .wp-language-email .language a,
 .page-header .header-top .wp-language-email .email-header a{
     color: #222;
-} 
+}
 .page-header .header-top .wp-language-email .email-header{
     display: inline-block;
     line-height: 40px;
@@ -108,6 +108,9 @@ ul{
     vertical-align: middle;
     width: 100%;
     padding-right: 70px;
+}
+.search-header .search-wrapper{
+    position: relative;
 }
 .search-header .search-wrapper form{
     position: relative;
@@ -815,6 +818,46 @@ ul.menu-cat-mobile li .submenu-parent-mobile.active{
     padding: 10px 10px 10px 0;
     font-size: 15px;
     color: #444;
+}
+.ajax-search-result{
+    opacity: 1;
+    position: absolute;
+    top: 41px;
+    left: 180px;
+    max-height: 300px;
+    width: calc(100% - 180px);
+    background-color: #fff;
+    overflow-y: scroll;
+    margin-right: auto;
+    visibility: visible;
+    margin-left: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 5px 5px 5px rgb(0 0 6 / 10%);
+}
+
+.ajax-search-result a{
+    display: flex;
+    padding: 10px;
+    overflow: hidden;
+}
+.ajax-search-result a img{
+    width: 80px;
+    float: left;
+    max-width: 100%;
+    height: auto;
+}
+
+.ajax-search-result a .info{
+    display: block;
+    margin-left: 30px;
+    width: auto;
+    height: auto;
+    text-align: left;
+}
+.ajax-search-result a span{
+    width: 100%;
+    float: left;
 }
 @keyframes jump {
     0% { bottom: 20px; } 50% { bottom: 40px; } 100% { bottom: 20px; }
