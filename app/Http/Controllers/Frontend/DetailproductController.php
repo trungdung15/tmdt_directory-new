@@ -22,20 +22,16 @@ class DetailproductController extends Controller
         $Menus              = $this->getmenu('menu');
         $Sub_menus          = $this->getmenu('submenu');
         $getcategoryblog    = $this->getcategoryblog();
-        $Products           = Products::where('slug','=',$slug)->first();
+        $product           = Products::where('slug','=',$slug)->first();
 
-        $NextProducts       = Products::where('id'  ,'>',$Products->id)
-                              ->orderBy('id','asc')->first();
-        $PreviewProducts    = Products::where('id'  ,'<',$Products->id)
-                              ->orderBy('id','desc')->first();
-        $attrs              = \json_decode($Products->attr);
+        $attrs              = \json_decode($product->attr);
         $locale             = config('app.locale');
         if(empty($attrs)){$attrs = [];}
         $colors = Attribute_product::where('attr', 'color')->whereIn('id', $attrs)->orderBy('name', 'ASC')->get();
         $sizes  = Attribute_product::where('attr', 'size')->whereIn('id', $attrs)->get();
 
         $products_id= array();
-        foreach($Products->category as $k){
+        foreach($product->category as $k){
             foreach($k->product as $pro){
                 $products_id[]= $pro->id;
             }
@@ -43,25 +39,23 @@ class DetailproductController extends Controller
         if(empty($products_id)){
             $product_related = Products::where('status', 1)->limit(6)->get();
         }else{
-            $product_related = Products::whereIn('id', $products_id)->where('status', 1)->limit(6)->get();
+            $product_related = Products::whereIn('id', $products_id)->where('status', 1)->limit(10)->get();
         }
 
-        $img        = json_decode($Products->image);
-        $property   = $this->xulychuoi_thongsosanpham($Products->property);
+        $imgs        = json_decode($product->image);
+        $property   = $this->xulychuoi_thongsosanpham($product->property);
 
         
         return view('frontend.detailproduct',[
             'Sidebars'        => $Sidebars,
             'Menus'           => $Menus,
-            'Products'        => $Products,
-            'img'             => $img,
+            'product'        => $product,
+            'imgs'             => $imgs,
             'property'        => $property,
             'product_related' => $product_related,
             'colors'          => $colors,
             'sizes'           => $sizes,
             'getcategoryblog' => $getcategoryblog,
-            'NextProducts'    => $NextProducts,
-            'PreviewProducts' => $PreviewProducts,
             'locale'          => $locale,
         ]);
         }

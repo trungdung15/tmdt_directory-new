@@ -179,7 +179,7 @@
                                                 <a href="{{ route('detailproduct', $item->slug)}}">
                                                     <img class="owl-lazy lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
                                                     @if (!empty($item->brand))
-                                                        <span class="brand" style="background-image: url('upload/images/products/thumb/{{$item->brands->image}}');"></span>
+                                                        <span class="brand" style="background-image: url('{{asset("upload/images/products/thumb/".$item->brands->image)}}');"></span>
                                                     @endif
                                                     <div class="wp-tag">
                                                         @if (!empty($item->year))
@@ -294,7 +294,7 @@
                                                             <a href="{{ route('detailproduct', $item->slug)}}">
                                                                 <img class="owl-lazy lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
                                                                 @if (!empty($item->brand))
-                                                                    <span class="brand" style="background-image: url('upload/images/products/thumb/{{$item->brands->image}}');"></span>
+                                                                    <span class="brand" style="background-image: url('{{asset("upload/images/products/thumb/".$item->brands->image)}}');"></span>
                                                                 @endif
                                                                 <div class="wp-tag">
                                                                     @if (!empty($item->year))
@@ -393,7 +393,7 @@
                                                             <a href="{{ route('detailproduct', $item->slug)}}">
                                                                 <img class="owl-lazy lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
                                                                 @if (!empty($item->brand))
-                                                                    <span class="brand" style="background-image: url('upload/images/products/thumb/{{$item->brands->image}}');"></span>
+                                                                    <span class="brand" style="background-image: url('{{asset("upload/images/products/thumb/".$item->brands->image)}}');"></span>
                                                                 @endif
                                                                 <div class="wp-tag">
                                                                     @if (!empty($item->year))
@@ -540,6 +540,39 @@
 @section('js')
     <script>
         $(document).ready(function(){
+            //Add to Cart
+            add_cart = function(id){
+                        var _token = $('meta[name="csrf-token"]').attr('content');
+                        var data = {
+                            id: id,
+                            _token: _token
+                        };
+
+                        $.ajax({
+                            url: "{{ route('add_cart_ajax') }}",
+                            method: 'POST',
+                            data: data,
+                            dataType: "json",
+                            success: function(data) {
+                                alert('Thêm thành công sản phẩm vào giỏi hàng!');
+                                $('#count-cart').text(data.count);
+                            },
+                        });
+                    }
+            add_wish = function(id){
+                var _token = $('meta[name="csrf-token"]').attr('content');
+                var data = {id:id, _token:_token};
+                $.ajax({
+                    url: "{{route('add_wish')}}",
+                    method: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function(data) {
+                        alert('Thêm thành công sản phẩm vào danh sách yêu thích!');
+                        $('#count-wish').text(data.count_wish);
+                    },
+                });
+            }
 
             function isOnScreen(elem) {
             if( elem.length == 0 ) {

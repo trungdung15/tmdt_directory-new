@@ -41,6 +41,7 @@ class Products extends Model
         'year',
         'still_stock',
         'time_deal',
+        'youtube',
         'attr',
     ];
     const IMAGE = 'no-images.jpg';
@@ -62,6 +63,26 @@ class Products extends Model
         return $this->belongsTo(Tag_event::class, 'event', 'id');
     }
 
+    public function vote_1(){
+        return $this->hasMany(Vote::class, 'product_id')->where('level', 1);
+    }
+    public function vote_2(){
+        return $this->hasMany(Vote::class, 'product_id')->where('level', 2);
+    }
+    public function vote_3(){
+        return $this->hasMany(Vote::class, 'product_id')->where('level', 3);
+    }
+    public function vote_4(){
+        return $this->hasMany(Vote::class, 'product_id')->where('level', 4);
+    }
+    public function vote_5(){
+        return $this->hasMany(Vote::class, 'product_id')->where('level', 5);
+    }
+
+    public function trungbinhsao(){
+        $t = ($this->vote_1->count()*1 + $this->vote_2->count()*2 + $this->vote_3->count()*3 + $this->vote_4->count()*4 + $this->vote_5->count()*5)/($this->votes->count());
+        return $number = \round($t, 1);
+    }
     public function count_vote(){
         $count = 0;
         $total = 0;

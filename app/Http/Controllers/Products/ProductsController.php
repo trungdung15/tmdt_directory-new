@@ -154,6 +154,7 @@ class ProductsController extends Controller
             'event' => $request->event,
             'still_stock' => $request->still_stock,
             'time_deal'    => $request->time_deal,
+            'youtube' => $request->youtube,
         ];
 
         try {
@@ -299,6 +300,7 @@ class ProductsController extends Controller
                 'event' => $request->event,
                 'still_stock' => $request->still_stock,
                 'time_deal'    => $request->time_deal,
+                'youtube' => $request->youtube,
             ];
 
             try {

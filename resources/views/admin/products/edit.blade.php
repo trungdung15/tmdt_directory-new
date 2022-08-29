@@ -277,6 +277,13 @@
                     </div>
                     <div class="mt-3">
                         <div class="mt-3">
+                            <label for="" class="form-label">Link video Youtube</label>
+                            <input type="text" name="youtube" class="form-control block mx-auto"
+                                id="year" value="{{ $edit->youtube }}" placeholder="Nhập link video sản phẩm">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="mt-3">
                             <label for="" class="form-label">Tình trạng sản phẩm</label>
                             <input type="text" name="still_stock" class="form-control w-56 block mx-auto"
                                 id="year" value="{{ $edit->still_stock }}" placeholder="VD: Còn hàng" required>

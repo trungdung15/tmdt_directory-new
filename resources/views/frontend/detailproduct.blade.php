@@ -1,752 +1,836 @@
-    @extends('frontend.layouts.base')
+@extends('frontend.layouts.base')
 
-    @section('title')
-        <title>@lang('lang.It24hdetail')</title>
-    @endsection
+@section('title')
+    <title>{{$product->name}}</title>
+@endsection
 
-    @section('header')
-        @include('frontend.layouts.header-page', [$Sidebars, $Menus])
-    @endsection
+@section('css')
+    <link rel="stylesheet" href="{{asset('asset/css/detail-product.css')}}">
+@endsection
 
-    @section('menu-mobile')
-        @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus])
-    @endsection
+@section('header-home')
+    @include('frontend.layouts.header-page', [$Sidebars, $Menus])
+@endsection
 
-    @section('content')
-    <div class="colfull clearfix">
-        <div class="contentarea">
-            <div class="linkhead">
-                <nav class="breadcrumb">
-                        <a href="{{route('user')}}">
-                            @lang('lang.Home')
-                        </a>
-                       <i class="fal fa-angle-right"></i>
-                        <a href="{{route('list_product')}}">
-                            @lang('lang.Shop')
-                        </a>
-                        <i class="fal fa-angle-right"></i>
-                        {{$Products->name}}
-                </nav>
+
+@section('menu-mobile')
+    @include('frontend.layouts.menu-mobile')
+@endsection
+
+@section('content')
+    <div class="wp-content">
+        <div class="wp-breadcrumb-page">
+            <div class="container-page">
+                <div class="breadcrumb-page">
+                    <a href="">Trang chủ</a><i class="fas fa-angle-right mx-1"></i>
+                    <a href="">Laptop, Tablet, Mobile</a><i class="fas fa-angle-right mx-1"></i>
+                    <a href="">Laptop Gaming</a>
+                </div>   
             </div>
-            <div class="detailproduct">
-                <div class="imgproduct col-xl-6">
-                    <div class="imgp">
-                        <a class="product-gallery__trigger" href="{{ asset('/upload/images/products/'.$Products->thumb) }}" id="zoomer_b">
-                            <i class="far fa-eye">
-                            </i>
-                        </a>
-                        <div class="product-video-360">
-                            <a class="product-video-360__btn btn-video" href="#">
-                                <i class="far fa-play">
-                                </i>
-                            </a>
-                        </div>
-                        @if (!empty($Products->onsale))
-                            <span class="onsale onsalescreen">
-                                -{{$Products->onsale}}%
-                            </span>
-                        @endif
-                        <div class="flex-viewport">
-                            <figure id="img-zoomer-box">
-                                <a href="{{ asset('/upload/images/products/'.$Products->thumb) }}" id="zoomer_a">
-                                    <img id="img-1" src="{{ asset('/upload/images/products/'.$Products->thumb) }}"/>
-                                </a>
-                                <div id="img-2" style="background: url('{{ asset('/upload/images/products/'.$Products->thumb) }}') no-repeat #FFF;">
-                                </div>
+        </div>
 
-                            </figure>
-                        </div>
-                    </div>
-                    <ol class="flex-control-nav flex-control-thumbs">
-                        @if($Products->image != "no-images.jpg")
-                        @foreach($img as $item)
-                        <li>
-                            <img class="imgproduct_thumb" data-o_src="{{ asset('/upload/images/products/' . $item) }}" height="150" src="{{ asset('/upload/images/products/thumb/'. $item) }}" width="150"/>
-                        </li>
-                        @endforeach
-                        @endif
-                    </ol>
+        <div class="container-page">
+            <div class="content-product-detail">
+                <div class="product-title">
+                    <h3>{{$product->name}}</h3>
                 </div>
-                <div class="infop col-xl-6">
-                    <div class="">
-                        <div class="topinfop">
-                            <div class="instock">
-                                @lang('lang.InStock')
-                            </div>
-                            <nav class="nextpreview">
-                                <a href="@if(!empty($PreviewProducts->slug)){{route('detailproduct',$PreviewProducts->slug)}} @endif">
-                                    <span><i class="far fa-arrow-left"></i>@lang('lang.Prew')</span>
-                                   {{--  <div class="product-item">
-                                        <img src="{{ asset('/upload/images/products/' . $PreviewProducts->thumb) }}" width="80px" height="80px">
-                                    </div> --}}
-                                </a>
-                                <a href="@if(!empty($NextProducts->slug)){{route('detailproduct',$NextProducts->slug)}}@endif" style="margin-left: 25px;">
-                                    <span>@lang('lang.Next')<i class="far fa-arrow-right"></i></span>
-                                </a>
-                            </nav>
-                        </div>
-                        <h1>
-                            {{$Products->name}}
-                        </h1>
-                        <div class="typep">
-                            <div class="product-brand">
-                                @lang('lang.Brands'):
-                                <a href="#">
-                                    {{$Products->brand}}
-                                </a>
-                            </div>
-                            <div class="product-brand">
-                                @lang('lang.Model'):
-                                <a href="#">
-                                    MYL92LL/A
-                                </a>
-                            </div>
-                            <div class="product-brand">
-                                @lang('lang.Code'):
-                                <a href="javascript:;">
-                                    #IT24H{{$Products->id}}
-                                </a>
-                            </div>
-                        </div>
-                        <p class="pricep">
-                            @if (!empty($Products->onsale))
-                                <del aria-hidden="true">
-                                    <span>
-                                        <bdi>
-                                            {{number_format($Products->price,0,',','.')}}
-                                            <span>@lang('lang.Currencyunit')</span>
-                                        </bdi>
-                                    </span>
-                                </del>
-                                <ins>
-                                    <span>
-                                        <bdi>{{number_format($Products->price_onsale,0,',','.')}}
-                                            <span>@lang('lang.Currencyunit')</span>
-                                        </bdi>
-                                    </span>
-                                </ins>
-                            @else
-                                <ins>
-                                    <span><bdi>{{number_format($Products->price,0,',','.')}}
-                                            <span> @lang('lang.Currencyunit')</span>
-                                          </bdi>
-                                     </span>
-                                </ins>
-                            @endif
-
-                        </p>
-                        <div class="rating2">
-                            <div class="rating-upper" style="width: {{$Products->count_vote()}}%;">
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                                <span><i class="fas fa-star"></i></span>
-                            </div>
-                            <div class="rating-lower">
-                                <span><i class="fal fa-star"></i></span>
-                                <span><i class="fal fa-star"></i></span>
-                                <span><i class="fal fa-star"></i></span>
-                                <span><i class="fal fa-star"></i></span>
-                                <span><i class="fal fa-star"></i></span>
-                            </div>
-                        </div>
-                        <a class="sub_rating" href="#reviews" rel="nofollow">
-                            (<span class="count">{{$Products->votes->count()}}</span> @lang('lang.Review'))
-                        </a>
-                        <div class="descriptionp">
-                            {!! $Products->short_content !!}
-                        </div>
-                        <table>
-                            <tbody>
-                                @if(count($colors) != 0)
-                                <tr class="choosecolor">
-                                    <th>
-                                        <label>
-                                            @lang('lang.Color'):
-                                        </label>
-                                        <span class="sub_color_name">
-                                        </span>
-                                    </th>
-                                    <td>
-                                        <ul>
-                                            @foreach ($colors as $color)
-                                                <li>
-                                                    <input id="color{{$color->id}}" type="raido">
-                                                        <label class="color_value_check" data-placement="top" title="{{$color->name}}" data-toggle="tooltip" for="color{{$color->id}}" style="background-color: {{$color->color}};">
-                                                        </label>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
-                                </tr>
+                <div class="wp-product-detail">
+                    <div class="product-detail-left">
+                        <div class="product-detail-img">
+                            <div class="product-thumb">
+                                <div class="image">
+                                    <img src="{{asset('upload/images/products/large/'.$product->thumb)}}" alt="">
+                                </div>
+                                @if (!empty($product->brand))
+                                    <div class="product-brand">
+                                        <img src="{{asset('upload/images/products/medium/'.$product->brands->image)}}" alt="">
+                                    </div>
                                 @endif
-                                @if(count($sizes) != 0)
-                                <tr class="choosesize">
-                                    <th>
-                                        <label>
-                                            @lang('lang.Size'):
-                                        </label>
-                                        <span class="sub_size_name">
-                                        </span>
-                                    </th>
-                                    <td>
-                                        <ul>
-                                            @foreach ($sizes as $size)
-                                                <li>
-                                                    <input id="size_{{$size->name}}" type="raido">
-                                                        <label class="size_value_check" data-placement="top" title="{{$size->name}}" data-toggle="tooltip" for="size_{{$size->name}}">
-                                                            {{$size->name}}
-                                                        </label>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
-                                </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                        @if($Products->time_deal>Carbon\Carbon::now())
-                        <div class="sidebar_deal time-dem-nguoc" data-date="{{$Products->time_deal}}" >
-                            <div class="time-sale">
-                                <div class="deal-text">
-                                    <span>@lang('lang.HurryUpOfferendsin')</span>
-                                </div>
-                                <div class="countdown">
-                                <div class="countdown-item">
-                                <div class="countdown-digits countdown-days" id="d"></div>
-                                <div class="countdown-label">@lang('lang.Day')</div>
-                                </div>
-                                <div class="countdown-item">
-                                <div class="countdown-digits countdown-hours" id="h"></div>
-                                <div class="countdown-label">@lang('lang.Hours')</div>
-                                </div>
-                                <div class="countdown-item">
-                                <div class="countdown-digits countdown-minutes" id="m"></div>
-                                <div class="countdown-label">@lang('lang.Minutes')</div>
-                                </div>
-                                <div class="countdown-item">
-                                <div class="countdown-digits countdown-seconds" id="s"></div>
-                                <div class="countdown-label">@lang('lang.Seconds')</div>
-                                </div>
-                                </div>
-                                <div class="deal-text-down">
-                                    <span>@lang('lang.Remainsuntiltheendoftheoffer')</span>
-                                </div>
+                                <span class="prev"><i class="fas fa-chevron-left"></i></span>
+                                <span class="next"><i class="fas fa-chevron-right"></i></span>
                             </div>
-                        </div>
-                        @endif
-                        <p class="in-stock stock">
-                            <i class="far fa-smile">
-                            </i>
-                            {{$Products->quantity}} @lang('lang.remainingitems')
-                        </p>
-                        <form action="" class="cart" enctype="multipart/form-data" method="post">
-                            <div class="quantity_wrap">
-                                <label class="screen-reader-text" for="quantity_62bd4779bc87d">
-                                    @lang('lang.Quantity')
-                                </label>
-                                <div class="quantity buttons_added">
-                                    <button class="minus" type="button">
-                                        <i class="fal fa-minus">
-                                        </i>
-                                    </button>
-                                    <input class="input-text qty text qty-order" id="quantity_62bd4779bc87d" max="999" min="1" name="quantity" placeholder="" step="1" title="Qty" type="number" value="1">
-                                        <button class="plus"  type="button">
-                                            <i class="fal fa-plus">
-                                            </i>
-                                        </button>
-                                </div>
-                            </div>
-                            <a href="javascript:;" class="single_add_to_cart_button button alt add-to-cart" data-product_id="{{$Products->id}}" name="add-to-cart" type="submit" value="147">
-                                <i class="fal fa-shopping-cart">
-                                </i>
-                                @lang('lang.Addtocart')
-                            </a>
-                            <a href="javascript:;" class="woosw-btn add-wish woosw-btn-147" data-id="{{$Products->id}}">
-                                <i class="fal fa-heart">
-                                </i>
-                            </a>
-                            <button class="woosc-btn woosc-btn-147 " data-id="147">
-                                <i class="fal fa-code">
-                                </i>
-                            </button>
-                        </form>
-                        <div class="product-extra">
-                            <section>
-                                <span>
-                                    <i class="fal fa-shopping-cart">
-                                    </i>
-                                </span>
-                                <strong>
-                                    Other people want this.
-                                </strong>
-                                <span>
-                                    15 people have this in their carts right now.
-                                </span>
-                            </section>
-                        </div>
-                        <div class="product_meta">
-                            <span class="posted_in">
-                                @lang('lang.Categories'):
-                                @foreach ($Products->category as $cat)
-                                    <a href="{{route('product_cat', $cat->slug)}}" rel="tag">
-                                        {{$cat->name}}.
+                            <ul class="list-thumb-detail">
+                                <li class="">
+                                    <a href="javascript:;" class="thumb-small active">
+                                        <img src="{{asset('upload/images/products/thumb/'.$product->thumb)}}" alt="">
                                     </a>
-                                @endforeach
-                            </span>
-                        </div>
-                        <div class="social-share">
-                            <span class="social-share-header">
-                                @lang('lang.Share'):
-                            </span>
-                            <a class="social-facebook" href="#" target="_blank" title="Share on facebook">
-                                <i class="fab fa-facebook-f" style="color: #4267B2">
-                                </i>
-                            </a>
-                            <a class="social-twitter" href="#">
-                                <i class="fab fa-twitter" style="color: #1DA1F2">
-                                </i>
-                            </a>
-                            <a class="social-linkedin" href="#" target="_blank" title="Share on LinkedIn">
-                                <i class="fab fa-linkedin-in" style="color:  #0A66C2;">
-                                </i>
-                            </a>
-                            <a class="social-google" href="#" title="Share on Google plus">
-                                <i class="fab fa-google-plus-g">
-                                </i>
-                            </a>
-                            <a class="social-pinterest" href="#" target="_blank" title="Share on Pinterest">
-                                <i class="fab fa-pinterest-p" style="color:#E60023;">
-                                </i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="inforeview">
-                <div class="">
-                    <div class="tabs">
-                        <ul>
-                            <li class="tab-product-info decription_title active" data-tab="decription">
-                                <a class="tab_description" href="#tab-description">
-                                    @lang('lang.Description')
-                                </a>
-                            </li>
-                            <li class="tab-product-info Additional_information_title" data-tab="Additional_information">
-                                <a class="tab_Additional_information" href="#tab-Additional_information">
-                                    @lang('lang.Additionalinformation')
-                                </a>
-                            </li>
-                            <li class="tab-product-info vender_title" data-tab="vender">
-                                <a class="tab_vender" href="#tab-Vender">
-                                    @lang('lang.VenderInfo')
-                                </a>
-                            </li>
-                            <li class="tab-product-info reviews_title" data-tab="reviews">
-                                <a class="tab_reviews @if(Session::has('success')) borderbottom_tabs @endif" href="#tab_reviews">
-                                    @lang('lang.reviews')
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="subtabs">
-                        <ul>
-                            <li id="subdecription" style="@if(Session::has('success')) display: none; @endif">
-                                <div class="row">
-                                <div class="col-12 col-md-8" style="margin-left: auto;margin-right: auto;width: 70%;">
-                                        {!! $Products->content !!}
-                                </div>
-                                </div>
-                            
-                            </li>
-                            <li id="subAdditional_information" style="@if(Session::has('success')) display: none; @endif">
-                                <table>
-                                    <tbody>
-                                        @if($property !=null)
-                                        @foreach($property as $key => $val)
-                                        <tr>
-                                            <th class="font_th" style="width:20%">
-                                                <span>
-                                                   {{ $key }}
-                                                </span>
-                                            </th>
-                                            <td>
-                                                <span>
-                                                    {{ $val}}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </li>
-                            <li id="subvenderinfo" style="@if(Session::has('success')) display: none; @endif">
-                                <ul class="list-unstyled">
-                                    <li class="store-name">
-                                        <span class="titlevender">
-                                            @lang('lang.StoreName'):
-                                        </span>
-                                        <span class="details">
-                                            Esthershop
-                                        </span>
-                                    </li>
-                                    <li class="seller-name">
-                                        <span class="titlevender">
-                                            @lang('lang.Vendor'):
-                                        </span>
-                                        <span class="details">
-                                            <a href="https://demo2.wpopal.com/digitaz/store/huongdo/" style="text-decoration: none;">
-                                                Esthershop
-                                            </a>
-                                        </span>
-                                    </li>
-                                    <li class="store-address">
-                                        <span class="titlevender">
-                                            <b>
-                                                @lang('lang.Address'):
-                                            </b>
-                                        </span>
-                                        <span class="details">
-                                            GA
-                                        </span>
-                                    </li>
-                                    <li class="clearfix">
-                                        <div class="rating2">
-
-                                            <div class="rating-upper" style="width: {{$Products->count_vote()}}%">
-                                                <span><i class="fas fa-star"></i></span>
-                                                <span><i class="fas fa-star"></i></span>
-                                                <span><i class="fas fa-star"></i></span>
-                                                <span><i class="fas fa-star"></i></span>
-                                                <span><i class="fas fa-star"></i></span>
-                                            </div>
-                                            <div class="rating-lower">
-                                                <span><i class="fal fa-star"></i></span>
-                                                <span><i class="fal fa-star"></i></span>
-                                                <span><i class="fal fa-star"></i></span>
-                                                <span><i class="fal fa-star"></i></span>
-                                                <span><i class="fal fa-star"></i></span>
-                                            </div>
-                                        </div>
-                                        <span style="font-size:14px; font-family: heebo; color: var(--text);">
-                                            4.30 rating from 30 reviews
-                                        </span>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li id="subreviewsinfo" style="@if(Session::has('success')) display: block; @endif">
-                                <div id="comments">
-                                    <ol class="commentlist">
-                                        @foreach ($Products->votes as $item)
-                                            <li class="review even thread-even depth-1" id="li-comment-112">
-                                                <div class="comment_container" id="comment-112">
-                                                    <img alt="" class="avatar avatar-60 photo lazyloaded" height="60" src="https://secure.gravatar.com/avatar/8eb1b522f60d11fa897de1dc6351b7e8?s=60&d=mm&r=g" width="60">
-                                                        <div class="comment-text">
-                                                            <div class="rating2">
-                                                                <div class="rating-upper" style="width: {{($item->level)*20}}%">
-                                                                    <span>
-                                                                        <i class="fas fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                    <span>
-                                                                        <i class="fas fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                    <span>
-                                                                        <i class="fas fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                    <span>
-                                                                        <i class="fas fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                    <span>
-                                                                        <i class="fas fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                </div>
-                                                                <div class="rating-lower">
-                                                                    <span>
-                                                                        <i class="fal fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                    <span>
-                                                                        <i class="fal fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                    <span>
-                                                                        <i class="fal fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                    <span>
-                                                                        <i class="fal fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                    <span>
-                                                                        <i class="fal fa-star">
-                                                                        </i>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                            <p class="meta">
-                                                                <strong class="name_cutomer_comment">
-                                                                    {{$item->name_user}}
-                                                                </strong>
-                                                                <span class="woocommerce-review__dash">
-                                                                    –
-                                                                </span>
-                                                                <time class="woocommerce-review__published-date" datetime="2022-04-14T08:20:50+00:00">
-                                                                    {{\App\Helpers\CommonHelper::convertDateToDMY($item->created_at)}}
-                                                                </time>
-                                                            </p>
-                                                            <div class="description">
-                                                                {{$item->comment}}
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                        <div id="comment-ajax"></div>
-                                    </ol>
-                                </div>
-                                <div id="review_form_wrapper">
-                                    <div id="review_form">
-                                        <div class="comment-respond" id="respond">
-                                            <form class="comment-form" id="commentform" method="post">
-                                                <p class="comment-notes">
-                                                    <span id="email-notes">
-                                                        @lang('lang.Youremailaddresswillnotbepublished').
-                                                    </span>
-                                                    <span aria-hidden="true" class="required-field-message">
-                                                        @lang('lang.Requiredfieldsaremarked')
-                                                        <span aria-hidden="true" class="required">
-                                                            *
-                                                        </span>
-                                                    </span>
-                                                </p>
-                                                <div class="comment-form-rating">
-                                                    <label for="rating" style="margin-right: 20px;">
-                                                        @lang('lang.Yourrating')
-                                                        <span class="required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="rating">
-                                                        <input id="star1" name="rating" class="check-rate" type="radio" value="5">
-                                                        <label class="full" for="star1">
-                                                        </label>
-                                                        <input id="star2" name="rating" class="check-rate" type="radio" value="4">
-                                                        <label class="full" for="star2">
-                                                        </label>
-                                                        <input id="star3" name="rating" class="check-rate" type="radio" value="3">
-                                                        <label class="full" for="star3">
-                                                        </label>
-                                                        <input id="star4" name="rating" class="check-rate" type="radio" value="2">
-                                                        <label class="full" for="star4">
-                                                        </label>
-                                                        <input id="star5" name="rating" class="check-rate" type="radio" value="1">
-                                                        <label class="full" for="star5">
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div style="display: flex; padding: 0 10px">
-                                                    <p class="comment-form-author">
-                                                        <input id="author" name="author" placeholder="@lang('lang.Name') *" size="30" type="text" value="" required>
-                                                    </p>
-                                                    <p class="comment-form-email">
-                                                        <input id="email" name="email" placeholder="@lang('lang.Email') *" size="30" type="email" value="" required>
-                                                    </p>
-                                                </div>
-                                                <p class="comment-form-comment">
-                                                    <textarea cols="45" id="comment" name="comment" placeholder="@lang('lang.Yourreview') *" rows="8" required></textarea>
-                                                </p>
-
-                                                <p class="comment-form-cookies-consent">
-                                                    <input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes">
-                                                        <label for="wp-comment-cookies-consent">
-                                                             @lang('lang.SavemynameemailandwebsiteinthisbrowserforthenexttimeIcomment').
-                                                        </label>
-                                                </p>
-                                                <p class="form-submit">
-                                                    <input type="hidden" name="comment_product" id="comment_product" value="{{$Products->id}}">
-                                                    <input  id="comment_parent" name="comment_parent" type="hidden" value="0">
-                                                    <a href="javascript:;" class="submit btn btn-primary" id="submit-comment">@lang('lang.Submit')</a>
-                                                </p>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <section class="related products">
-                <h2>
-                    @lang('lang.Relatedproducts')
-                </h2>
-                <div class="digitaz-products-border ">
-                    <ul class="products columns-4">
-                        @php $z_index = 9999 @endphp
-                        @foreach ($product_related as $item)
-                        <li class="product-style-default product type-product post-137 status-publish first instock product_cat-accessories product_cat-mobile-tablets has-post-thumbnail featured shipping-taxable purchasable product-type-simple">
-                            <div class="product-block" style="z-index:{{$z_index}} ">
-
-                               @php $z_index = $z_index-1 @endphp
-                               <a href="{{route('detailproduct', $item->slug)}}">
-                                <div class="content-product-imagin">
-                                </div>
-                                <div class="product-header">
-                                    <div class="posted-in">
-                                        @foreach ($item->category as $cat)
-                                        <a href="{{route('product_cat', $cat->slug)}}" rel="tag">
-                                            {{$cat->name}}
-                                        </a>.
-                                        @endforeach
-                                    </div>
-                                    <h3 class="woocommerce-loop-product__title">
-                                        <a href="{{route('detailproduct', $item->slug)}}">
-                                            {{$item->name}}
+                                </li>
+                                @foreach ($imgs as $img)
+                                    <li class="">
+                                        <a href="javascript:;" class="thumb-small">
+                                            <img src="{{asset('upload/images/products/thumb/'.$img)}}" alt="">
                                         </a>
-                                    </h3>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-detail-info">
+                            <div class="product-detail-meta">
+                                <div class="code">Mã: {{$product->id}}</div> <span class="icon-meta">|</span>
+                                <div class="review">
+                                    <div class="rating2">
+                                        <div class="rating-upper" style="width: {{$product->count_vote()}}%">
+                                            <span><i class="fas fa-star"></i></span>
+                                            <span><i class="fas fa-star"></i></span>
+                                            <span><i class="fas fa-star"></i></span>
+                                            <span><i class="fas fa-star"></i></span>
+                                            <span><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <div class="rating-lower">
+                                            <span><i class="fal fa-star"></i></span>
+                                            <span><i class="fal fa-star"></i></span>
+                                            <span><i class="fal fa-star"></i></span>
+                                            <span><i class="fal fa-star"></i></span>
+                                            <span><i class="fal fa-star"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="count-review">({{$product->votes->count()}})</div> <span class="icon-meta">|</span>
+                                    @if (!empty($product->sold))
+                                        <div class="sold">Đã bán: {{$product->sold}}</div>
+                                    @else
+                                        <div class="sold">Đã bán: Đang cập nhật!</div>
+                                    @endif
                                 </div>
-                                <div class="product-transition">
-                                @if(!empty($item->onsale))
-                                    <span class="onsale">-{{$item->onsale}}%</span>
+                            </div>
+                            <div class="product-sumary">
+                                <div class="sumary-title">Thông số sản phẩm</div>
+                                {!! $product->short_content !!}
+                            </div>
+                            <div class="product-price">
+                                @if (!empty($product->onsale))
+                                    <div class="price-old">
+                                        <div class="text">Giá bán:</div>
+                                        <div class="number">{{number_format($product->price,0,',','.')}} đ</div>
+                                    </div>
+                                    <div class="price-new">
+                                        <div class="text">Giá khuyến mãi:</div>
+                                        <div class="number">{{number_format($product->price_onsale,0,',','.')}} đ <span class="save">(Tiết kiệm {{$product->onsale}}%)</span></div>
+                                    </div>
+                                @else
+                                    <div class="price-new">
+                                        <div class="text">Giá bán:</div>
+                                        <div class="number">{{number_format($product->price,0,',','.')}} đ</div>
+                                    </div>
                                 @endif
-                                <div class="product-image">
-                                    <a href="{{route('detailproduct', $item->slug)}}" style="display: block;">
-                                        <img class="attachment-shop_catalog size-shop_catalog lazyloaded" data-ll-status="loaded" height="369" src="{{asset('upload/images/products/medium').'/'.$item->thumb}}">
-                                    </a>
+                                
+                            </div>
+                            <div class="product-gift">
+                                <div class="product-gift-head"><i class="fas fa-gift me-2"></i> Quà tặng ưu đãi</div>
+                                <div class="product-gift-body">
+                                    {!! $product->gift !!}
                                 </div>
-                                 <div class="group-action top">
-                                    <div class="shop-action vertical">
-                                        <button class="woosw-btn add-wish-2" data-id="{{$item->id}}">Add to wishlist</button>
-                                        <a href="{{asset('upload/images/products/large').'/'.$item->thumb}}" class="woosq-btn">Quick view</a>
-                                        <button class="woosc-btn">Compare</button>
+                            </div>
+                            <div class="product-order">
+                                <span class="text">Số lượng:</span>
+                                <div class="quantity_wrap">
+                                    <div class="quantity buttons_added">
+                                        <button class="minus" type="button"><i class="fal fa-minus"></i></button>
+                                        <input class="input-text qty text qty-order" max="999" min="1" name="quantity" placeholder="" step="1" title="Qty" type="number" value="1">
+                                        <button class="plus"  type="button"><i class="fal fa-plus"></i></button>
                                     </div>
                                 </div>
+                                <a href="javascript:;" class="addcart add-to-cart" data-id="{{$product->id}}"><i class="fas fa-cart-arrow-down"></i> Thêm vào giỏ hàng</a>
+                                <a href="javascript:;" class="addwish add-wish" onclick="add_wish({{$product->id}})"><i class="fal fa-heart"></i></a>
+                            </div>
+                            <div class="action-addcart">
+                                <div class="add-cart">
+                                    <a href="" class="add-cart-now">Mua ngay</a>
+                                    <a href="">Mua trả góp</a>
                                 </div>
-                                <div class="product-caption">
-                                    <div class="product-caption-top">
-                                        <span class="price">
-                                            @if (!empty($item->onsale))
-                                                <del aria-hidden="true">
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <bdi>
-                                                            {{number_format($item->price,0,',','.')}}
-                                                            <span class="woocommerce-Price-currencySymbol">
-                                                                @lang('lang.Currencyunit')
-                                                            </span>
-                                                        </bdi>
+                                <div class="affiliate">
+                                    <a href="" class="shopee">Shopee</a>
+                                    <a href="" class="tiki">Tiki</a>
+                                    <a href="" class="lazada">Lazada</a>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="product-detail-service">
+                            <div class="detail-service">
+                                <div class="header-service">
+                                    Showroom bán hàng
+                                </div>
+                                <div class="content-service">
+                                    <a href="https://goo.gl/maps/fqjBabTHfA4AJLiz5"><i class="fas fa-map-marker-alt me-1"></i>
+                                        81C Mê Linh - Lê Chân - Hải Phòng
+                                    </a>
+                                    <a href="https://goo.gl/maps/fqjBabTHfA4AJLiz5"><i class="fas fa-map-marker-alt me-1"></i>
+                                        81C Mê Linh - Lê Chân - Hải Phòng
+                                    </a>
+                                    <a href="https://goo.gl/maps/fqjBabTHfA4AJLiz5"><i class="fas fa-map-marker-alt me-1"></i>
+                                        81C Mê Linh - Lê Chân - Hải Phòng
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="detail-service">
+                                <div class="header-service">
+                                    Chính sách bán hàng
+                                </div>
+                                <div class="content-service">
+                                    <ul>
+                                        <li>Uy tín 10 năm xây dựng và phát triển</li>
+                                        <li>Sản phẩm chính hãng 100%</li>
+                                        <li>Trả góp lãi suất 0% toàn bộ giỏ hàng</li>
+                                        <li>Trả bảo hành tận nơi sử dụng</li>
+                                        <li>Bảo hành tận nơi cho doanh nghiệp</li>
+                                        <li>Vệ sinh miễn phí trọn đời PC, Laptop</li>
+                                        <li>Miễn phí quẹt thẻ</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="detail-service">
+                                <div class="header-service">
+                                    Liên hệ
+                                </div>
+                                <div class="content-service">
+                                    <a class="phone" href="tel:0886776268">
+                                        <i class="fas fa-phone-alt me-1"></i>
+                                        Hotline: 0886776286
+                                    </a>
+                                    <a class="phone" href="">
+                                        <i class="fas fa-phone-alt me-1"></i>
+                                        Kinh doanh 1: 0886776286
+                                    </a>
+                                    <a class="phone" href="">
+                                        <i class="fas fa-phone-alt me-1"></i>
+                                        Kinh doanh 2: 0886776286
+                                    </a>
+                                    <a class="phone" href="">
+                                        <i class="fas fa-phone-alt me-1"></i>
+                                        Kinh doanh 3: 0886776286
+                                    </a>
+                                    <a class="phone" href="">
+                                        <i class="fas fa-envelope me-1"></i>
+                                       Email: contact@it24h.vn
+                                    </a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-content-bottom">
+                <div class="content-left">
+                    <div class="wp-content-detail">
+                        <div class="header-content">Chi tiết sản phẩm</div>
+                        <div class="content-detail">
+                            {!! $product->content !!}
+                        </div>
+                    </div>
+                    @if (!empty($product->youtube))
+                        <div class="media-product">
+                            <div class="header-content">Video</div>
+                            <div class="ratio ratio-16x9">
+                                <iframe src="{{$product->youtube}}" title="" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    @endif
+                    <div class="product-specifications-mobile">
+                        <div class="header-content">Thông số kỹ thuật</div>
+                        <div class="specifications-info">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;"><strong>Sản phẩm</strong></td>
+                                        <td style="text-align: center;"><strong>Chi tiết</strong></td>
+                                        <td style="text-align: center;"><strong>Bảo hành</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">CPU</td>
+                                        <td style="text-align: center;">CPU Intel Core i3-10100F (3.6GHz up to 4.3GHz, 4 Cores 8 Threads, 6MB Cache, Socket Intel LGA 1200)</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">Mainboard</td>
+                                        <td style="text-align: center;">Mainboard H510M</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">RAM</td>
+                                        <td style="text-align: center;">8GB</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">SSD</td>
+                                        <td style="text-align: center;">240GB</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">VGA</td>
+                                        <td style="text-align: center;">GeForce GTX 1650 4G GDDR6</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">PSU</td>
+                                        <td style="text-align: center;">Cooler Master PC400</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">CASE</td>
+                                        <td style="text-align: center;">Vỏ Case Gaming</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="comment-vote">
+                        <div class="header-content">Bình luận và đánh giá sản phẩm</div>
+                        <div class="content-detail">
+                            <div class="wrap-review">
+                                <div class="review-left">
+                                    <div class="review-left-poit">{{$product->trungbinhsao()}}/5 <span class="icon-star2"><i class="fa fa-star" aria-hidden="true"></i></span></div>
+                                </div>
+                                <div class="review-center">
+                                    <div class="review-center-item">
+                                        <div class="item-left">5 sao</div>
+                                        <div class="item-center"><span style="width:{{($product->vote_5->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-right">{{$product->vote_5->count()}}</div>
+                                    </div>
+                                    <div class="review-center-item">
+                                        <div class="item-left">4 sao</div>
+                                        <div class="item-center"><span style="width:{{($product->vote_4->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-right">{{$product->vote_4->count()}}</div>
+                                    </div>
+                                    <div class="review-center-item">
+                                        <div class="item-left">3 sao</div>
+                                        <div class="item-center"><span style="width:{{($product->vote_3->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-right">{{$product->vote_3->count()}}</div>
+                                    </div>
+                                    <div class="review-center-item">
+                                        <div class="item-left">2 sao</div>
+                                        <div class="item-center"><span style="width:{{($product->vote_2->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-right">{{$product->vote_2->count()}}</div>
+                                    </div>
+                                    <div class="review-center-item">
+                                        <div class="item-left">1 sao</div>
+                                        <div class="item-center"><span style="width:{{($product->vote_1->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-right">{{$product->vote_1->count()}}</div>
+                                    </div>
+                                </div>
+                                <div class="review-right">
+                                    <div class="title">Để lại nhận xét và đánh giá của bạn</div>
+                                    <a class="show-form js-toggle-form-rv" onclick="$('#review_form_wrapper').slideToggle()" href="javascript:void(0)">Viết đánh giá</a>
+                                </div>
+                            </div>
+                            <div id="review_form_wrapper" style="display: none;">
+                                <div class="title">Để lại đánh giá của bạn</div>
+                                <div id="review_form">
+                                    <div class="comment-respond" id="respond">
+                                        <form class="comment-form" id="commentform" method="post">
+                                            <div class="comment-form-rating">
+                                                <label for="rating">
+                                                    Đánh giá của bạn
+                                                    <span class="required">
+                                                        *
                                                     </span>
-                                                </del>
-                                                <ins>
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <bdi>
-                                                            {{number_format($item->price_onsale,0,',','.')}}
-                                                            <span class="woocommerce-Price-currencySymbol">
-                                                                @lang('lang.Currencyunit')
-                                                            </span>
-                                                        </bdi>
-                                                    </span>
-                                                </ins>
-                                            @else
-                                                <del aria-hidden="true">
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <bdi>
-                                                            <span class="woocommerce-Price-currencySymbol">
-                                                            </span>
-                                                        </bdi>
-                                                    </span>
-                                                </del>
-                                                <ins>
-                                                    <span class="woocommerce-Price-amount amount">
-                                                        <bdi>
-                                                            {{number_format($item->price,0,',','.')}}
-                                                            <span class="woocommerce-Price-currencySymbol">
-                                                                @lang('lang.Currencyunit')
-                                                            </span>
-                                                        </bdi>
-                                                    </span>
-                                                </ins>
-                                            @endif
+                                                </label>
+                                                <div id="rating">
+                                                    <input id="star1" name="rating" class="check-rate" type="radio" value="5" checked>
+                                                    <label class="full" for="star1">
+                                                    </label>
+                                                    <input id="star2" name="rating" class="check-rate" type="radio" value="4">
+                                                    <label class="full" for="star2">
+                                                    </label>
+                                                    <input id="star3" name="rating" class="check-rate" type="radio" value="3">
+                                                    <label class="full" for="star3">
+                                                    </label>
+                                                    <input id="star4" name="rating" class="check-rate" type="radio" value="2">
+                                                    <label class="full" for="star4">
+                                                    </label>
+                                                    <input id="star5" name="rating" class="check-rate" type="radio" value="1">
+                                                    <label class="full" for="star5">
+                                                    </label>
+                                                </div>
+                                            </div>
 
-                                        </span>
-                                        <div class="count-review t-line">
-                                            <span class="sub_rating">
-                                                ({{$item->votes->count()}} @lang('lang.Review'))
-                                            </span>
+                                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                                                <p class="comment-form-author">
+                                                    <input id="author" name="author" placeholder="Nhập họ tên *" size="30" type="text" value="" required>
+                                                </p>
+                                                <p class="comment-form-email">
+                                                    <input id="email" name="email" placeholder="Nhập email *" size="30" type="email" value="" required>
+                                                </p>
+                                            </div>
+                                            <p class="comment-form-comment">
+                                                <textarea cols="45" id="comment" name="comment" placeholder="Nhập nội dung đánh giá *" rows="8" required></textarea>
+                                            </p>
+                                            <p class="form-submit">
+                                                <input type="hidden" name="comment_product" id="comment_product" value="{{$product->id}}">
+                                                <input  id="comment_parent" name="comment_parent" type="hidden" value="0">
+                                                <a href="javascript:;" id="submit-comment">Gửi đánh giá</a>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="list-comment">
+                                @foreach ($product->votes as $comment)
+                                    <li class="detail-comment">
+                                        <div class="avatar">
+                                            <img src="{{asset('asset/images/avatar-comment.png')}}" alt="">
+                                        </div>
+                                        <div class="wp-content-comment">
                                             <div class="rating2">
-                                                <div class="rating-upper" style="width: {{$item->count_vote()}}%">
-                                                    <span><i class="fas fa-star"></i></span>
-                                                    <span><i class="fas fa-star"></i></span>
-                                                    <span><i class="fas fa-star"></i></span>
-                                                    <span><i class="fas fa-star"></i></span>
-                                                    <span><i class="fas fa-star"></i></span>
-                                                    
+                                                <div class="rating-upper" style="width: {{$comment->level * 20}}%">
+                                                    <span>
+                                                        <i class="fas fa-star">
+                                                        </i>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fas fa-star">
+                                                        </i>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fas fa-star">
+                                                        </i>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fas fa-star">
+                                                        </i>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fas fa-star">
+                                                        </i>
+                                                    </span>
                                                 </div>
                                                 <div class="rating-lower">
-                                                    <span><i class="fal fa-star"></i></span>
-                                                    <span><i class="fal fa-star"></i></span>
-                                                    <span><i class="fal fa-star"></i></span>
-                                                    <span><i class="fal fa-star"></i></span>
-                                                    <span><i class="fal fa-star"></i></span>
+                                                    <span>
+                                                        <i class="fal fa-star">
+                                                        </i>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fal fa-star">
+                                                        </i>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fal fa-star">
+                                                        </i>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fal fa-star">
+                                                        </i>
+                                                    </span>
+                                                    <span>
+                                                        <i class="fal fa-star">
+                                                        </i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="author">
+                                                <span class="name">{{$comment->name_user}}</span>
+                                                <span class="date">{{\App\Helpers\CommonHelper::convertDateToDMY($comment->created_at)}}</span>
+                                            </div>
+                                            <div class="content-comment">
+                                                {{$comment->comment}}
+                                            </div>
+                                        </div>                                        
+                                    </li>
+                                @endforeach
+                                <div id="comment-ajax"></div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="product-specifications">
+                        <div class="header-content">Thông số kỹ thuật</div>
+                        <div class="specifications-info">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;"><strong>Sản phẩm</strong></td>
+                                        <td style="text-align: center;"><strong>Chi tiết</strong></td>
+                                        <td style="text-align: center;"><strong>Bảo hành</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">CPU</td>
+                                        <td style="text-align: center;">CPU Intel Core i3-10100F (3.6GHz up to 4.3GHz, 4 Cores 8 Threads, 6MB Cache, Socket Intel LGA 1200)</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">Mainboard</td>
+                                        <td style="text-align: center;">Mainboard H510M</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">RAM</td>
+                                        <td style="text-align: center;">8GB</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">SSD</td>
+                                        <td style="text-align: center;">240GB</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">VGA</td>
+                                        <td style="text-align: center;">GeForce GTX 1650 4G GDDR6</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">PSU</td>
+                                        <td style="text-align: center;">Cooler Master PC400</td>
+                                        <td style="text-align: center;">36T</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">CASE</td>
+                                        <td style="text-align: center;">Vỏ Case Gaming</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="wp-list-post">
+                        <div class="header-content">Tin tức mới nhất</div>
+                        <ul class="list-post">
+                            <li>
+                                <a href="">
+                                    <div class="thumb"><img src="/asset/images/laptop_dung_cach_3.jpg" alt=""></div>
+                                    <div class="detail-post">
+                                        <h3 class="title">TOP 6 LAPTOP DƯỚI 15 TRIỆU TỐT NHẤT 2022 MÀ BẠN NÊN THAM KHẢO!</h3>
+                                        <div class="desc">
+                                            Với chi phí dưới 15 triệu bạn sẽ mua được laptop có cấu hình như thế nào? Đâu là các mẫu laptop dưới 15 triệu tốt nhất 2021 mà bạn nên mua? Xem ngay bài viết dưới đây của Hacom nhé !
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="thumb"><img src="/asset/images/laptop_dung_cach_3.jpg" alt=""></div>
+                                    <div class="detail-post">
+                                        <h3 class="title">TOP 6 LAPTOP DƯỚI 15 TRIỆU TỐT NHẤT 2022 MÀ BẠN NÊN THAM KHẢO!</h3>
+                                        <div class="desc">
+                                            Với chi phí dưới 15 triệu bạn sẽ mua được laptop có cấu hình như thế nào? Đâu là các mẫu laptop dưới 15 triệu tốt nhất 2021 mà bạn nên mua? Xem ngay bài viết dưới đây của Hacom nhé !
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <div class="thumb"><img src="/asset/images/laptop_dung_cach_3.jpg" alt=""></div>
+                                    <div class="detail-post">
+                                        <h3 class="title">TOP 6 LAPTOP DƯỚI 15 TRIỆU TỐT NHẤT 2022 MÀ BẠN NÊN THAM KHẢO!</h3>
+                                        <div class="desc">
+                                            Với chi phí dưới 15 triệu bạn sẽ mua được laptop có cấu hình như thế nào? Đâu là các mẫu laptop dưới 15 triệu tốt nhất 2021 mà bạn nên mua? Xem ngay bài viết dưới đây của Hacom nhé !
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="list-product-bottom">
+                <div class="product-content" style="margin-bottom: 40px;">
+                    <div class="block-title">
+                        <ul class="nav nav-pills list-product-recommend owl-carousel owl-theme owl-loaded owl-drag" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-cat1-tab" data-bs-toggle="pill" data-bs-target="#pills-cat1" type="button" role="tab" aria-controls="pills-cat1" aria-selected="true">Sản phẩm liên quan</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-cat2-tab" data-bs-toggle="pill" data-bs-target="#pills-cat2" type="button" role="tab" aria-controls="pills-cat2" aria-selected="false">Sản phẩm đã xem</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content container-home" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-cat1" role="tabpanel" aria-labelledby="pills-cat1-tab">
+                            <div class="list-product owl-carousel owl-theme owl-loaded owl-drag list-product-recommend-slider" id="list-product-group">
+                                @foreach ($product_related as $item)
+                                    <!-- product -->
+                                    <div class="product-item mb-3">
+                                        <div class="thumb">
+                                            <a href="{{ route('detailproduct', $item->slug)}}">
+                                                <img class="owl-lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
+                                                @if (!empty($item->brand))
+                                                    <span class="brand" style="background-image: url('{{asset("upload/images/products/thumb/".$item->brands->image)}}');"></span>
+                                                @endif
+                                                <div class="wp-tag">
+                                                    @if (!empty($item->year))
+                                                        <span class="years">{{$item->year}}</span>
+                                                    @endif
+                                                    @if (!empty($item->installment))
+                                                        <span class="payment">Trả góp 0%</span>
+                                                    @endif
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="detail">
+                                            <div class="wp-event">
+                                                @if (!empty($item->event))
+                                                    <p class="event" style="background: linear-gradient(to right,{{$item->events->color_left}},{{$item->events->color_right}});">
+                                                        <img src="{{asset('upload/images/products/thumb/'.$item->events->icon)}}" alt="">
+                                                        <span>{{$item->events->name}}</span>
+                                                    </p>
+                                                @else
+                                                    <p class="event" style="min-height: 20px;"></p>
+                                                @endif
+                                                <p class="code">Mã: {{$item->id}}</p>
+                                            </div>
+                                            <div class="name">
+                                                <a href="{{ route('detailproduct', $item->slug)}}">{{$item->name}}</a>
+                                            </div>
+                                            @if (!empty($item->specifications))
+                                                <ul class="product-attributes">
+                                                    @foreach ($item->get_specifications() as $k)
+                                                        <li>{{$k}}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                            <div class="price-review clearfix">
+                                                <div class="price">
+                                                    @if (!empty($item->onsale))
+                                                        <span class="onsale">- {{$item->onsale}}%</span>
+                                                        <div class="price-old">{{number_format($item->price,0,',','.')}} đ</div>
+                                                        <div class="price-new">{{number_format($item->price_onsale,0,',','.')}} đ</div>
+                                                    @else
+                                                        <div class="price-new">{{number_format($item->price,0,',','.')}} đ</div>
+                                                    @endif
+                                                </div>
+                                                <div class="review">
+                                                    <div class="rating2">
+                                                        <div class="rating-upper" style="width: {{$item->count_vote()}}%">
+                                                            <span><i class="fas fa-star"></i></span>
+                                                            <span><i class="fas fa-star"></i></span>
+                                                            <span><i class="fas fa-star"></i></span>
+                                                            <span><i class="fas fa-star"></i></span>
+                                                            <span><i class="fas fa-star"></i></span>
+                                                        </div>
+                                                        <div class="rating-lower">
+                                                            <span><i class="fal fa-star"></i></span>
+                                                            <span><i class="fal fa-star"></i></span>
+                                                            <span><i class="fal fa-star"></i></span>
+                                                            <span><i class="fal fa-star"></i></span>
+                                                            <span><i class="fal fa-star"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="count-review">({{$item->votes->count()}})</div>
+                                                    @if (!empty($item->sold))
+                                                        <div class="sold"><i class="fas fa-badge-check"></i>Đã bán {{$item->sold}}</div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="detail-bottom">
+                                                @if (!empty($item->still_stock))
+                                                    <div class="qty" style="color: #01aa42;
+                                                    background-color: #dbf8e1;">{{$item->still_stock}}</div>
+                                                @endif
+                                                <div class="action">
+                                                    <a href="javascript:;" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
+                                                    <a href="javascript:;" class="heart add-wish" title="Lưu sản phẩm" onclick="add_wish({{$item->id}})"><i class="far fa-heart"></i></a>
+                                                    <a href="javascript:;" title="Thêm vào giỏ hàng" class="add-cart" onclick="add_cart({{$item->id}})"><i class="far fa-shopping-cart"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-cat2" role="tabpanel" aria-labelledby="pills-cat2-tab">
+                            <div class="list-product owl-carousel owl-theme owl-loaded owl-drag list-product-recommend-slider" id="list-product-group">
+                                <!-- product -->
+                                <div class="product-item mb-3">
+                                        <div class="thumb">
+                                            <a href="">
+                                                <img src="/asset/images/pc_gaming.jpg" alt="">
+                                                <span class="brand" style="background-image: url('asset/images/msi.png');"></span>
+                                                <div class="wp-tag">
+                                                    <span class="years">New 2022</span>
+                                                    <span class="payment">Trả góp 0%</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="detail">
+                                            <div class="wp-event">
+                                                <p class="event" style="background: linear-gradient(to right,#ef3006,#c60004);">
+                                                    <img src="/asset/images/icon1-50x50.png" alt="">
+                                                    <span>Giảm sốc</span>
+                                                </p>
+                                            </div>
+                                            <div class="name">
+                                                <a href="">PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD</a>
+                                            </div>   
+                                            <ul class="product-attributes">
+                                                <li>Core i5</li>
+                                                <li>500GB SSD</li>
+                                                <li>8GB</li>
+                                                <li>RTX 3070</li>
+                                                <li>600W</li>
+                                                <li>Core i5</li>
+                                                <li>500GB SSD</li>
+                                                <li>8GB</li>
+                                                <li>RTX 3070</li>
+                                                <li>600W</li>
+                                            </ul>
+                                            <div class="price-review clearfix">
+                                                <div class="price">
+                                                    <span class="onsale">- 20%</span>
+                                                    <div class="price-old">19.999.000 đ</div>
+                                                    <div class="price-new">16.866.000 đ</div>  
+                                                </div>
+                                                <div class="review">
+                                                    <div class="rating2">
+                                                        <div class="rating-upper" style="width: 90%">
+                                                            <span><i class="fas fa-star"></i></span>
+                                                            <span><i class="fas fa-star"></i></span>
+                                                            <span><i class="fas fa-star"></i></span>
+                                                            <span><i class="fas fa-star"></i></span>
+                                                            <span><i class="fas fa-star"></i></span>
+                                                        </div>
+                                                        <div class="rating-lower">
+                                                            <span><i class="fal fa-star"></i></span>
+                                                            <span><i class="fal fa-star"></i></span>
+                                                            <span><i class="fal fa-star"></i></span>
+                                                            <span><i class="fal fa-star"></i></span>
+                                                            <span><i class="fal fa-star"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="count-review">(5)</div>
+                                                    <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
+                                                </div>
+                                            </div>
+                                            <div class="detail-bottom">
+                                                <div class="qty" style="color: #01aa42;
+                                                background-color: #dbf8e1;">Còn hàng</div>
+                                                <div class="action">
+                                                    <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
+                                                    <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
+                                                    <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
-                                <div class="product-caption-bottom qty">
-                                    <div class="product-input-quantity">
-                                        <div class="quantity_wrap">
-                                            <label class="screen-reader-text" for="quantity_62bd4779bc87d">
-                                            </label>
-                                            <div class="quantity buttons_added">
-                                                <button class="minus" type="button">
-                                                    <i class="fal fa-minus">
-                                                    </i>
-                                                </button>
-                                                <input class="input-text qty text qty-order" id="quantity_62bd4779bc87d" max="999" min="1" name="quantity" placeholder="" step="1" title="Qty" type="number" value="1">
-                                                    <button class="plus" type="button">
-                                                        <i class="fal fa-plus">
-                                                        </i>
-                                                    </button>
+
+                                <!-- product -->
+                                <div class="product-item mb-3">
+                                    <div class="thumb">
+                                        <a href="">
+                                            <img src="/asset/images/Apple-Macbook-Pro-2020-removebg-preview.png" alt="">
+                                            <span class="brand" style="background-image: url('asset/images/macbook.png');"></span>
+                                            <div class="wp-tag">
+                                                <span class="years">New 2022</span>
+                                                <span class="payment">Trả góp 0%</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="detail">
+                                        <div class="wp-event">
+                                            <p class="event" style="background: linear-gradient(to right,#6cc9ed,#169fd8);">
+                                                <img src="/asset/images/icon4-50x50.png" alt="">
+                                                <span>+1 năm bảo hành</span>
+                                            </p>
+                                        </div>
+                                        <div class="name">
+                                            <a href="">Laptop Macbook Air M10 2020</a>
+                                        </div>
+                                        
+                                        <ul class="product-attributes">
+                                            <li>Core i5</li>
+                                            <li>256GB SSD</li>
+                                            <li>8GB</li>
+                                        </ul>
+                                        <div class="price-review clearfix">
+                                            <div class="price">
+                                                <span class="onsale">- 15%</span>
+                                                <div class="price-old">36.999.000 đ</div>
+                                                <div class="price-new">32.866.000 đ</div>  
+                                            </div>
+                                            <div class="review">
+                                                <div class="rating2">
+                                                    <div class="rating-upper" style="width: 80%">
+                                                        <span><i class="fas fa-star"></i></span>
+                                                        <span><i class="fas fa-star"></i></span>
+                                                        <span><i class="fas fa-star"></i></span>
+                                                        <span><i class="fas fa-star"></i></span>
+                                                        <span><i class="fas fa-star"></i></span>
+                                                    </div>
+                                                    <div class="rating-lower">
+                                                        <span><i class="fal fa-star"></i></span>
+                                                        <span><i class="fal fa-star"></i></span>
+                                                        <span><i class="fal fa-star"></i></span>
+                                                        <span><i class="fal fa-star"></i></span>
+                                                        <span><i class="fal fa-star"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div class="count-review">(5)</div>
+                                                <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
+                                            </div>
+                                        </div>
+                                        <div class="detail-bottom">
+                                            <div class="qty" style="color: #01aa42;
+                                            background-color: #dbf8e1;">Còn hàng</div>
+                                            <div class="action">
+                                                <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
+                                                <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
+                                                <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
                                             </div>
                                         </div>
                                     </div>
-                                    <a class="addcart add-to-cart-2" href="javascript:;" data-product_id="{{$item->id}}">
-                                        <button>
-                                            <i class="far fa-shopping-cart">
-                                            </i>
-                                        </button>
-                                    </a>
                                 </div>
-                                 </a>
                             </div>
-                        </li>
-                        @endforeach
-                    </ul>
+                        </div>
+                    </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </div>  
     </div>
     <p id="message_add_cart" style="display:none;">@lang('lang.Productaddedtocartsuccessfully')</p>
     <p id="Youhavenotfilledinthecommentsreviews" style="display:none;">@lang('lang.Youhavenotfilledinthecommentsreviews')</p>
     <p id="Younotyetrating" style="display:none;">@lang('lang.Younotyetrating')</p>
     <p id="Nameisempty" style="display:none;">@lang('lang.Nameisempty')</p>
     <p id="Emailisempty" style="display:none;">@lang('lang.Emailisempty')</p>
-    @endsection
+@endsection
 
-    @section('footer')
-        @include('frontend.layouts.footer')
-    @endsection
+@section('footer')
+    @include('frontend.layouts.footer')
+@endsection
 
-    @section('js')
-        <script>
+@section('js')
+    <script>
+        $(document).ready(function(){
+        $('.thumb-small').click(function(){
+            let src = $(this).find('img').attr('src');
+            let picture_src = src.replace('{{asset("upload/images/products/thumb/")}}', '');
+            // alert(picture_src);
+            $('.product-thumb .image img').attr('src', '{{asset("upload/images/products/large/")}}' + picture_src);
+            $('.thumb-small').removeClass('active');
+            $(this).addClass('active');
+
+            return false;
+        });
+        $('span.next').click(function(){
+            // alert('ok')
+            if($('ul.list-thumb-detail li:last-child').children('.thumb-small').hasClass('active')){
+                $('ul.list-thumb-detail li:first-child').children('.thumb-small').click();
+            } else {
+                $('ul.list-thumb-detail li .thumb-small.active').parent('li').next().children('.thumb-small').click();
+            }
+        });
+        $('span.prev').click(function(){
+            if($('ul.list-thumb-detail li:first-child').children('.thumb-small').hasClass('active')){
+                $('ul.list-thumb-detail li:last-child').children('.thumb-small').click();
+            } else {
+                $('ul.list-thumb-detail li .thumb-small.active').parent('li').prev().children('.thumb-small').click();
+            }
+        });
+
+        $('ul.list-thumb-detail li:first-child').children('.thumb-small').click();
+
+            //Cong so luong san pham
+        $(".plus").on("click",function(){
+            $(this).prev().val(+$(this).prev().val() + 1);
+        });
+
+        //tru sl san pham
+        $(".minus").on("click",function(){
+            if ($(this).next().val() > 0)
+                $(this).next().val(+$(this).next().val() - 1);
+        });
+
+
+    });
+
             $(document).ready(function(){
                 var mess = document.getElementById('message_add_cart').innerHTML;
                 var mess2 = document.getElementById('Youhavenotfilledinthecommentsreviews').innerHTML;
@@ -755,7 +839,7 @@
                 var mess5 = document.getElementById('Emailisempty').innerHTML;
                 //Add to Cart
                 $('.add-to-cart').click(function(){
-                    var id = $(this).data('product_id');
+                    var id = $(this).data('id');
                     var qty = $('.qty-order').val();
                     var _token = $('meta[name="csrf-token"]').attr('content');
                             var data = {
@@ -774,27 +858,38 @@
                                 },
                             });
                 });
-                //Add to Cart
-                $('.add-to-cart-2').click(function(){
-                    var id = $(this).data('product_id');
-                    var qty = $(this).parent('.product-caption-bottom').children('.qty-order').val();
+                add_wish = function(id){
                     var _token = $('meta[name="csrf-token"]').attr('content');
-                            var data = {
-                                id: id,
-                                qty: qty,
-                                _token: _token
-                            };
-                            $.ajax({
-                                url: "{{ route('add_cart_ajax') }}",
-                                method: 'POST',
-                                data: data,
-                                dataType: "json",
-                                success: function(data) {
-                                    alert(mess);
-                                    $('#count-cart').text(data.count);
-                                },
-                            });
-                });
+                    var data = {id:id, _token:_token};
+                    $.ajax({
+                        url: "{{route('add_wish')}}",
+                        method: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        success: function(data) {
+                            alert('Thêm thành công sản phẩm vào danh sách yêu thích!');
+                            $('#count-wish').text(data.count_wish);
+                        },
+                    });
+                }
+                add_cart = function(id){
+                    var _token = $('meta[name="csrf-token"]').attr('content');
+                    var data = {
+                        id: id,
+                        _token: _token
+                    };
+
+                    $.ajax({
+                        url: "{{ route('add_cart_ajax') }}",
+                        method: 'POST',
+                        data: data,
+                        dataType: "json",
+                        success: function(data) {
+                            alert('Thêm thành công sản phẩm vào giỏi hàng!');
+                            $('#count-cart').text(data.count);
+                        },
+                    });
+                }
 
                 //Comment
                 $('#submit-comment').click(function(){
@@ -829,79 +924,12 @@
                         success: function(data) {
                             $("#comment-ajax").append(data);
                             $("#commentform")[0].reset();
+                            $('#review_form_wrapper').css('display', 'none');
+                            alert('Để lại bình luận, đánh giá thành công!');
                         },
                     });
                 });
 
-         var $time = $('.time-dem-nguoc').attr('data-date');
-        var countDownDate = new Date($time).getTime();
-        if(countDownDate){
-            // cập nhập thời gian sau mỗi 1 giây
-            var x = setInterval(function() {
-
-                // Lấy thời gian hiện tại
-                var now = new Date().getTime();
-
-                // Lấy số thời gian chênh lệch
-                var distance = countDownDate - now;
-
-                // Tính toán số ngày, giờ, phút, giây từ thời gian chênh lệch
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-
-                // HIển thị chuỗi thời gian trong thẻ
-                if (days > 0)
-                    document.getElementById("d").innerHTML = days;
-                if (hours < 10)
-                    document.getElementById("h").innerHTML = '0'+ hours;
-                else
-                    document.getElementById("h").innerHTML = hours;
-                if (minutes <10 )
-                    document.getElementById("m").innerHTML = '0'+ minutes;
-                else
-                    document.getElementById("m").innerHTML = minutes;
-
-                if (seconds < 10)
-                    document.getElementById("s").innerHTML = '0'+ seconds;
-                else
-                    document.getElementById("s").innerHTML = seconds;
-            }, 1000);
-        }
-
-            $('.add-wish').click(function(){
-                var id = $(this).data('id');
-                var _token = $('meta[name="csrf-token"]').attr('content');
-                var data = {id:id, _token:_token};
-                $.ajax({
-                    url: "{{route('add_wish')}}",
-                    method: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    success: function(data) {
-                        alert('Thêm thành công sản phẩm vào danh sách yêu thích!');
-                        $('.add-wish').html(data.heart);
-                        $('#count-wish').text(data.count_wish);
-                    },
-                });
-            });
-            $('.add-wish-2').click(function(){
-                var id = $(this).data('id');
-                var _token = $('meta[name="csrf-token"]').attr('content');
-                var data = {id:id, _token:_token};
-                $.ajax({
-                    url: "{{route('add_wish')}}",
-                    method: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    success: function(data) {
-                        alert('Thêm thành công sản phẩm vào danh sách yêu thích!');
-                        $('#count-wish').text(data.count_wish);
-                    },
-                });
-            });
         });
     </script>
 @endsection
