@@ -122,6 +122,7 @@ $(document).ready(function () {
         dots: false,
         mouseDrag: true,
         touchDrag: true,
+        lazyLoad: true,
         responsive: {
             0: {
                 items: 1
@@ -190,6 +191,7 @@ $(document).ready(function () {
         dots: false,
         mouseDrag: true,
         touchDrag: true,
+        lazyLoad: true,
         responsive: {
             0: {
                 items: 1
@@ -224,6 +226,7 @@ $(document).ready(function () {
         dots: false,
         mouseDrag: true,
         touchDrag: true,
+        lazyLoad: true,
         responsive: {
             0: {
                 items: 2

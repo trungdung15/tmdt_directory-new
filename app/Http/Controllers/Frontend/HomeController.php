@@ -29,19 +29,17 @@ class HomeController extends Controller
             $list_cat_id[] = $cat->id;
         }
         $list_cat = \implode(' ', $list_cat_id);
-        // $Sidebars           = $this->getmenu('sidebar');
-        // $Menus              = $this->getmenu('menu');
-        // $Sub_menus          = $this->getmenu('submenu');
+        $Sidebars           = $this->getmenu('sidebar');
+        $Menus              = $this->getmenu('menu');
+        $Sub_menus          = $this->getmenu('submenu');
         $locale             = config('app.locale');
         $banner_1   = DB::table('sliders')->where('location',1)->where('status', 1)->inRandomOrder()->first();
         $banner_2   = DB::table('sliders')->where('location',2)->where('status', 1)->inRandomOrder()->first();
         $banner_3   = DB::table('sliders')->where('location',3)->where('status', 1)->inRandomOrder()->first();
         $banner_sidebar   = DB::table('sliders')->where('location',4)->where('status', 1)->inRandomOrder()->first();
         $sliders = DB::table('sliders')->where('location',9)->where('status', 1)->orderBy('position', 'ASC')->get();
-        $product_hot_sale    = DB::table('products')
-                              ->where('status',1)->where('hot_sale', 1)->whereNull('deleted_at')->inRandomOrder()->limit(10)->get();
-        $product_new    = DB::table('products')
-                              ->where('status',1)->where('new', 1)->whereNull('deleted_at')->inRandomOrder()->limit(10)->get();
+        $product_hot_sale    = Products::where('status',1)->where('hot_sale', 1)->whereNull('deleted_at')->inRandomOrder()->limit(10)->get();
+        $product_new    = Products::where('status',1)->where('new', 1)->whereNull('deleted_at')->inRandomOrder()->limit(10)->get();
         $dealProduct = Products::where('status',1)
             ->whereNull('deleted_at')->whereNotNull('time_deal')->where('time_deal', '>', date('Y-m-d').' 23:59:59')
             ->orderBy('time_deal', 'desc')->inRandomOrder()->limit(8)->get();
@@ -57,15 +55,14 @@ class HomeController extends Controller
         return view('frontend.index',[
         'get_cat_parents' =>  $get_cat_parents,
         'time_deal' => $time_deal,
-        // 'Sidebars'          => $Sidebars,
-        // 'Menus'             => $Menus,
-        // 'Sub_menus'         => $Sub_menus,
+        'Sidebars'          => $Sidebars,
+        'Menus'             => $Menus,
+        'Sub_menus'         => $Sub_menus,
         'banner_1'  => $banner_1,
         'banner_2'  => $banner_2,
         'banner_3'  => $banner_3,
         'banner_sidebar'  => $banner_sidebar,
         'sliders'           => $sliders,
-        // 'topSellProducts'   => $topSellProducts,
         'dealProduct'       => $dealProduct,
         'list_post' => $list_post,
         'list_cat'          => $list_cat,

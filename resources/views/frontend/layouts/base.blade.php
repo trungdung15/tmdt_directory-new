@@ -113,8 +113,39 @@
                     }
                 });
             });
+            //Add to Cart
+            add_cart = function(id){
+                        var _token = $('meta[name="csrf-token"]').attr('content');
+                        var data = {
+                            id: id,
+                            _token: _token
+                        };
 
-
+                        $.ajax({
+                            url: "{{ route('add_cart_ajax') }}",
+                            method: 'POST',
+                            data: data,
+                            dataType: "json",
+                            success: function(data) {
+                                alert('Thêm thành công sản phẩm vào giỏi hàng!');
+                                $('#count-cart').text(data.count);
+                            },
+                        });
+                    }
+            add_wish = function(id){
+                var _token = $('meta[name="csrf-token"]').attr('content');
+                var data = {id:id, _token:_token};
+                $.ajax({
+                    url: "{{route('add_wish')}}",
+                    method: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function(data) {
+                        alert('Thêm thành công sản phẩm vào danh sách yêu thích!');
+                        $('#count-wish').text(data.count_wish);
+                    },
+                });
+            }
         });
     </script>
     <script>

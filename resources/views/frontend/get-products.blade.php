@@ -12,7 +12,7 @@
                         <!-- product -->
                     <div class="product-item mb-3">
                         <div class="thumb">
-                            <a href="">
+                            <a href="{{ route('detailproduct', $item->slug)}}">
                                 <img class="owl-lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
                                 @if (!empty($item->brand))
                                     <span class="brand" style="background-image: url('upload/images/products/thumb/{{$item->brands->image}}');"></span>
@@ -40,7 +40,7 @@
                                 <p class="code">Mã: {{$item->id}}</p>
                             </div>
                             <div class="name">
-                                <a href="">{{$item->name}}</a>
+                                <a href="{{ route('detailproduct', $item->slug)}}">{{$item->name}}</a>
                             </div>
                             @if (!empty($item->specifications))
                                 <ul class="product-attributes">
@@ -88,9 +88,9 @@
                                     background-color: #dbf8e1;">{{$item->still_stock}}</div>
                                 @endif
                                 <div class="action">
-                                    <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
-                                    <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
-                                    <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
+                                    <a href="javascript:;" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
+                                    <a href="javascript:;" class="heart add-wish" title="Lưu sản phẩm" onclick="add_wish({{$item->id}})"><i class="far fa-heart"></i></a>
+                                    <a href="javascript:;" title="Thêm vào giỏ hàng" class="add-cart" onclick="add_cart({{$item->id}})"><i class="far fa-shopping-cart"></i></a>
                                 </div>
                             </div>
                         </div>
