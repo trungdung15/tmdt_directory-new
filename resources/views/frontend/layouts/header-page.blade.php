@@ -38,7 +38,7 @@
                 <div class="logo-container">
                     <h1 class="logo-content">
                         <strong style="display: none;">IT24H - Máy tính văn phòng, PC gaming, phụ kiện máy tính, camera an linh</strong>
-                        <a href="" title="IT24H - Máy tính văn phòng, PC gaming, phụ kiện máy tính, camera an linh">
+                        <a href="{{route('user')}}" title="IT24H - Máy tính văn phòng, PC gaming, phụ kiện máy tính, camera an linh">
                             <img src="{{asset('/asset/images/it24h.png')}}" alt="">
                         </a>
                     </h1>
@@ -126,7 +126,7 @@
                 <div class="vertical-block">
                     <div class="title-vertical">
                         <i class="fas fa-bars"></i>
-                        Danh mục sản phẩm
+                        @lang('lang.Productcategory')
                     </div>
                     <div class="vertical-menu">
                         <div class="vertical-menu-content" style="visibility: hidden; transform: translateY(10px); opacity: 0;">
@@ -327,15 +327,18 @@
                     <div class="horizontal-menu">
                         <nav>
                             <ul class="menu-header">
-                                <li><a href="{{route('user')}}" class="active"><span><i class="far fa-home"></i></span> @lang('lang.Home')</a></li>
-                                <li><a href="{{route('list_product')}}"><span><i class="fal fa-shopping-bag"></i></span> @lang('lang.Shop')</a></li>
-                                <li><a href="{{route('categoryBlogs')}}"><span><i class="fal fa-newspaper"></i></span> @lang('lang.Blog')</a></li>
-                                <li><a href="{{route('contact')}}"><span><i class="far fa-phone-rotary"></i></span> @lang('lang.Contact')</a></li>
+                                @php
+                                    $page_active = session('page_active');
+                                @endphp
+                                <li><a href="{{route('user')}}"><span><i class="far fa-home"></i></span> @lang('lang.Home')</a></li>
+                                <li><a href="{{route('list_product')}}" class="{{$page_active == 'product' ? 'active' : ''}}"><span><i class="fal fa-shopping-bag"></i></span> @lang('lang.Shop')</a></li>
+                                <li><a href="{{route('categoryBlogs')}}" class="{{$page_active == 'post' ? 'active' : ''}}"><span><i class="fal fa-newspaper"></i></span> @lang('lang.Blog')</a></li>
+                                <li><a href="{{route('contact')}}" class="{{$page_active == 'contact' ? 'active' : ''}}"><span><i class="far fa-phone-rotary"></i></span> @lang('lang.Contact')</a></li>
                             </ul>
                         </nav>
                     </div>
                     <div class="header-shipping">
-                        <strong>Free ship</strong> khi mua 2 sản phẩm
+                        <strong>Free ship</strong> @lang('lang.whenyouby2products')
                     </div>
                 </div>
             </div>

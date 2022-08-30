@@ -13,7 +13,7 @@
 @endsection
 
 
-@section('menu-mobile')
+@section('header-mobile')
     @include('frontend.layouts.menu-mobile')
 @endsection
 
@@ -22,10 +22,10 @@
         <div class="wp-breadcrumb-page">
             <div class="container-page">
                 <div class="breadcrumb-page">
-                    <a href="">Trang chủ</a><i class="fas fa-angle-right mx-1"></i>
-                    <a href="">Laptop, Tablet, Mobile</a><i class="fas fa-angle-right mx-1"></i>
-                    <a href="">Laptop Gaming</a>
-                </div>   
+                    <a href="{{route('user')}}">Trang chủ <i class="fas fa-angle-right mx-1"></i></a>
+                    <a href="{{route('list_product')}}">Sản phẩm <i class="fas fa-angle-right mx-1"></i></a>
+                    <a>{{$product->name}}</a>
+                </div>
             </div>
         </div>
 
@@ -55,13 +55,15 @@
                                         <img src="{{asset('upload/images/products/thumb/'.$product->thumb)}}" alt="">
                                     </a>
                                 </li>
-                                @foreach ($imgs as $img)
-                                    <li class="">
-                                        <a href="javascript:;" class="thumb-small">
-                                            <img src="{{asset('upload/images/products/thumb/'.$img)}}" alt="">
-                                        </a>
-                                    </li>
-                                @endforeach
+                                @if (!empty($imgs))
+                                    @foreach ($imgs as $img)
+                                        <li class="">
+                                            <a href="javascript:;" class="thumb-small">
+                                                <img src="{{asset('upload/images/products/thumb/'.$img)}}" alt="">
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -113,14 +115,16 @@
                                         <div class="number">{{number_format($product->price,0,',','.')}} đ</div>
                                     </div>
                                 @endif
-                                
+
                             </div>
-                            <div class="product-gift">
-                                <div class="product-gift-head"><i class="fas fa-gift me-2"></i> Quà tặng ưu đãi</div>
-                                <div class="product-gift-body">
-                                    {!! $product->gift !!}
+                            @if (!empty($product->gift))
+                                <div class="product-gift">
+                                    <div class="product-gift-head"><i class="fas fa-gift me-2"></i> Quà tặng ưu đãi</div>
+                                    <div class="product-gift-body">
+                                        {!! $product->gift !!}
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="product-order">
                                 <span class="text">Số lượng:</span>
                                 <div class="quantity_wrap">
@@ -135,7 +139,7 @@
                             </div>
                             <div class="action-addcart">
                                 <div class="add-cart">
-                                    <a href="" class="add-cart-now">Mua ngay</a>
+                                    <a href="javascript:;" class="add-cart-now" data-id="{{$product->id}}">Mua ngay</a>
                                     <a href="">Mua trả góp</a>
                                 </div>
                                 <div class="affiliate">
@@ -210,7 +214,7 @@
             </div>
             <div class="product-content-bottom">
                 <div class="content-left">
-                    <div class="wp-content-detail">
+                    <div class="wp-content-detail" style="overflow: hidden;">
                         <div class="header-content">Chi tiết sản phẩm</div>
                         <div class="content-detail">
                             {!! $product->content !!}
@@ -283,27 +287,27 @@
                                 <div class="review-center">
                                     <div class="review-center-item">
                                         <div class="item-left">5 sao</div>
-                                        <div class="item-center"><span style="width:{{($product->vote_5->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-center"><span style="width:{{($product->vote_5->count()/(($product->votes->count() == 0) ? 5 : $product->votes->count()))*100}}%"></span></div>
                                         <div class="item-right">{{$product->vote_5->count()}}</div>
                                     </div>
                                     <div class="review-center-item">
                                         <div class="item-left">4 sao</div>
-                                        <div class="item-center"><span style="width:{{($product->vote_4->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-center"><span style="width:{{($product->vote_4->count()/(($product->votes->count() == 0) ? 5 : $product->votes->count()))*100}}%"></span></div>
                                         <div class="item-right">{{$product->vote_4->count()}}</div>
                                     </div>
                                     <div class="review-center-item">
                                         <div class="item-left">3 sao</div>
-                                        <div class="item-center"><span style="width:{{($product->vote_3->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-center"><span style="width:{{($product->vote_3->count()/(($product->votes->count() == 0) ? 5 : $product->votes->count()))*100}}%"></span></div>
                                         <div class="item-right">{{$product->vote_3->count()}}</div>
                                     </div>
                                     <div class="review-center-item">
                                         <div class="item-left">2 sao</div>
-                                        <div class="item-center"><span style="width:{{($product->vote_2->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-center"><span style="width:{{($product->vote_2->count()/(($product->votes->count() == 0) ? 5 : $product->votes->count()))*100}}%"></span></div>
                                         <div class="item-right">{{$product->vote_2->count()}}</div>
                                     </div>
                                     <div class="review-center-item">
                                         <div class="item-left">1 sao</div>
-                                        <div class="item-center"><span style="width:{{($product->vote_1->count()/$product->votes->count())*100}}%"></span></div>
+                                        <div class="item-center"><span style="width:{{($product->vote_1->count()/(($product->votes->count() == 0) ? 5 : $product->votes->count()))*100}}%"></span></div>
                                         <div class="item-right">{{$product->vote_1->count()}}</div>
                                     </div>
                                 </div>
@@ -423,7 +427,7 @@
                                             <div class="content-comment">
                                                 {{$comment->comment}}
                                             </div>
-                                        </div>                                        
+                                        </div>
                                     </li>
                                 @endforeach
                                 <div id="comment-ajax"></div>
@@ -484,39 +488,20 @@
                     <div class="wp-list-post">
                         <div class="header-content">Tin tức mới nhất</div>
                         <ul class="list-post">
-                            <li>
-                                <a href="">
-                                    <div class="thumb"><img src="/asset/images/laptop_dung_cach_3.jpg" alt=""></div>
-                                    <div class="detail-post">
-                                        <h3 class="title">TOP 6 LAPTOP DƯỚI 15 TRIỆU TỐT NHẤT 2022 MÀ BẠN NÊN THAM KHẢO!</h3>
-                                        <div class="desc">
-                                            Với chi phí dưới 15 triệu bạn sẽ mua được laptop có cấu hình như thế nào? Đâu là các mẫu laptop dưới 15 triệu tốt nhất 2021 mà bạn nên mua? Xem ngay bài viết dưới đây của Hacom nhé !
+                            @foreach ($posts as $post)
+                                <li>
+                                    <a href="">
+                                        <div class="thumb"><img src="{{asset('upload/images/post/medium/'.$post->thumb)}}" alt=""></div>
+                                        <div class="detail-post">
+                                            <h3 class="title">{{$post->title}}</h3>
+                                            <div class="desc">
+                                                {{$post->excerpt}}
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <div class="thumb"><img src="/asset/images/laptop_dung_cach_3.jpg" alt=""></div>
-                                    <div class="detail-post">
-                                        <h3 class="title">TOP 6 LAPTOP DƯỚI 15 TRIỆU TỐT NHẤT 2022 MÀ BẠN NÊN THAM KHẢO!</h3>
-                                        <div class="desc">
-                                            Với chi phí dưới 15 triệu bạn sẽ mua được laptop có cấu hình như thế nào? Đâu là các mẫu laptop dưới 15 triệu tốt nhất 2021 mà bạn nên mua? Xem ngay bài viết dưới đây của Hacom nhé !
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <div class="thumb"><img src="/asset/images/laptop_dung_cach_3.jpg" alt=""></div>
-                                    <div class="detail-post">
-                                        <h3 class="title">TOP 6 LAPTOP DƯỚI 15 TRIỆU TỐT NHẤT 2022 MÀ BẠN NÊN THAM KHẢO!</h3>
-                                        <div class="desc">
-                                            Với chi phí dưới 15 triệu bạn sẽ mua được laptop có cấu hình như thế nào? Đâu là các mẫu laptop dưới 15 triệu tốt nhất 2021 mà bạn nên mua? Xem ngay bài viết dưới đây của Hacom nhé !
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
+                                    </a>
+                                </li>
+                            @endforeach
+
                         </ul>
                     </div>
                 </div>
@@ -629,49 +614,60 @@
 
                         <div class="tab-pane fade" id="pills-cat2" role="tabpanel" aria-labelledby="pills-cat2-tab">
                             <div class="list-product owl-carousel owl-theme owl-loaded owl-drag list-product-recommend-slider" id="list-product-group">
-                                <!-- product -->
-                                <div class="product-item mb-3">
+                                @foreach ($product_watched as $item)
+                                    <!-- product -->
+                                    <div class="product-item mb-3">
                                         <div class="thumb">
-                                            <a href="">
-                                                <img src="/asset/images/pc_gaming.jpg" alt="">
-                                                <span class="brand" style="background-image: url('asset/images/msi.png');"></span>
+                                            <a href="{{ route('detailproduct', $item->slug)}}">
+                                                <img class="owl-lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
+                                                @if (!empty($item->brand))
+                                                    <span class="brand" style="background-image: url('{{asset("upload/images/products/thumb/".$item->brands->image)}}');"></span>
+                                                @endif
                                                 <div class="wp-tag">
-                                                    <span class="years">New 2022</span>
-                                                    <span class="payment">Trả góp 0%</span>
+                                                    @if (!empty($item->year))
+                                                        <span class="years">{{$item->year}}</span>
+                                                    @endif
+                                                    @if (!empty($item->installment))
+                                                        <span class="payment">Trả góp 0%</span>
+                                                    @endif
                                                 </div>
                                             </a>
                                         </div>
                                         <div class="detail">
                                             <div class="wp-event">
-                                                <p class="event" style="background: linear-gradient(to right,#ef3006,#c60004);">
-                                                    <img src="/asset/images/icon1-50x50.png" alt="">
-                                                    <span>Giảm sốc</span>
-                                                </p>
+                                                @if (!empty($item->event))
+                                                    <p class="event" style="background: linear-gradient(to right,{{$item->events->color_left}},{{$item->events->color_right}});">
+                                                        <img src="{{asset('upload/images/products/thumb/'.$item->events->icon)}}" alt="">
+                                                        <span>{{$item->events->name}}</span>
+                                                    </p>
+                                                @else
+                                                    <p class="event" style="min-height: 20px;"></p>
+                                                @endif
+                                                <p class="code">Mã: {{$item->id}}</p>
                                             </div>
                                             <div class="name">
-                                                <a href="">PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD PC gaming pro (I5 1140F/B560/8GB RAM/500GB SSD</a>
-                                            </div>   
-                                            <ul class="product-attributes">
-                                                <li>Core i5</li>
-                                                <li>500GB SSD</li>
-                                                <li>8GB</li>
-                                                <li>RTX 3070</li>
-                                                <li>600W</li>
-                                                <li>Core i5</li>
-                                                <li>500GB SSD</li>
-                                                <li>8GB</li>
-                                                <li>RTX 3070</li>
-                                                <li>600W</li>
-                                            </ul>
+                                                <a href="{{ route('detailproduct', $item->slug)}}">{{$item->name}}</a>
+                                            </div>
+                                            @if (!empty($item->specifications))
+                                                <ul class="product-attributes">
+                                                    @foreach ($item->get_specifications() as $k)
+                                                        <li>{{$k}}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
                                             <div class="price-review clearfix">
                                                 <div class="price">
-                                                    <span class="onsale">- 20%</span>
-                                                    <div class="price-old">19.999.000 đ</div>
-                                                    <div class="price-new">16.866.000 đ</div>  
+                                                    @if (!empty($item->onsale))
+                                                        <span class="onsale">- {{$item->onsale}}%</span>
+                                                        <div class="price-old">{{number_format($item->price,0,',','.')}} đ</div>
+                                                        <div class="price-new">{{number_format($item->price_onsale,0,',','.')}} đ</div>
+                                                    @else
+                                                        <div class="price-new">{{number_format($item->price,0,',','.')}} đ</div>
+                                                    @endif
                                                 </div>
                                                 <div class="review">
                                                     <div class="rating2">
-                                                        <div class="rating-upper" style="width: 90%">
+                                                        <div class="rating-upper" style="width: {{$item->count_vote()}}%">
                                                             <span><i class="fas fa-star"></i></span>
                                                             <span><i class="fas fa-star"></i></span>
                                                             <span><i class="fas fa-star"></i></span>
@@ -686,94 +682,32 @@
                                                             <span><i class="fal fa-star"></i></span>
                                                         </div>
                                                     </div>
-                                                    <div class="count-review">(5)</div>
-                                                    <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
+                                                    <div class="count-review">({{$item->votes->count()}})</div>
+                                                    @if (!empty($item->sold))
+                                                        <div class="sold"><i class="fas fa-badge-check"></i>Đã bán {{$item->sold}}</div>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="detail-bottom">
-                                                <div class="qty" style="color: #01aa42;
-                                                background-color: #dbf8e1;">Còn hàng</div>
+                                                @if (!empty($item->still_stock))
+                                                    <div class="qty" style="color: #01aa42;
+                                                    background-color: #dbf8e1;">{{$item->still_stock}}</div>
+                                                @endif
                                                 <div class="action">
-                                                    <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
-                                                    <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
-                                                    <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
+                                                    <a href="javascript:;" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
+                                                    <a href="javascript:;" class="heart add-wish" title="Lưu sản phẩm" onclick="add_wish({{$item->id}})"><i class="far fa-heart"></i></a>
+                                                    <a href="javascript:;" title="Thêm vào giỏ hàng" class="add-cart" onclick="add_cart({{$item->id}})"><i class="far fa-shopping-cart"></i></a>
                                                 </div>
                                             </div>
                                         </div>
-                                </div>
-
-                                <!-- product -->
-                                <div class="product-item mb-3">
-                                    <div class="thumb">
-                                        <a href="">
-                                            <img src="/asset/images/Apple-Macbook-Pro-2020-removebg-preview.png" alt="">
-                                            <span class="brand" style="background-image: url('asset/images/macbook.png');"></span>
-                                            <div class="wp-tag">
-                                                <span class="years">New 2022</span>
-                                                <span class="payment">Trả góp 0%</span>
-                                            </div>
-                                        </a>
                                     </div>
-                                    <div class="detail">
-                                        <div class="wp-event">
-                                            <p class="event" style="background: linear-gradient(to right,#6cc9ed,#169fd8);">
-                                                <img src="/asset/images/icon4-50x50.png" alt="">
-                                                <span>+1 năm bảo hành</span>
-                                            </p>
-                                        </div>
-                                        <div class="name">
-                                            <a href="">Laptop Macbook Air M10 2020</a>
-                                        </div>
-                                        
-                                        <ul class="product-attributes">
-                                            <li>Core i5</li>
-                                            <li>256GB SSD</li>
-                                            <li>8GB</li>
-                                        </ul>
-                                        <div class="price-review clearfix">
-                                            <div class="price">
-                                                <span class="onsale">- 15%</span>
-                                                <div class="price-old">36.999.000 đ</div>
-                                                <div class="price-new">32.866.000 đ</div>  
-                                            </div>
-                                            <div class="review">
-                                                <div class="rating2">
-                                                    <div class="rating-upper" style="width: 80%">
-                                                        <span><i class="fas fa-star"></i></span>
-                                                        <span><i class="fas fa-star"></i></span>
-                                                        <span><i class="fas fa-star"></i></span>
-                                                        <span><i class="fas fa-star"></i></span>
-                                                        <span><i class="fas fa-star"></i></span>
-                                                    </div>
-                                                    <div class="rating-lower">
-                                                        <span><i class="fal fa-star"></i></span>
-                                                        <span><i class="fal fa-star"></i></span>
-                                                        <span><i class="fal fa-star"></i></span>
-                                                        <span><i class="fal fa-star"></i></span>
-                                                        <span><i class="fal fa-star"></i></span>
-                                                    </div>
-                                                </div>
-                                                <div class="count-review">(5)</div>
-                                                <div class="sold"><i class="fas fa-badge-check"></i>Đã bán 324</div>
-                                            </div>
-                                        </div>
-                                        <div class="detail-bottom">
-                                            <div class="qty" style="color: #01aa42;
-                                            background-color: #dbf8e1;">Còn hàng</div>
-                                            <div class="action">
-                                                <a href="" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
-                                                <a href="" class="heart" title="Lưu sản phẩm"><i class="far fa-heart"></i></a>
-                                                <a href="" title="Thêm vào giỏ hàng"><i class="far fa-shopping-cart"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
     <p id="message_add_cart" style="display:none;">@lang('lang.Productaddedtocartsuccessfully')</p>
     <p id="Youhavenotfilledinthecommentsreviews" style="display:none;">@lang('lang.Youhavenotfilledinthecommentsreviews')</p>
@@ -890,6 +824,25 @@
                         },
                     });
                 }
+
+                $('.add-cart-now').click(function(){
+                    var id = $(this).data('id');
+                    var _token = $('meta[name="csrf-token"]').attr('content');
+                    var data = {
+                        id: id,
+                        _token: _token
+                    };
+                    $.ajax({
+                        url: "{{ route('add_cart_ajax') }}",
+                        method: 'POST',
+                        data: data,
+                        dataType: "json",
+                        success: function(data) {
+                            $('#count-cart').text(data.count);
+                            location.href = '{{route('list_cart')}}';
+                        },
+                    });
+                });
 
                 //Comment
                 $('#submit-comment').click(function(){

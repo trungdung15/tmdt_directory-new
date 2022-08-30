@@ -1,55 +1,14 @@
-/* :root {
-    --global-color-primary: #1558E5;
-    --global-color-primary_hover: #124fce;
-    --global-color-text: #666666;
-    --global-color-accent: #000000;
-    --global-color-lighter: #999999;
-    --global-color-highlight: #EF262C;
-    --global-color-border: #EFEFEF;
-    --global-typography-heading_title-font-family: "Heebo";
-    --global-typography-heading_title-font-size: 24px;
-    --global-typography-heading_title-font-weight: 500;
-    --global-typography-heading_title-text-transform: none;
-    --global-typography-heading_title-line-height: 32px;
-    --global-typography-heading_footer-font-family: "Heebo";
-    --global-typography-heading_footer-font-size: 16px;
-    --global-typography-heading_footer-font-weight: 500;
-    --global-typography-heading_footer-text-transform: uppercase;
-    --global-typography-heading_footer-line-height: 24px;
-}
-*{
-    margin: 0;
-    padding: 0;
-    border: 0;
-    box-sizing: border-box;
-}
 
 body {
-    --primary: #1558E5;
+    --primary: #169fd8;
     --primary_hover: #124fce;
-    --text: #666666;
+    --text: #222;
     --accent: #000000;
     --lighter: #999999;
     --highlight: #EF262C;
     --border: #EFEFEF;
-    font-family: 'Heebo', sans-serif !important;
-} */
-
-/*
-███████▄▄███████████▄
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█
-▓▓▓▓▓▓█░░trungdung░░░█
-▓dungtdcs@gmail.com░░█
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█
-▓▓▓▓▓▓███░░░░░░░░░░░░█
-██████▀░░░░░░░██████▀
-░░░░░░░░░█░░░░█
-░░░░░░░░░░█░░░█
-░░░░░░░░░░░█░░█
-░░░░░░░░░░░█░░█
-░░░░░░░░░░░░▀▀
-*/
+    font-family: 'Roboto', sans-serif !important;
+}
 
 a{text-decoration: none !important;}
 
@@ -77,7 +36,7 @@ ul.menu-account li a span{
     float: right;
 }
 ul.menu-account li:hover a{
-    color: var(--global-color-primary);
+    color: var(--primary);
 }
 .nav-tabs .nav-link{
     border: none;
@@ -87,7 +46,7 @@ ul.menu-account li:hover a{
 }
 .nav-tabs .nav-link.active{
     border: none;
-    color: var(--global-color-primary);
+    color: var(--primary);
 }
 .tab-content .content-info{
     order: 2;

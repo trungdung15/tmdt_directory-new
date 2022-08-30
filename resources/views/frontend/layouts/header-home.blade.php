@@ -38,7 +38,7 @@
                 <div class="logo-container">
                     <h1 class="logo-content">
                         <strong style="display: none;">IT24H - Máy tính văn phòng, PC gaming, phụ kiện máy tính, camera an linh</strong>
-                        <a href="" title="IT24H - Máy tính văn phòng, PC gaming, phụ kiện máy tính, camera an linh">
+                        <a href="{{route('user')}}" title="IT24H - Máy tính văn phòng, PC gaming, phụ kiện máy tính, camera an linh">
                             <img src="{{asset('/asset/images/it24h.png')}}" alt="">
                         </a>
                     </h1>
@@ -126,7 +126,7 @@
                 <div class="vertical-block">
                     <div class="title-vertical">
                         <i class="fas fa-bars"></i>
-                        Danh mục sản phẩm
+                        @lang('lang.Productcategory')
                     </div>
                     <div class="vertical-menu">
                         <div class="vertical-menu-content">
@@ -335,7 +335,7 @@
                         </nav>
                     </div>
                     <div class="header-shipping">
-                        <strong>Free ship</strong> khi mua 2 sản phẩm
+                        <strong>Free ship</strong> @lang('lang.whenyouby2products')
                     </div>
                 </div>
             </div>

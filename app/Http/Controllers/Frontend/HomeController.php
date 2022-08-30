@@ -124,6 +124,10 @@ class HomeController extends Controller
 
     //trang blog chung
     public function categoryBlogs(Request $request){
+        $this->middleware(function ($request, $next) {
+            \session(['page_active' => 'post']);
+            return $next($request);
+        });
         $locale       = config('app.locale');
         if($request->input('tim-kiem')){
             $search = $request->input('tim-kiem');
@@ -159,6 +163,10 @@ class HomeController extends Controller
     }
     // xu ly bai viet duoc tim kiem
     public function categoryBlog(Request $request, $slug){
+        $this->middleware(function ($request, $next) {
+            \session(['page_active' => 'post']);
+            return $next($request);
+        });
         $locale     = config('app.locale');
         if($request->input('tim-kiem')){
             $search = $request->input('tim-kiem');
@@ -205,6 +213,10 @@ class HomeController extends Controller
     }
     //trang chi tiet bai viet
     public function singlePost(Request $request, $slug){
+        $this->middleware(function ($request, $next) {
+            \session(['page_active' => 'post']);
+            return $next($request);
+        });
         $locale       = config('app.locale');
         $post = Post::where('slug',$slug)
             ->where('status',1)->whereNull('deleted_at')->first();
@@ -266,7 +278,10 @@ class HomeController extends Controller
 
     /* ==== Xử lý dữ liệu trang danh sách sản phẩm */
     public function list_product(Request $request){
-
+        $this->middleware(function ($request, $next) {
+            \session(['page_active' => 'product']);
+            return $next($request);
+        });
         $locale       = config('app.locale');
         $searchValues = '';
         if($request->query('searchs') !=""){
@@ -358,6 +373,10 @@ class HomeController extends Controller
 
     // trang danh sach san pham khi loc
     public function product_cat(Request $request, $slug){
+        $this->middleware(function ($request, $next) {
+            \session(['page_active' => 'product']);
+            return $next($request);
+        });
         $categories = Category::where('taxonomy',Category::SAN_PHAM)
             ->where('parent_id',0)
             ->where('status',1)
@@ -459,6 +478,10 @@ class HomeController extends Controller
     }
     //lien he
     public function contact(){
+        $this->middleware(function ($request, $next) {
+            \session(['page_active' => 'contact']);
+            return $next($request);
+        });
         $locale             = config('app.locale');
         $Sidebars           = $this->getmenu('sidebar');
         $Menus              = $this->getmenu('menu');

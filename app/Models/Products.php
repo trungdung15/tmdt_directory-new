@@ -80,8 +80,14 @@ class Products extends Model
     }
 
     public function trungbinhsao(){
-        $t = ($this->vote_1->count()*1 + $this->vote_2->count()*2 + $this->vote_3->count()*3 + $this->vote_4->count()*4 + $this->vote_5->count()*5)/($this->votes->count());
-        return $number = \round($t, 1);
+        if($this->votes->count() == 0){
+            return $number = 5;
+        }else{
+            $count_total = $this->votes->count();
+            $t = ($this->vote_1->count()*1 + $this->vote_2->count()*2 + $this->vote_3->count()*3 + $this->vote_4->count()*4 + $this->vote_5->count()*5)/($count_total);
+            return $number = \round($t, 1);
+        }
+
     }
     public function count_vote(){
         $count = 0;

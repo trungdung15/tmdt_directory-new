@@ -15,6 +15,7 @@ return[
 	'Login' => 'Đăng nhập',
 	'Forgetpassword' => 'Quên mật khẩu?',
 	'Shopbydepartment' => 'Tất cả sản phẩm',
+    'Productcategory' => 'Danh mục sản phẩm',
 	'Home' => 'Trang chủ',
 	'Blog' => 'Tin tức',
 	'Contact' => 'Liên hệ',
@@ -186,6 +187,7 @@ return[
 	'Enteryourphone' => 'Nhập số điện thoại của bạn..',
 	'Enteryourfullname' => 'Nhập họ tên của bạn..',
 	'Enteryouraddress' => 'Nhập địa chỉ của bạn..',
+    'Enteryouremail' => 'Nhập email của bạn..',
 	'Ordernotes' => 'Ghi chú đơn hàng',
 	'Enterordernotes' => 'Nhập ghi chú đơn hàng..',
 	'Yourorder' => 'Đơn hàng của bạn',
@@ -255,5 +257,6 @@ return[
 	'Forgetpasswordd' => 'Quên mật khẩu',
     'Favoriteproduct'=> 'Sản phẩm yêu thích',
     'It24hwishlist' => 'IT24H - Yêu thích',
-    'emptylistwish' => 'Không có sản phẩm nào trong danh sách yêu thích!'
+    'emptylistwish' => 'Không có sản phẩm nào trong danh sách yêu thích!',
+    'whenyouby2products' => 'khi mua 2 sản phẩm',
 ];

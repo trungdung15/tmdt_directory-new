@@ -1,18 +1,18 @@
 @extends('frontend.layouts.base')
 
 @section('title')
-    <title>@lang('lang.It24hblog')</title>
+    <title>{{$post->title}}</title>
 @endsection
 
 @section('css')
     <link rel="stylesheet" href="{{asset('asset/css/single-post.css')}}">
 @endsection
 
-@section('header')
+@section('header-home')
     @include('frontend.layouts.header-page', [$Sidebars, $Menus])
 @endsection
 
-@section('menu-mobile')
+@section('header-mobile')
     @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus])
 @endsection
 
@@ -24,7 +24,7 @@
                     <div class="breadcrumb_populated">
                         <div class="breadcrumb_title"></div>
                         <nav class="breadcrumb_list">
-                            <a href="{{route('user')}}">@lang('lang.Home')/a>
+                            <a href="{{route('user')}}">@lang('lang.Home')</a>
                             <i class="fas fa-angle-right"></i>
                             <a href="{{route('categoryBlogs')}}">@lang('lang.Blog')</a>
                             <i class="fas fa-angle-right"></i>
@@ -111,7 +111,7 @@
                                                 <li class="comment">
                                                     <div class="comment-body" id="vote-{{$vote->id}}">
                                                         <div class="comment-author">
-                                                            <img width="50" height="50" class="avatar" src="{{asset('asset/images/64e1b8d34f425d19e1ee2ea7236d3028.png')}}">
+                                                            <img width="50" height="50" class="avatar" src="{{asset('asset/images/avatar-comment.png')}}">
                                                         </div>
                                                         <div class="comment-content">
                                                             <div class="comment-head">
@@ -136,7 +136,7 @@
                                                         <li class="comment">
                                                             <div class="comment-body">
                                                                 <div class="comment-author">
-                                                                    <img width="50" height="50" class="avatar" src="{{asset('asset/images/64e1b8d34f425d19e1ee2ea7236d3028.png')}}">
+                                                                    <img width="50" height="50" class="avatar" src="{{asset('asset/images/avatar-comment.png')}}">
                                                                 </div>
                                                                 <div class="comment-content">
                                                                     <div class="comment-head">

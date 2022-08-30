@@ -8,27 +8,34 @@ use App\Models\Locationmenu;
 use App\Models\Products;
 use App\Models\Vote;
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class DetailproductController extends Controller
 {
-   
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            \session(['page_active' => 'product']);
+            return $next($request);
+        });
+    }
     public function index($slug)
     {
 
         try{
         $Sidebars           = $this->getmenu('sidebar');
         $Menus              = $this->getmenu('menu');
-        $Sub_menus          = $this->getmenu('submenu');
         $getcategoryblog    = $this->getcategoryblog();
         $product           = Products::where('slug','=',$slug)->first();
-
-        $attrs              = \json_decode($product->attr);
         $locale             = config('app.locale');
-        if(empty($attrs)){$attrs = [];}
-        $colors = Attribute_product::where('attr', 'color')->whereIn('id', $attrs)->orderBy('name', 'ASC')->get();
-        $sizes  = Attribute_product::where('attr', 'size')->whereIn('id', $attrs)->get();
+        $posts = Post::where('status', 1)->orderBy('id', 'DESC')->limit(5)->get();
+        // $attrs              = \json_decode($product->attr);
+        // if(empty($attrs)){$attrs = [];}
+        // $colors = Attribute_product::where('attr', 'color')->whereIn('id', $attrs)->orderBy('name', 'ASC')->get();
+        // $sizes  = Attribute_product::where('attr', 'size')->whereIn('id', $attrs)->get();
 
         $products_id= array();
         foreach($product->category as $k){
@@ -37,7 +44,7 @@ class DetailproductController extends Controller
             }
         }
         if(empty($products_id)){
-            $product_related = Products::where('status', 1)->limit(6)->get();
+            $product_related = Products::where('status', 1)->limit(10)->get();
         }else{
             $product_related = Products::whereIn('id', $products_id)->where('status', 1)->limit(10)->get();
         }
@@ -45,7 +52,16 @@ class DetailproductController extends Controller
         $imgs        = json_decode($product->image);
         $property   = $this->xulychuoi_thongsosanpham($product->property);
 
-        
+        /* XỬ LÝ LƯU SP ĐÃ XEM */
+        $id = $product->id;
+        $get_cookie = Session::get('list_watched');
+        $list_id_watched = explode(' ', $get_cookie);
+        if(!in_array($id, $list_id_watched)){
+            $list_id_watched[] = $id;
+        }
+        $list_watched = \implode(' ', $list_id_watched);
+        Session::put('list_watched', $list_watched);
+        $product_watched = Products::whereIn('id', $list_id_watched)->where('status', 1)->inRandomOrder()->limit(10)->get();
         return view('frontend.detailproduct',[
             'Sidebars'        => $Sidebars,
             'Menus'           => $Menus,
@@ -53,10 +69,10 @@ class DetailproductController extends Controller
             'imgs'             => $imgs,
             'property'        => $property,
             'product_related' => $product_related,
-            'colors'          => $colors,
-            'sizes'           => $sizes,
             'getcategoryblog' => $getcategoryblog,
             'locale'          => $locale,
+            'posts' => $posts,
+            'product_watched' => $product_watched,
         ]);
         }
         catch(\Exception $exception){

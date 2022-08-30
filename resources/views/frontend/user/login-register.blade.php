@@ -1,44 +1,37 @@
 @extends('frontend.layouts.base')
 
 @section('title')
-    <title>@lang('lang.IT24Haccount')</title> 
+    <title>@lang('lang.IT24Haccount')</title>
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{asset('asset/css/user/register.css')}}">
-    <link rel="stylesheet" href="asset/css/user/myaccount.css">
+    <link rel="stylesheet" href="{{asset('asset/css/user/myaccount.css')}}">
     <style>
-        .breadcrumb-wrap {
-            margin-top: 25px !important;
+        input::placeholder{
+            font-size: 14px;
         }
     </style>
 @endsection
 
-@section('header')
+@section('header-home')
     @include('frontend.layouts.header-page', [$Sidebars, $Menus])
 @endsection
 
-@section('menu-mobile')
+@section('header-mobile')
     @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus])
 @endsection
 
 @section('content')
-    <div class="breadcrumb-wrap container-wp">
-        <section class="breadcrumb">
-            <div class="breadcrumb_default">
-                <div class="breadcrumb_populated">
-                    <div class="breadcrumb_title">@lang('lang.Myaccount')</div>
-                    <nav class="breadcrumb_list">
-                        <a href="{{route('user')}}">@lang('lang.Home')</a>
-                        <i class="fas fa-angle-right"></i>
-                       @lang('lang.Myaccount')
-                    </nav>
-                </div>
+    <div class="wp-breadcrumb-page">
+        <div class="container-page">
+            <div class="breadcrumb-page">
+                <a href="{{route('user')}}">@lang('lang.Home') <i class="fas fa-angle-right mx-1"></i></a>
+                <a>@lang('lang.Myaccount')</a>
             </div>
-        </section>
+        </div>
     </div>
-    <div id="content">
-        <div class="container-wp wp-my-account">
+    <div class="container-page" style="color: #222">
+        <div class="wp-my-account">
             @if ($message = Session::get('error'))
             <div class="alert alert-danger align-items-center" role="alert">
                 <div><i class="fal fa-exclamation-triangle me-1"></i> {{ $message }}</div>
@@ -54,7 +47,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="email">@lang('lang.Usernameoremailaddress') <span class="required">*</span></label>
-                            <input type="email" class="form-control" name="email" id="email" autocomplete="email" value="" placeholder="Enteryourusernameoremailaddress" required>
+                            <input type="email" class="form-control" name="email" id="email" autocomplete="email" value="" placeholder="@lang('lang.Enteryourusernameoremailaddress')" required>
                             @error('email')
                             <span role="alert">
                                 <p class="text-danger fst-italic mt-2" style="font-size: 14px;">{{ $message }}</p>
@@ -75,7 +68,7 @@
                             <span class="remember">@lang('lang.Rememberme')</span>
                         </label>
                         <a href="{{route('forgot_password')}}" class="lost-pass">@lang('lang.Lostyourpassword')</a>
-                        <button type="submit" class="btn-submit">@lang('lang.Login')</button>
+                        <button type="submit" class="btn-submit btn btn-primary px-2">@lang('lang.Login')</button>
                     </form>
                     <hr>
                     <a href="{{route('login-facebook')}}" class="btn-login-facebook btn btn-primary w-100 mt-2"><i class="fab fa-facebook-square me-2"></i>@lang('lang.loginwithfb')</a>
@@ -127,7 +120,7 @@
                             </span>
                             @enderror
                         </div>
-                        <button class="btn-submit" type="submit">@lang('lang.Register') </button>
+                        <button class="btn-submit btn btn-primary px-2" type="submit">@lang('lang.Register') </button>
                     </form>
                     </div>
                 </div>

@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="{{asset('asset/css/contact.css')}}">
 @endsection
 
-@section('header')
+@section('header-home')
     @include('frontend.layouts.header-page', [$Sidebars, $Menus])
 @endsection
 
-@section('menu-mobile')
-    @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus]) 
+@section('header-mobile')
+    @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus])
 @endsection
 
 @section('content')
@@ -46,7 +46,7 @@
                                         </div>
                                         <div class="contact_address">
                                             81c Phố Mê Linh<br>
-                                            An Dương, Lê Chân, Hải Phòng
+                                            Lê Chân, Hải Phòng
                                         </div>
                                     </div>
                                 </div>
@@ -79,8 +79,7 @@
                                             <span class="contact_text">@lang('lang.Contact')</span>
                                         </div>
                                         <div class="contact_address">
-                                            devit24h@gmail.com<br>
-                                            info@example.com
+                                            contact@it24h.com
                                         </div>
                                     </div>
                                 </div>

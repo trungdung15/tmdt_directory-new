@@ -5,46 +5,29 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="asset/css/checkout.css">
-    <link rel="stylesheet" href="asset/css/user/register.css">
-    <style>
-        .breadcrumb-wrap {
-            margin-top: 25px !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{{asset('asset/css/checkout.css')}}">
 @endsection
 
-@section('header')
+@section('header-home')
     @include('frontend.layouts.header-page', [$Sidebars, $Menus])
 @endsection
 
-@section('menu-mobile')
+@section('header-mobile')
     @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus])
 @endsection
 
 @section('content')
-    <div class="breadcrumb-wrap container-wp">
-        <section class="breadcrumb">
-            <div class="breadcrumb_default">
-                <div class="breadcrumb_populated">
-                    <div class="breadcrumb_title">@lang('lang.Checkout')</div>
-                    <nav class="breadcrumb_list">
-                        <a href="{{route('user')}}">@lang('lang.Home')</a>
-                        <i class="fas fa-angle-right"></i>
-                        @lang('lang.Checkout')
-                    </nav>
-                </div>
+    <div class="wp-breadcrumb-page">
+        <div class="container-page">
+            <div class="breadcrumb-page">
+                <a href="{{route('user')}}">@lang('lang.Home') <i class="fas fa-angle-right mx-1"></i></a>
+                <a>@lang('lang.Checkout')</a>
             </div>
-        </section>
+        </div>
     </div>
-    <div id="content">
-        <div class="container-wp wp-my-account">
+    <div id="content" class="container-page">
+        <div class="wp-my-account" style="color: #222">
             <div class="row">
-                <div class="col-12">
-                    <div class="showcoupon">
-                        @lang('lang.Haveacoupon')? <a href="">@lang('lang.Clickheretoenteryourcode')</a>
-                    </div>
-                </div>
                 <div class="col-12">
                     <form action="{{route('sendmail')}}" method="POST">
                         @csrf
@@ -85,7 +68,7 @@
                                     <div class="form-group mb-3">
                                         <label for="email">@lang('lang.Email')</label>
                                         <input type="email" name="email" value="{{(old('email')) ?? (!empty($customer) ? $customer->email : '')}}"
-                                        id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter your email...">
+                                        id="email" class="form-control @error('email') is-invalid @enderror" placeholder="@lang('lang.Enteryouremail')">
                                         @error('email')
                                             <span role="alert">
                                                 <p class="text-danger fst-italic mt-2" style="font-size: 14px;">{{ $message }}</p>

@@ -5,40 +5,27 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{asset('asset/css/user/register.css')}}">
-    <link rel="stylesheet" href="asset/css/user/myaccount.css">
-    <style>
-        .breadcrumb-wrap {
-            margin-top: 25px !important;
-        }
-    </style>
+    <link rel="stylesheet" href="{{asset('asset/css/user/myaccount.css')}}">
 @endsection
 
-@section('header')
+@section('header-home')
     @include('frontend.layouts.header-page', [$Sidebars, $Menus])
 @endsection
 
-@section('menu-mobile')
+@section('header-mobile')
     @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus])
 @endsection
 
 @section('content')
-    <div class="breadcrumb-wrap container-wp">
-        <section class="breadcrumb">
-            <div class="breadcrumb_default">
-                <div class="breadcrumb_populated">
-                    <div class="breadcrumb_title">@lang('lang.Myaccount')</div>
-                    <nav class="breadcrumb_list">
-                        <a href="{{route('user')}}">@lang('Home')</a>
-                        <i class="fas fa-angle-right"></i>
-                        @lang('lang.Myaccount')
-                    </nav>
-                </div>
+    <div class="wp-breadcrumb-page">
+        <div class="container-page">
+            <div class="breadcrumb-page">
+                <a href="{{route('user')}}">@lang('lang.Home') <i class="fas fa-angle-right mx-1"></i></a>
+                <a>@lang('lang.Myaccount')</a>
             </div>
-        </section>
+        </div>
     </div>
-    <div id="content">
-        <div class="container-wp">
+    <div class="container-page" style="color: #222">
             <div class="row">
                 <div class="col-12 col-md-3">
                     <ul class="menu-account nav nav-tabs" id="myTab" role="tablist">
@@ -227,9 +214,9 @@
                                     <td>@if ($order->status == 1)
                                         @lang('lang.waitprocessing')
                                     @elseif($order->status == 2)
-                                        @lang('lang.Packed') 
+                                        @lang('lang.Packed')
                                     @elseif($order->status == 3)
-                                        @lang('lang.shipping') 
+                                        @lang('lang.shipping')
                                     @elseif($order->status == 4)
                                        @lang('lang.Complete')
                                     @elseif($order->status == 5)
@@ -324,7 +311,6 @@
                       </div>
                 </div>
             </div>
-        </div>
     </div>
 @endsection
 

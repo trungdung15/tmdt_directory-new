@@ -1,33 +1,8 @@
-:root {
-    --global-color-primary: #1558E5;
-    --global-color-primary_hover: #124fce;
-    --global-color-text: #666666;
-    --global-color-accent: #000000;
-    --global-color-lighter: #999999;
-    --global-color-highlight: #EF262C;
-    --global-color-border: #EFEFEF;
-    --global-typography-heading_title-font-family: "Roboto";
-    --global-typography-heading_title-font-size: 24px;
-    --global-typography-heading_title-font-weight: 500;
-    --global-typography-heading_title-text-transform: none;
-    --global-typography-heading_title-line-height: 32px;
-    --global-typography-heading_footer-font-family: "Roboto";
-    --global-typography-heading_footer-font-size: 16px;
-    --global-typography-heading_footer-font-weight: 500;
-    --global-typography-heading_footer-text-transform: uppercase;
-    --global-typography-heading_footer-line-height: 24px;
-}
-*{
-    margin: 0;
-    padding: 0;
-    border: 0;
-    box-sizing: border-box;
-}
 
 body {
-    --primary: #1558E5;
+    --primary: #169fd8;
     --primary_hover: #124fce;
-    --text: #666666;
+    --text: #222;
     --accent: #000000;
     --lighter: #999999;
     --highlight: #EF262C;
@@ -35,26 +10,12 @@ body {
     font-family: 'Roboto', Arial, Helvetica, sans-serif !important;
 }
 
-/*
-███████▄▄███████████▄
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█
-▓▓▓▓▓▓█░░trungdung░░░█
-▓dungtdcs@gmail.com░░█
-▓▓▓▓▓▓█░░░░░░░░░░░░░░█
-▓▓▓▓▓▓███░░░░░░░░░░░░█
-██████▀░░░░░░░██████▀
-░░░░░░░░░█░░░░█
-░░░░░░░░░░█░░░█
-░░░░░░░░░░░█░░█
-░░░░░░░░░░░█░░█
-░░░░░░░░░░░░▀▀
-*/
 
 a{text-decoration: none !important;}
 
 .wp-order-detail{
     margin-bottom: 50px;
+    color: #222;
 }
 .wp-order-detail p.alert-order-success{
     display: block;
@@ -89,7 +50,7 @@ ul.order-detail li strong{
     font-size: 14px;
 }
 .wp-order-detail .order-product table.table-order-detail{
-    max-width: 900px;
+    max-width: 1200px;
     margin: 1.41575em auto 5.9968353111em;
 }
 table.table-order-detail thead th {
@@ -131,7 +92,7 @@ table.table-order-detail tfoot tr td span.amount{
 table.table-order-detail tfoot tr td span.amount-total{
     font-weight: 600;
     font-size: 24px;
-    color: var(--global-color-primary);
+    color: var(--primary);
 }
 .wp-order-detail .customer-info{
     font-size: 14px;

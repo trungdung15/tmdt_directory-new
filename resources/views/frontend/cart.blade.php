@@ -5,39 +5,28 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="asset/css/user/register.css">
     <link rel="stylesheet" href="asset/css/cart.css">
-    <link rel="stylesheet" href="asset/css/style_body.css">
-    <style>
-        
-    </style>
 @endsection
 
-@section('header')
+@section('header-home')
     @include('frontend.layouts.header-page', [$Sidebars, $Menus])
 @endsection
 
-@section('menu-mobile')
+@section('header-mobile')
     @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus])
 @endsection
 
 @section('content')
-    <div class="breadcrumb-wrap container-wp">
-        <section class="breadcrumb">
-            <div class="breadcrumb_default">
-                <div class="breadcrumb_populated">
-                    <div class="breadcrumb_title">@lang('lang.Cart')</div>
-                    <nav class="breadcrumb_list">
-                        <a href="{{route('user')}}">@lang('lang.Home')</a>
-                        <i class="fas fa-angle-right"></i>
-                        @lang('lang.Cart')
-                    </nav>
-                </div>
+    <div class="wp-breadcrumb-page">
+        <div class="container-page">
+            <div class="breadcrumb-page">
+                <a href="{{route('user')}}">@lang('lang.Home') <i class="fas fa-angle-right mx-1"></i></a>
+                <a>@lang('lang.Cart')</a>
             </div>
-        </section>
+        </div>
     </div>
-    <div id="content">
-        <div class="container-wp container-wp-remove">
+    <div id="content" class="container-page" style="color: #222">
+        <div class="container-wp-remove" style="width:100%">
             @if (Cart::count()>0)
             <div class="row" id="cart-empty">
                 <div class="col-12 col-lg-8">
@@ -130,97 +119,115 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-8">
-                <div class="cross-sells">
-                    <h2>@lang('lang.Youmaybeinterestedin')</h2>
-                    <div class="wp-list-product">
-                    <div class="body_products">
-                        <div class="products_default">
-                            <div class="products_border">
-                                <div id="product-trend" class="owl-carousel owl-theme">
-                                    @if ($products->count()>0)
-                                        @foreach ($products as $item)
-                                        <div class="product_style-default">
-                                            <div class="product-block">
-                                                <div class="product-header">
-                                                    <div class="posted-in">
-                                                        @foreach ($item->category as $cat)
-                                                        <a href="{{route('product_cat', $cat->slug)}}">
-                                                            @if($locale =='vi'){{$cat->name}}
-                                                            @else {{$cat->name2}}
-                                                            @endif
-                                                        </a>,
-                                                        @endforeach
-                                                    </div>
-                                                    <h3 class="product-title">
-                                                        <a href="{{route('detailproduct', $item->slug)}}">{{$item->name}}</a>
-                                                    </h3>
-                                                </div>
-                                                <div class="product-transition">
-                                                    @if(!empty($item->onsale))
-                                                        <span class="onsale">-{{$item->onsale}}%</span>
+                <div class="col-12 mb-5">
+                    @if (!empty($products))
+                        <div class="cross-sells">
+                            <h2>@lang('lang.Youmaybeinterestedin')</h2>
+                            <div class="wp-list-product">
+                                <div class="list-product owl-carousel owl-theme owl-loaded owl-drag list-product-recommend-slider" id="list-product-group">
+                                    @foreach ($products as $item)
+                                        <!-- product -->
+                                        <div class="product-item mb-3">
+                                            <div class="thumb">
+                                                <a href="{{ route('detailproduct', $item->slug)}}">
+                                                    <img class="owl-lazy" data-src="{{asset('upload/images/products/medium/'.$item->thumb)}}" alt="">
+                                                    @if (!empty($item->brand))
+                                                        <span class="brand" style="background-image: url('{{asset("upload/images/products/thumb/".$item->brands->image)}}');"></span>
                                                     @endif
-                                                    <div class="product-image">
-                                                        <img width="300" height="300" src="upload/images/products/medium/{{$item->thumb}}">
-                                                    </div>
-                                                    <a href="{{route('detailproduct', $item->slug)}}" class="product_link"></a>
-                                                </div>
-                                                <div class="product-caption">
-                                                    <div class="product-caption-top">
-                                                    <span class="price">
-                                                        @if(!empty($item->onsale))
-                                                            <del>{{number_format($item->price,0,',','.')}} đ</del>
-                                                            <ins>{{number_format($item->price_onsale,0,',','.')}} đ</ins>
-                                                        @else
-                                                            {{number_format($item->price,0,',','.')}} đ
+                                                    <div class="wp-tag">
+                                                        @if (!empty($item->year))
+                                                            <span class="years">{{$item->year}}</span>
                                                         @endif
-                                                    </span>
-                                                        <div class="count-review">
-                                                            <div class="rating2">
-                                                                <div class="rating-upper" style="width: {{$item->count_vote()}}%">
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                    <span><i class="fas fa-star"></i></span>
-                                                                </div>
-                                                                <div class="rating-lower">
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                    <span><i class="fal fa-star"></i></span>
-                                                                </div>
-                                                            </div>
-                                                            <span>({{$item->votes->count()}} @lang('lang.Review'))</span>
-                                                        </div>
+                                                        @if (!empty($item->installment))
+                                                            <span class="payment">Trả góp 0%</span>
+                                                        @endif
                                                     </div>
-                                                    <div class="product-caption-bottom">
-                                                        <a href="{{route('add_cart', $item->id)}}" class="add_to_cart_button"><i class="far fa-shopping-cart"></i>@lang('lang.Addtocart')</a>
+                                                </a>
+                                            </div>
+                                            <div class="detail">
+                                                <div class="wp-event">
+                                                    @if (!empty($item->event))
+                                                        <p class="event" style="background: linear-gradient(to right,{{$item->events->color_left}},{{$item->events->color_right}});">
+                                                            <img src="{{asset('upload/images/products/thumb/'.$item->events->icon)}}" alt="">
+                                                            <span>{{$item->events->name}}</span>
+                                                        </p>
+                                                    @else
+                                                        <p class="event" style="min-height: 20px;"></p>
+                                                    @endif
+                                                    <p class="code">Mã: {{$item->id}}</p>
+                                                </div>
+                                                <div class="name">
+                                                    <a href="{{ route('detailproduct', $item->slug)}}">{{$item->name}}</a>
+                                                </div>
+                                                @if (!empty($item->specifications))
+                                                    <ul class="product-attributes">
+                                                        @foreach ($item->get_specifications() as $k)
+                                                            <li>{{$k}}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
+                                                <div class="price-review clearfix">
+                                                    <div class="price">
+                                                        @if (!empty($item->onsale))
+                                                            <span class="onsale">- {{$item->onsale}}%</span>
+                                                            <div class="price-old">{{number_format($item->price,0,',','.')}} đ</div>
+                                                            <div class="price-new">{{number_format($item->price_onsale,0,',','.')}} đ</div>
+                                                        @else
+                                                            <div class="price-new">{{number_format($item->price,0,',','.')}} đ</div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="review">
+                                                        <div class="rating2">
+                                                            <div class="rating-upper" style="width: {{$item->count_vote()}}%">
+                                                                <span><i class="fas fa-star"></i></span>
+                                                                <span><i class="fas fa-star"></i></span>
+                                                                <span><i class="fas fa-star"></i></span>
+                                                                <span><i class="fas fa-star"></i></span>
+                                                                <span><i class="fas fa-star"></i></span>
+                                                            </div>
+                                                            <div class="rating-lower">
+                                                                <span><i class="fal fa-star"></i></span>
+                                                                <span><i class="fal fa-star"></i></span>
+                                                                <span><i class="fal fa-star"></i></span>
+                                                                <span><i class="fal fa-star"></i></span>
+                                                                <span><i class="fal fa-star"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="count-review">({{$item->votes->count()}})</div>
+                                                        @if (!empty($item->sold))
+                                                            <div class="sold"><i class="fas fa-badge-check"></i>Đã bán {{$item->sold}}</div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="detail-bottom">
+                                                    @if (!empty($item->still_stock))
+                                                        <div class="qty" style="color: #01aa42;
+                                                        background-color: #dbf8e1;">{{$item->still_stock}}</div>
+                                                    @endif
+                                                    <div class="action">
+                                                        <a href="javascript:;" class="repeat" title="So sánh"><i class="far fa-repeat"></i></a>
+                                                        <a href="javascript:;" class="heart add-wish" title="Lưu sản phẩm" onclick="add_wish({{$item->id}})"><i class="far fa-heart"></i></a>
+                                                        <a href="javascript:;" title="Thêm vào giỏ hàng" class="add-cart" onclick="add_cart({{$item->id}})"><i class="far fa-shopping-cart"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        @endforeach
-                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    </div>
-                </div>
+                    @endif
+
                 </div>
             </div>
             @else
-            <div class="row">
-                <div class="entry-content">
+                <div class="entry-content" style="width:100%">
                     <p class="cart-empty">
                         <i class="fad fa-shopping-cart"></i><br>
                         @lang('lang.Yourcartiscurrentlyempty').
                     </p>
                     <a href="{{route('user')}}"> @lang('lang.Returntoshop')</a>
                 </div>
-            </div>
             @endif
         </div>
     </div>
@@ -232,29 +239,39 @@
 
 @section('js')
     <script>
-        $('#product-trend').owlCarousel({
-            loop:true,
-            margin:0,
-            nav:false,
-            dots:false,
-            autoplay:true,
-            autoplayTimeout:3500,
-            responsive:{
-                0:{
-                    items:1
-                },
-                300:{
-                    items:2
-                },
-                600:{
-                    items:3
-                },
-
-            }
-        });
-    </script>
-    <script>
         $(document).ready(function(){
+            add_wish = function(id){
+                    var _token = $('meta[name="csrf-token"]').attr('content');
+                    var data = {id:id, _token:_token};
+                    $.ajax({
+                        url: "{{route('add_wish')}}",
+                        method: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        success: function(data) {
+                            alert('Thêm thành công sản phẩm vào danh sách yêu thích!');
+                            $('#count-wish').text(data.count_wish);
+                        },
+                    });
+                }
+                add_cart = function(id){
+                    var _token = $('meta[name="csrf-token"]').attr('content');
+                    var data = {
+                        id: id,
+                        _token: _token
+                    };
+
+                    $.ajax({
+                        url: "{{ route('add_cart_ajax') }}",
+                        method: 'POST',
+                        data: data,
+                        dataType: "json",
+                        success: function(data) {
+                            alert('Thêm thành công sản phẩm vào giỏi hàng!');
+                            $('#count-cart').text(data.count);
+                        },
+                    });
+                }
             $('.remove-cart').click(function(){
                 var row_id = $(this).data('rowid');
                 var _token = $('meta[name="csrf-token"]').attr('content');

@@ -5,48 +5,35 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{asset('asset/css/user/register.css')}}">
     <link rel="stylesheet" href="{{asset('asset/css/cart.css')}}">
-    <link rel="stylesheet" href="{{asset('asset/css/style_body.css')}}">
-    <style>
-
-    </style>
 @endsection
 
-@section('header')
+@section('header-home')
     @include('frontend.layouts.header-page', [$Sidebars, $Menus])
 @endsection
 
-@section('menu-mobile')
+@section('header-mobile')
     @include('frontend.layouts.menu-mobile', [$Sidebars, $Menus])
 @endsection
 
 @section('content')
-    <div class="breadcrumb-wrap container-wp">
-        <section class="breadcrumb">
-            <div class="breadcrumb_default">
-                <div class="breadcrumb_populated">
-                    <div class="breadcrumb_title">@lang('lang.Favoriteproduct')</div>
-                    <nav class="breadcrumb_list">
-                        <a href="{{route('user')}}">@lang('lang.Home')</a>
-                        <i class="fas fa-angle-right"></i>
-                        @lang('lang.Favoriteproduct')
-                    </nav>
-                </div>
+    <div class="wp-breadcrumb-page">
+        <div class="container-page">
+            <div class="breadcrumb-page">
+                <a href="{{route('user')}}">@lang('lang.Home') <i class="fas fa-angle-right mx-1"></i></a>
+                <a>@lang('lang.Favoriteproduct')</a>
             </div>
-        </section>
+        </div>
     </div>
-    <div id="content">
-        <div class="container-wp container-wp-remove">
-            <div class="row" id="cart-empty">
-                <div class="col-12">
-                    <div class="wp-cart-table">
+        <div class="container-page container-wp-remove" style="min-height: 500px; color:#222;">
+            <div id="cart-empty">
+                    <div class="wp-cart-table" style="margin-right: 0; margin-bottom: 0;">
                         @if ($products->count() > 0)
                             <table class="table-cart">
                                 <thead>
                                     <tr>
                                         <th class="product-remove"></th>
-                                        <th class="product-thumbnail"></th>
+                                        <th class="product-thumbnail text-center">Ảnh</th>
                                         <th class="product-name">@lang('lang.Product')</th>
                                         <th class="product-price">@lang('lang.Price')</th>
                                         <th class="add-cart-product"></th>
@@ -89,10 +76,8 @@
                             <p style="text-align: center;">@lang('lang.emptylistwish')</p>
                         @endif
                     </div>
-                </div>
             </div>
         </div>
-    </div>
     <p id="message_add_cart" style="display:none;">@lang('lang.Productaddedtocartsuccessfully')</p>
 @endsection
 
