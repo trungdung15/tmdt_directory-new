@@ -291,12 +291,6 @@ class HomeController extends Controller
         $Sidebars = $this->getmenu('sidebar');
         $Menus    = $this->getmenu('menu');
         $Sub_menus          = $this->getmenu('submenu');
-        $getcategoryblog    = $this->getcategoryblog();
-        $banner_1 = DB::table('sliders')->where('location',6)->first();
-        $banner_2 = DB::table('sliders')->where('location',7)->first();
-        $banner_3 = DB::table('sliders')->where('location',8)->first();
-        $product_deals = Products::where('deals', 1)->where('status', 1)
-        ->whereNotNull('onsale')->orderBy('onsale', 'DESC')->limit(5)->get();
         $categories = Category::where('taxonomy',Category::SAN_PHAM)
             ->where('parent_id',0)
             ->where('status',1)
@@ -367,8 +361,7 @@ class HomeController extends Controller
             }
 
         return \view('frontend.product', \compact('products', 'categories',
-        'cat', 'Sidebars', 'Menus','Sub_menus', 'getcategoryblog',
-        'product_deals', 'banner_1', 'banner_2', 'banner_3', 'locale'));
+        'cat', 'Sidebars', 'Menus','Sub_menus', 'locale'));
     }
 
     // trang danh sach san pham khi loc
@@ -388,7 +381,7 @@ class HomeController extends Controller
         $Sidebars           = $this->getmenu('sidebar');
         $Menus              = $this->getmenu('menu');
         $Sub_menus          = $this->getmenu('submenu');
-        $getcategoryblog    = $this->getcategoryblog();
+
         $locale             = config('app.locale');
         $banner_1 = DB::table('sliders')->where('location',6)->first();
         $banner_2 = DB::table('sliders')->where('location',7)->first();
@@ -421,7 +414,7 @@ class HomeController extends Controller
                 ->whereBetween('price_onsale', [$min_price, $max_price])->paginate(12)->withQueryString();;
             }
         return \view('frontend.product', \compact('products', 'categories', 'cat','Sidebars',
-        'Menus','Sub_menus', 'getcategoryblog', 'banner_1', 'banner_2', 'banner_3','locale'));
+        'Menus','Sub_menus','locale'));
     }
     // xu ly lay comment
     public function commentPost(Request $request){
